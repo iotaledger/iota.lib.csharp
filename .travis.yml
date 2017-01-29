@@ -1,0 +1,7 @@
+language: csharp
+solution: "./IotaApi.sln"
+install:
+- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./IotaApi.sln
+script:
+- xbuild ./IotaApi.sln
+- mono ./packages/xunit.runner.console*/tools/xunit.console.exe ./IotaCSharpApiUnitTests.Tests/bin/Debug/IotaCSharpApiUnitTests.dll

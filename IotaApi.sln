@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaCSharpApi", "IotaCSharpApi\IotaCSharpApi.csproj", "{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaCSharpApiUnitTests", "IotaCSharpApiUnitTests\IotaCSharpApiUnitTests.csproj", "{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

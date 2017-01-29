@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Iota.Lib.CSharp</RootNamespace>
+    <AssemblyName>IotaApi</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net35\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SendGrid.CSharp.HTTP.Client, Version=3.0.0.0, Culture=neutral, PublicKeyToken=79219bf4e5ecaaca, processorArchitecture=MSIL">
+      <HintPath>..\packages\SendGrid.CSharp.HTTP.Client.3.0.0\lib\SendGrid.CSharp.HTTP.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\Core\Command.cs" />
+    <Compile Include="Api\Core\ErrorResponse.cs" />
+    <Compile Include="Api\Core\GetInclusionStatesRequest.cs" />
+    <Compile Include="Api\Model\Input.cs" />
+    <Compile Include="Api\Model\Inputs.cs" />
+    <Compile Include="Api\Model\Signature.cs" />
+    <Compile Include="Api\Exception\NotEnoughBalanceException.cs" />
+    <Compile Include="Api\Exception\InvalidBundleException.cs" />
+    <Compile Include="Api\Exception\InvalidTailTransactionException.cs" />
+    <Compile Include="Api\Exception\InvisibleBundleTransactionException.cs" />
+    <Compile Include="Api\Exception\IllegalAccessError.cs" />
+    <Compile Include="Api\Exception\InvalidSignatureException.cs" />
+    <Compile Include="Api\Utils\Constants.cs" />
+    <Compile Include="Api\Core\StoreTransactionsResponse.cs" />
+    <Compile Include="Api\Core\StoreTransactionsRequest.cs" />
+    <Compile Include="Api\Core\InterruptAttachingToTangleResponse.cs" />
+    <Compile Include="Api\Core\InterruptAttachingToTangleRequest.cs" />
+    <Compile Include="Api\Core\GetTransactionsToApproveResponse.cs" />
+    <Compile Include="Api\Core\GetTransactionsToApproveRequest.cs" />
+    <Compile Include="Api\Core\GetTrytesResponse.cs" />
+    <Compile Include="Api\Core\RemoveNeighborsResponse.cs" />
+    <Compile Include="Api\Core\RemoveNeighborsRequest.cs" />
+    <Compile Include="Api\Core\AddNeighborsRequest.cs" />
+    <Compile Include="Api\Core\AddNeighborsResponse.cs" />
+    <Compile Include="Api\Core\GetNeighborsResponse.cs" />
+    <Compile Include="Api\Core\GetNeighborsRequest.cs" />
+    <Compile Include="Api\Model\Bundle.cs" />
+    <Compile Include="Api\Model\Transfer.cs" />
+    <Compile Include="Api\Model\Transaction.cs" />
+    <Compile Include="Api\Model\Neighbor.cs" />
+    <Compile Include="Api\Core\IGenericIotaCoreApi.cs" />
+    <Compile Include="Api\Core\GenericIotaCoreApi.cs" />
+    <Compile Include="Api\IotaApi.cs" />
+    <Compile Include="Api\Core\AttachToTangleRequest.cs" />
+    <Compile Include="Api\Core\GetTrytesRequest.cs" />
+    <Compile Include="Api\Core\EnumHelper.cs" />
+    <Compile Include="Api\Core\FindTransactionsRequest.cs" />
+    <Compile Include="Api\Core\GetBalancesRequest.cs" />
+    <Compile Include="Api\Core\GetInclusionStatesResponse.cs" />
+    <Compile Include="Api\Core\GetBalancesResponse.cs" />
+    <Compile Include="Api\Core\BroadcastTransactionsRequest.cs" />
+    <Compile Include="Api\Core\BroadcastTransactionsResponse.cs" />
+    <Compile Include="Api\Core\AttachToTangleResponse.cs" />
+    <Compile Include="Api\Core\FindTransactionsResponse.cs" />
+    <Compile Include="Api\Core\GetTipsRequest.cs" />
+    <Compile Include="Api\Core\GetTipsResponse.cs" />
+    <Compile Include="Api\Core\IotaRequest.cs" />
+    <Compile Include="Api\Core\IotaResponse.cs" />
+    <Compile Include="Api\Core\GetNodeInfoRequest.cs" />
+    <Compile Include="Api\Core\GetNodeInfoResponse.cs" />
+    <Compile Include="Api\Utils\ICurl.cs" />
+    <Compile Include="Api\Utils\IllegalStateException.cs" />
+    <Compile Include="Api\Utils\IotaApiException.cs" />
+    <Compile Include="Api\Utils\IotaApiUtils.cs" />
+    <Compile Include="Api\Utils\Converter.cs" />
+    <Compile Include="Api\IotaCoreApi.cs" />
+    <Compile Include="Api\Utils\Rest\JsonSerializer.cs" />
+    <Compile Include="Api\Utils\Checksum.cs" />
+    <Compile Include="Api\Utils\Curl.cs" />
+    <Compile Include="Api\Utils\InputValidator.cs" />
+    <Compile Include="Api\Exception\InvalidAddressException.cs" />
+    <Compile Include="Api\Utils\IotaUnitConverter.cs" />
+    <Compile Include="Api\Utils\IotaUnits.cs" />
+    <Compile Include="Api\Utils\Rest\JsonWebClient.cs" />
+    <Compile Include="Api\Utils\Signing.cs" />
+    <Compile Include="Api\Utils\TrytesConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
