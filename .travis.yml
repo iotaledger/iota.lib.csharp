@@ -1,5 +1,5 @@
 language: csharp
-solution: "./IotaApi.sln"
+solution: "IotaApi.sln"
 install:
 - travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./IotaApi.sln
 script:
