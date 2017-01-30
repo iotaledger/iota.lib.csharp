@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Iota.Lib.CSharpTests</RootNamespace>
     <AssemblyName>IotaCSharpApiUnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -36,10 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -58,7 +54,6 @@
     <Compile Include="Api\IotaApiNewTests.cs" />
     <Compile Include="Api\IotaCoreApiTest.cs" />
     <Compile Include="Api\Utils\ChecksumTest.cs" />
-    <Compile Include="Api\Utils\IotaApiTests.cs" />
     <Compile Include="Api\Utils\InputValidatorTests.cs" />
     <Compile Include="Api\Utils\IotaUnitConverterTests.cs" />
     <Compile Include="Api\Utils\TrytesConverterTest.cs" />
@@ -69,9 +64,6 @@
       <Project>{fc2c2f96-49ea-4046-95bd-3b570bdd1e13}</Project>
       <Name>IotaCSharpApi</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
