@@ -657,7 +657,7 @@ namespace Iota.Lib.CSharp.Api
             {
                 BroadcastAndStore(attachToTangleResponse.Trytes);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return new Transaction[0];
             }
