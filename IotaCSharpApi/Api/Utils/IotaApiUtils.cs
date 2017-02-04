@@ -148,7 +148,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             // Convert all bundle entries into trytes
             foreach (Transaction tx in bundle.Transactions)
             {
-                bundleTrytes.Add(Transaction.transactionTrytes(tx));
+                bundleTrytes.Add(tx.ToTransactionTrytes());
             }
             bundleTrytes.Reverse();
             return bundleTrytes;
