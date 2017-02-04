@@ -10,15 +10,15 @@ namespace Iota.Lib.CSharp.Api.Model
     {
         public Transaction(string address, string value, string tag, string timestamp)
         {
-            this.Address = address;
-            this.Value = value;
-            this.Tag = tag;
-            this.Timestamp = timestamp;
+            Address = address;
+            Value = value;
+            Tag = tag;
+            Timestamp = timestamp;
         }
 
         public Transaction(string trytes, ICurl curl)
         {
-            if (String.IsNullOrEmpty(trytes))
+            if (string.IsNullOrEmpty(trytes))
             {
                 throw new ArgumentException("trytes must non-null");
             }
