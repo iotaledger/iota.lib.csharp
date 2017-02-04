@@ -88,6 +88,13 @@ namespace Iota.Lib.CSharp.Api.Utils
             return regexTrytes.IsMatch(trytes);
         }
 
+
+
+        public static bool IsArrayOfTrytes(string[] trytes, int length )
+        {
+           return trytes.ToList().TrueForAll(element => IsTrytes(element, length));
+        }
+
         public static bool IsTransfersCollectionCorrect(List<Transfer> transfers)
         {
             foreach (Transfer transfer in transfers)
@@ -142,6 +149,12 @@ namespace Iota.Lib.CSharp.Api.Utils
         {
             while (seed.Length < 81) seed += 9;
             return seed;
+        }
+
+        public static void CheckIfArrayOfTrytes(string[] trytes)
+        {
+            if(IsArrayOfTrytes(trytes, 2673))
+                throw new InvalidTryteException();
         }
     }
 }

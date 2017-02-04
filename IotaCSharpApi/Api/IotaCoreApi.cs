@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Iota.Lib.CSharp.Api.Core;
+using Iota.Lib.CSharp.Api.Utils;
 
 namespace Iota.Lib.CSharp.Api
 {
@@ -39,6 +40,8 @@ namespace Iota.Lib.CSharp.Api
         public AttachToTangleResponse AttachToTangle(string trunkTransaction, string branchTransaction,
             string[] trytes, int minWeightMagnitude = 18)
         {
+            InputValidator.CheckIfArrayOfTrytes(trytes);
+
             AttachToTangleRequest attachToTangleRequest = new AttachToTangleRequest(trunkTransaction, branchTransaction,
                 trytes, minWeightMagnitude);
             return _genericIotaCoreApi.Request<AttachToTangleRequest, AttachToTangleResponse>(attachToTangleRequest);

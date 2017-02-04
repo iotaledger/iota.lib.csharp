@@ -434,7 +434,7 @@ namespace Iota.Lib.CSharp.Api
             if (!start.HasValue)
                 start = 0;
             if (!end.HasValue)
-                end.Value - start.Value
+                end = 0;
 
             // If start value bigger than end, return error
             // or if difference between end and start is bigger than 500 keys
@@ -837,10 +837,12 @@ namespace Iota.Lib.CSharp.Api
 
         private Bundle TraverseBundle(string trunkTransaction, string bundleHash, Bundle bundle)
         {
-            string trytes = GetTrytes(new[] {trunkTransaction}).Trytes[0];
+            GetTrytesResponse gtr = GetTrytes(trunkTransaction);
 
-            if (string.IsNullOrEmpty(trytes))
+            if (gtr.Trytes.Count == 0)
                 throw new InvisibleBundleTransactionException();
+
+            string trytes = gtr.Trytes[0];
 
             Transaction transaction = new Transaction(trytes, curl);
 
@@ -879,7 +881,7 @@ namespace Iota.Lib.CSharp.Api
         }
 
         /// <summary>
-        /// Wrapper function that does broadcasts and stores the specified trytes
+        /// Wrapper function that broadcasts and stores the specified trytes
         /// </summary>
         /// <param name="trytes">trytes</param>
         public void BroadcastAndStore(List<string> trytes)
