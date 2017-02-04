@@ -8,7 +8,7 @@ using Iota.Lib.CSharp.Api.Model;
 namespace Iota.Lib.CSharp.Api.Utils
 {
     /// <summary>
-    /// Default input validator
+    /// This class provides methods to validate the parameters of different iota API methods
     /// </summary>
     public static class InputValidator
     {
@@ -27,13 +27,23 @@ namespace Iota.Lib.CSharp.Api.Utils
             return false;
         }
 
-        public static bool CheckAddress(string address)
+        /// <summary>
+        /// Checks whether the specified address is an address
+        /// </summary>
+        /// <param name="address">address to check</param>
+        /// <exception cref="InvalidAddressException">exception which is thrown when the address is invalid</exception>
+        /// <returns></returns>
+        public static void CheckAddress(string address)
         {
             if (!address.IsAddress())
                 throw new InvalidAddressException(address);
-            return true;
         }
 
+        /// <summary>
+        /// Determines whether the specified string represents a signed integer
+        /// </summary>
+        /// <param name="value">a string</param>
+        /// <returns></returns>
         public static bool isValue(String value)
         {
             return Regex.IsMatch(value, @"^(-){0,1}\d+$");

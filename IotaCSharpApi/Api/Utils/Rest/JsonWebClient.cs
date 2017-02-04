@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Iota.Lib.CSharp.Api.Utils.Rest
 {
-    public class JsonWebClient
+    internal class JsonWebClient
     {
         public TResponse GetPOSTResponseSync<TResponse>(Uri uri, string data)
         {

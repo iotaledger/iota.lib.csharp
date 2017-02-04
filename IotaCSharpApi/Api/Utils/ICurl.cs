@@ -1,5 +1,8 @@
 ﻿namespace Iota.Lib.CSharp.Api.Utils
 {
+    /// <summary>
+    /// This interface abstracts ...
+    /// </summary>
     public interface ICurl
     {
         ICurl Clone();

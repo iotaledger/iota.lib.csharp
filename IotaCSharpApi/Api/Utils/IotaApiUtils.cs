@@ -28,7 +28,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                 ts.Milliseconds/10);
             Console.WriteLine(elapsedTime);
 
-            int[] key = signing.Key(Converter.trits(seed), index, 2);
+            int[] key = signing.Key(Converter.ToTrits(seed), index, 2);
 
             ts = stopWatch.Elapsed;
             elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
@@ -50,7 +50,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds/10);
             Console.WriteLine(elapsedTime);
-            string address = Converter.trytes(addressTrits);
+            string address = Converter.ToTrytes(addressTrits);
 
             if (checksum)
                 address = address.AddChecksum();
@@ -58,23 +58,13 @@ namespace Iota.Lib.CSharp.Api.Utils
             return address;
         }
 
-        /**
-             * Generates a new address
-             *
-             * @param seed
-             * @param index
-             * @param checksum
-             * @return an String with address
-             */
-
-
-        public static List<string> signInputsAndReturn(string seed,
+        public static List<string> SignInputsAndReturn(string seed,
             List<Input> inputs,
             Bundle bundle,
             List<string> signatureFragments, ICurl curl)
         {
-            bundle.finalize(curl);
-            bundle.addTrytes(signatureFragments);
+            bundle.FinalizeBundle(curl);
+            bundle.AddTrytes(signatureFragments);
 
             //  SIGNING OF INPUTS
             //
@@ -101,22 +91,22 @@ namespace Iota.Lib.CSharp.Api.Utils
                     string bundleHash = bundle.Transactions[i].Bundle;
 
                     // Get corresponding private key of address
-                    int[] key = new Signing(curl).Key(Converter.trits(seed), keyIndex, 2);
+                    int[] key = new Signing(curl).Key(Converter.ToTrits(seed), keyIndex, 2);
 
                     //  First 6561 trits for the firstFragment
                     int[] firstFragment = SubArray(key, 0, 6561);
 
                     //  Get the normalized bundle hash
-                    int[] normalizedBundleHash = bundle.normalizedBundle(bundleHash);
+                    int[] normalizedBundleHash = bundle.NormalizedBundle(bundleHash);
 
                     //  First bundle fragment uses 27 trytes
                     int[] firstBundleFragment = SubArray(normalizedBundleHash, 0, 27);
 
                     //  Calculate the new signatureFragment with the first bundle fragment
-                    int[] firstSignedFragment = new Signing(curl).signatureFragment(firstBundleFragment, firstFragment);
+                    int[] firstSignedFragment = new Signing(curl).SignatureFragment(firstBundleFragment, firstFragment);
 
                     //  Convert signature to trytes and assign the new signatureFragment
-                    bundle.Transactions[i].SignatureFragment = Converter.trytes(firstSignedFragment);
+                    bundle.Transactions[i].SignatureFragment = Converter.ToTrytes(firstSignedFragment);
 
                     //  Because the signature is > 2187 trytes, we need to
                     //  find the second transaction to add the remainder of the signature
@@ -133,11 +123,11 @@ namespace Iota.Lib.CSharp.Api.Utils
                             int[] secondBundleFragment = SubArray(normalizedBundleHash, 27, 27);
 
                             //  Calculate the new signature
-                            int[] secondSignedFragment = new Signing(curl).signatureFragment(secondBundleFragment,
+                            int[] secondSignedFragment = new Signing(curl).SignatureFragment(secondBundleFragment,
                                 secondFragment);
 
                             //  Convert signature to trytes and assign it again to this bundle entry
-                            bundle.Transactions[j].SignatureFragment = (Converter.trytes(secondSignedFragment));
+                            bundle.Transactions[j].SignatureFragment = (Converter.ToTrytes(secondSignedFragment));
                         }
                     }
                 }

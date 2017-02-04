@@ -139,7 +139,7 @@ namespace Iota.Lib.CSharpTests.Api
             }*/
         }
 
-        [Ignore] // takes too long
+        // [Ignore] // takes too long
         [TestMethod]
         public void shouldSendTrytes()
         {
@@ -147,7 +147,7 @@ namespace Iota.Lib.CSharpTests.Api
         }
 
         // take too long
-        [Ignore]
+        // [Ignore]
         [TestMethod]
         public void shouldSendTransfer()
         {

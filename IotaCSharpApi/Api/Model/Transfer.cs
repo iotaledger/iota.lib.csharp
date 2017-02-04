@@ -1,5 +1,8 @@
 ﻿namespace Iota.Lib.CSharp.Api.Model
 {
+    /// <summary>
+    /// This class represents a Transfer
+    /// </summary>
     public class Transfer
     {
         public Transfer(string address, long value, string message, string tag)

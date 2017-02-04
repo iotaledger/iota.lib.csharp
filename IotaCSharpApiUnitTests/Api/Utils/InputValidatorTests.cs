@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Iota.Lib.CSharp.Api.Exception;
 using Iota.Lib.CSharp.Api.Model;
 using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,7 +33,7 @@ namespace Iota.Lib.CSharpTests.Api.Utils
         [TestMethod]
         public void shouldCheckAddress()
         {
-            Assert.AreEqual(InputValidator.CheckAddress(TEST_ADDRESS_WITHOUT_CHECKSUM), true);
+            Assert.AreEqual(InputValidator.IsAddress(TEST_ADDRESS_WITHOUT_CHECKSUM), true);
         }
 
         [TestMethod]

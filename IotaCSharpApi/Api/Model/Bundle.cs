@@ -10,30 +10,23 @@ namespace Iota.Lib.CSharp.Api.Model
 
         public int Length { get; set; }
 
-
         public Bundle() : this(new List<Transaction>(), 0)
         {
         }
 
         public Bundle(List<Transaction> transactions, int length)
         {
-            this.Transactions = transactions;
-            this.Length = length;
+            Transactions = transactions;
+            Length = length;
         }
-
 
         public Transaction this[int index]
         {
             get { return Transactions[index]; }
         }
 
-        public void addEntry(int signatureMessageLength, string address, long value, string tag, long timestamp)
+        public void AddEntry(int signatureMessageLength, string address, long value, string tag, long timestamp)
         {
-            /*if (Transactions == null)
-            {
-                this.Transactions = new List<Transaction>(Transactions);
-            }*/
-
             for (int i = 0; i < signatureMessageLength; i++)
             {
                 Transaction trx = new Transaction(address, (i == 0 ? value : 0).ToString(), tag, timestamp.ToString());
@@ -41,52 +34,10 @@ namespace Iota.Lib.CSharp.Api.Model
             }
         }
 
-        public void finalize(ICurl customCurl)
-        {
-            ICurl curl = customCurl == null ? new Curl() : customCurl;
-            curl.Reset();
-
-            for (int i = 0; i < Transactions.Count; i++)
-            {
-                int[] valueTrits = Converter.trits(Transactions[i].Value, 81);
-
-                int[] timestampTrits = Converter.trits(Transactions[i].Timestamp, 27);
-
-                int[] currentIndexTrits = Converter.trits(Transactions[i].CurrentIndex = ("" + i), 27);
-
-                int[] lastIndexTrits = Converter.trits(
-                    Transactions[i].LastIndex = ("" + (this.Transactions.Count - 1)), 27);
-
-                string stringToConvert = Transactions[i].Address
-                                         + Converter.trytes(valueTrits)
-                                         + Transactions[i].Tag +
-                                         Converter.trytes(timestampTrits)
-                                         + Converter.trytes(currentIndexTrits) +
-                                         Converter.trytes(lastIndexTrits);
-
-                int[] t = Converter.trits(stringToConvert);
-                curl.Absorb(t, 0, t.Length);
-            }
-
-            int[] hash = new int[243];
-            curl.Squeeze(hash, 0, hash.Length);
-            String hashInTrytes = Converter.trytes(hash);
-
-            for (int i = 0; i < Transactions.Count; i++)
-            {
-                Transactions[i].Bundle = hashInTrytes;
-            }
-        }
-
-        public void finalize()
-        {
-            finalize(new Curl());
-        }
-
-        public void addTrytes(List<string> signatureFragments)
+        public void AddTrytes(List<string> signatureFragments)
         {
             String emptySignatureFragment = "";
-            String emptyHash = Constants.EMPTY_HASH;
+            String emptyHash = Constants.EmptyHash;
 
             for (int j = 0; emptySignatureFragment.Length < 2187; j++)
             {
@@ -112,8 +63,9 @@ namespace Iota.Lib.CSharp.Api.Model
                 transaction.Nonce = emptyHash;
             }
         }
+      
 
-        public int[] normalizedBundle(string bundleHash)
+        public int[] NormalizedBundle(string bundleHash)
         {
             int[] normalizedBundle = new int[81];
 
@@ -123,7 +75,7 @@ namespace Iota.Lib.CSharp.Api.Model
                 for (int j = 0; j < 27; j++)
                 {
                     sum +=
-                        (normalizedBundle[i*27 + j] = Converter.value(Converter.tritsString("" + bundleHash[i*27 + j])));
+                        (normalizedBundle[i*27 + j] = Converter.ToValue(Converter.ToTritsString("" + bundleHash[i*27 + j])));
                 }
 
                 if (sum >= 0)
@@ -157,6 +109,47 @@ namespace Iota.Lib.CSharp.Api.Model
             }
 
             return normalizedBundle;
+        }
+
+        public void FinalizeBundle(ICurl customCurl)
+        {
+            customCurl.Reset();
+
+            for (int i = 0; i < Transactions.Count; i++)
+            {
+                int[] valueTrits = Converter.ToTrits(Transactions[i].Value, 81);
+
+                int[] timestampTrits = Converter.ToTrits(Transactions[i].Timestamp, 27);
+
+                int[] currentIndexTrits = Converter.ToTrits(Transactions[i].CurrentIndex = ("" + i), 27);
+
+                int[] lastIndexTrits = Converter.ToTrits(
+                    Transactions[i].LastIndex = ("" + (this.Transactions.Count - 1)), 27);
+
+                string stringToConvert = Transactions[i].Address
+                                         + Converter.ToTrytes(valueTrits)
+                                         + Transactions[i].Tag +
+                                         Converter.ToTrytes(timestampTrits)
+                                         + Converter.ToTrytes(currentIndexTrits) +
+                                         Converter.ToTrytes(lastIndexTrits);
+
+                int[] t = Converter.ToTrits(stringToConvert);
+                customCurl.Absorb(t, 0, t.Length);
+            }
+
+            int[] hash = new int[243];
+            customCurl.Squeeze(hash, 0, hash.Length);
+            String hashInTrytes = Converter.ToTrytes(hash);
+
+            for (int i = 0; i < Transactions.Count; i++)
+            {
+                Transactions[i].Bundle = hashInTrytes;
+            }
+        }
+
+        public void FinalizeBundle()
+        {
+            FinalizeBundle(new Curl());
         }
 
         public int CompareTo(object obj)

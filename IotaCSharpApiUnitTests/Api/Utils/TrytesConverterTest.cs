@@ -11,21 +11,21 @@ namespace Iota.Lib.CSharpTests.Api.Utils
         [TestMethod]
         public void shouldConvertStringToTrytes()
         {
-            Assert.AreEqual("IC", TrytesConverter.toTrytes("Z"));
-            Assert.AreEqual(TrytesConverter.toTrytes("JOTA JOTA"), "TBYBCCKBEATBYBCCKB");
+            Assert.AreEqual("IC", TrytesConverter.ToTrytes("Z"));
+            Assert.AreEqual(TrytesConverter.ToTrytes("JOTA JOTA"), "TBYBCCKBEATBYBCCKB");
         }
 
         [TestMethod]
         public void shouldConvertTrytesToString()
         {
-            Assert.AreEqual("Z", TrytesConverter.toString("IC"));
-            Assert.AreEqual(TrytesConverter.toString("TBYBCCKBEATBYBCCKB"), "JOTA JOTA");
+            Assert.AreEqual("Z", TrytesConverter.ToString("IC"));
+            Assert.AreEqual(TrytesConverter.ToString("TBYBCCKBEATBYBCCKB"), "JOTA JOTA");
         }
 
         public void shouldConvertBackAndForth()
         {
             string str = RandomString(1000);
-            string back = TrytesConverter.toString(TrytesConverter.toTrytes(str));
+            string back = TrytesConverter.ToString(TrytesConverter.ToTrytes(str));
             Assert.AreEqual(str, back);
         }
 

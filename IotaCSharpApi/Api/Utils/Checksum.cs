@@ -43,9 +43,9 @@ namespace Iota.Lib.CSharp.Api.Utils
         {
             Curl curl = new Curl();
             curl.Reset();
-            curl.State = Converter.copyTrits(address, curl.State);
+            curl.State = Converter.CopyTrits(address, curl.State);
             curl.Transform();
-            return Converter.trytes(curl.State).Substring(0, 9);
+            return Converter.ToTrytes(curl.State).Substring(0, 9);
         }
     }
 }

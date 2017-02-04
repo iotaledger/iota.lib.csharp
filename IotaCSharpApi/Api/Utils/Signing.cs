@@ -59,10 +59,10 @@ namespace Iota.Lib.CSharp.Api.Utils
                     }
                 }
             }
-            return To(key);
+            return ToIntArray(key);
         }
 
-        private static int[] To(IList<int> key)
+        private static int[] ToIntArray(IList<int> key)
         {
             int[] a = new int[key.Count];
             int i = 0;
@@ -80,13 +80,11 @@ namespace Iota.Lib.CSharp.Api.Utils
 
             for (int i = 0; i < Math.Floor((decimal) key.Length/6561); i++)
             {
-                //int[] keyFragment = Arrays.copyOfRange(key, i * 6561, (i + 1) * 6561);
                 int[] keyFragment = new int[6561];
                 Array.Copy(key, i*6561, keyFragment, 0, 6561);
 
                 for (int j = 0; j < 27; j++)
                 {
-                    // buffer = Arrays.copyOfRange(keyFragment, j * 243, (j + 1) * 243);
                     Array.Copy(keyFragment, j*243, buffer, 0, 243);
                     for (int k = 0; k < 26; k++)
                     {
@@ -143,7 +141,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             return address;
         }
 
-        public int[] signatureFragment(int[] normalizedBundleFragment, int[] keyFragment)
+        public int[] SignatureFragment(int[] normalizedBundleFragment, int[] keyFragment)
         {
             int[] hash = new int[243];
 
@@ -167,12 +165,12 @@ namespace Iota.Lib.CSharp.Api.Utils
             return keyFragment;
         }
 
-        public bool validateSignatures(String expectedAddress, String[] signatureFragments, String bundleHash)
+        public bool ValidateSignatures(string expectedAddress, string[] signatureFragments, string bundleHash)
         {
             Bundle bundle = new Bundle();
 
             var normalizedBundleFragments = new int[3, 27];
-            int[] normalizedBundleHash = bundle.normalizedBundle(bundleHash);
+            int[] normalizedBundleHash = bundle.NormalizedBundle(bundleHash);
 
             // Split hash into 3 fragments
             for (int i = 0; i < 3; i++)
@@ -187,31 +185,23 @@ namespace Iota.Lib.CSharp.Api.Utils
             for (int i = 0; i < signatureFragments.Length; i++)
             {
                 int[] digestBuffer = Digest(SliceRow(normalizedBundleFragments, i%3).ToArray(),
-                    Converter.trits(signatureFragments[i]));
+                    Converter.ToTrits(signatureFragments[i]));
 
                 for (int j = 0; j < 243; j++)
                 {
                     Array.Copy(digestBuffer, j, digests, i*243 + j, 1);
                 }
             }
-            String address = Converter.trytes(Address(digests));
+            string address = Converter.ToTrytes(Address(digests));
 
             return (expectedAddress.Equals(address));
         }
 
-        public static IEnumerable<T> SliceRow<T>(T[,] array, int row)
+        private static IEnumerable<T> SliceRow<T>(T[,] array, int row)
         {
             for (var i = array.GetLowerBound(1); i <= array.GetUpperBound(1); i++)
             {
                 yield return array[row, i];
-            }
-        }
-
-        public static IEnumerable<T> SliceColumn<T>(T[,] array, int column)
-        {
-            for (var i = array.GetLowerBound(0); i <= array.GetUpperBound(0); i++)
-            {
-                yield return array[i, column];
             }
         }
     }

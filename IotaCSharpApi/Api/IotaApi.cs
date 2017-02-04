@@ -197,7 +197,7 @@ namespace Iota.Lib.CSharp.Api
 
                 // Add first entries to the bundle
                 // Slice the address in case the user provided a checksummed one
-                bundle.addEntry(signatureMessageLength, transfers[i].Address, transfers[i].Value, tag, timestamp);
+                bundle.AddEntry(signatureMessageLength, transfers[i].Address, transfers[i].Value, tag, timestamp);
                 // Sum up total value
                 totalValue += transfers[i].Value;
             }
@@ -260,8 +260,8 @@ namespace Iota.Lib.CSharp.Api
             else
             {
                 // If no input required, don't sign and simply finalize the bundle
-                bundle.finalize(curl);
-                bundle.addTrytes(signatureFragments);
+                bundle.FinalizeBundle(curl);
+                bundle.AddTrytes(signatureFragments);
 
                 List<String> bundleTrytes = new List<string>();
                 bundle.Transactions.ForEach(tx => bundleTrytes.Add(tx.ToTransactionTrytes()));
@@ -284,7 +284,7 @@ namespace Iota.Lib.CSharp.Api
                 var timestamp = CreateTimeStampNow();
 
                 // Add input as bundle entry
-                bundle.addEntry(2, input.Address, toSubtract, tag, timestamp);
+                bundle.AddEntry(2, input.Address, toSubtract, tag, timestamp);
                 // If there is a remainder value
                 // Add extra output to send remaining funds to
 
@@ -297,10 +297,10 @@ namespace Iota.Lib.CSharp.Api
                     if (remainder > 0 && remainderAddress != null)
                     {
                         // Remainder bundle entry
-                        bundle.addEntry(1, remainderAddress, remainder, tag, timestamp);
+                        bundle.AddEntry(1, remainderAddress, remainder, tag, timestamp);
 
                         // function for signing inputs
-                        IotaApiUtils.signInputsAndReturn(seed, inputs, bundle, signatureFragments, curl);
+                        IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, curl);
                     }
                     else if (remainder > 0)
                     {
@@ -308,16 +308,16 @@ namespace Iota.Lib.CSharp.Api
                         string address = GetNewAddress(seed)[0];
 
                         // Remainder bundle entry
-                        bundle.addEntry(1, address, remainder, tag, timestamp);
+                        bundle.AddEntry(1, address, remainder, tag, timestamp);
 
                         // function for signing inputs
-                        return IotaApiUtils.signInputsAndReturn(seed, inputs, bundle, signatureFragments, curl);
+                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, curl);
                     }
                     else
                     {
                         // If there is no remainder, do not add transaction to bundle
                         // simply sign and return
-                        return IotaApiUtils.signInputsAndReturn(seed, inputs, bundle, signatureFragments, curl);
+                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, curl);
                     }
                 }
                 // If multiple inputs provided, subtract the totalTransferValue by
@@ -705,15 +705,15 @@ namespace Iota.Lib.CSharp.Api
                 string thisTxTrytes = bundleTransaction.ToTransactionTrytes().Substring(2187, 162);
 
                 // Absorb bundle hash + value + timestamp + lastIndex + currentIndex trytes.
-                curl.Absorb(Converter.trits(thisTxTrytes));
+                curl.Absorb(Converter.ToTrits(thisTxTrytes));
 
                 // Check if input transaction
                 if (bundleValue < 0)
                 {
                     string address = bundleTransaction.Address;
                     Signature sig = new Signature();
-                    sig.setAddress(address);
-                    sig.getSignatureFragments().Add(bundleTransaction.SignatureFragment);
+                    sig.Address = address;
+                    sig.SignatureFragments.Add(bundleTransaction.SignatureFragment);
 
                     // Find the subsequent txs with the remaining signature fragment
                     for (int i = index; i < bundle.Length - 1; i++)
@@ -723,7 +723,7 @@ namespace Iota.Lib.CSharp.Api
                         // Check if new tx is part of the signature fragment
                         if (newBundleTx.Address == address && long.Parse(newBundleTx.Value) == 0)
                         {
-                            sig.getSignatureFragments().Add(newBundleTx.SignatureFragment);
+                            sig.SignatureFragments.Add(newBundleTx.SignatureFragment);
                         }
                     }
 
@@ -737,7 +737,7 @@ namespace Iota.Lib.CSharp.Api
 
             int[] bundleFromTrxs = new int[243];
             curl.Squeeze(bundleFromTrxs);
-            string bundleFromTxString = Converter.trytes(bundleFromTrxs);
+            string bundleFromTxString = Converter.ToTrytes(bundleFromTrxs);
 
             // Check if bundle hash is the same as returned by tx object
             if (!bundleFromTxString.Equals(bundleHash))
@@ -752,9 +752,9 @@ namespace Iota.Lib.CSharp.Api
             // Validate the signatures
             foreach (Signature aSignaturesToValidate in signaturesToValidate)
             {
-                String[] signatureFragments = aSignaturesToValidate.getSignatureFragments().ToArray();
-                string address = aSignaturesToValidate.getAddress();
-                bool isValidSignature = new Signing().validateSignatures(address, signatureFragments, bundleHash);
+                String[] signatureFragments = aSignaturesToValidate.SignatureFragments.ToArray();
+                string address = aSignaturesToValidate.Address;
+                bool isValidSignature = new Signing().ValidateSignatures(address, signatureFragments, bundleHash);
 
                 if (!isValidSignature)
                     throw new InvalidSignatureException();

@@ -1,36 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Iota.Lib.CSharp.Api.Model
 {
+    /// <summary>
+    /// Thic class represents a signature
+    /// </summary>
     public class Signature
     {
-        string address;
-        List<string> signatureFragments;
-
         public Signature()
         {
-            this.signatureFragments = new List<string>();
+            this.SignatureFragments = new List<string>();
         }
 
-        public String getAddress()
-        {
-            return address;
-        }
+        public string Address { get; set; }
 
-        public void setAddress(String address)
-        {
-            this.address = address;
-        }
-
-        public List<String> getSignatureFragments()
-        {
-            return signatureFragments;
-        }
-
-        public void setSignatureFragments(List<String> signatureFragments)
-        {
-            this.signatureFragments = signatureFragments;
-        }
+        public List<string> SignatureFragments { get; set; }
     }
 }

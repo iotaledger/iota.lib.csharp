@@ -39,12 +39,12 @@ namespace Iota.Lib.CSharpTests.Api.Utils
         [TestMethod]
         public void shouldFindOptimizeUnitToDisplay()
         {
-            Assert.AreEqual(IotaUnitConverter.findOptimalIotaUnitToDisplay(1), IotaUnits.Iota);
-            Assert.AreEqual(IotaUnitConverter.findOptimalIotaUnitToDisplay(1000), IotaUnits.Kilo);
-            Assert.AreEqual(IotaUnitConverter.findOptimalIotaUnitToDisplay(1000000), IotaUnits.Mega);
-            Assert.AreEqual(IotaUnitConverter.findOptimalIotaUnitToDisplay(1000000000), IotaUnits.Giga);
-            Assert.AreEqual(IotaUnitConverter.findOptimalIotaUnitToDisplay(1000000000000L), IotaUnits.Terra);
-            Assert.AreEqual(IotaUnitConverter.findOptimalIotaUnitToDisplay(1000000000000000L), IotaUnits.Peta);
+            Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1), IotaUnits.Iota);
+            Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1000), IotaUnits.Kilo);
+            Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1000000), IotaUnits.Mega);
+            Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1000000000), IotaUnits.Giga);
+            Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1000000000000L), IotaUnits.Terra);
+            Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1000000000000000L), IotaUnits.Peta);
         }
 
         /*[TestMethod]

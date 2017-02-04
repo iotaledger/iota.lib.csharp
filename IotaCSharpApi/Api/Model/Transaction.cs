@@ -32,7 +32,7 @@ namespace Iota.Lib.CSharp.Api.Model
                 }
             }
 
-            int[] transactionTrits = Converter.trits(trytes);
+            int[] transactionTrits = Converter.ToTrits(trytes);
             int[] hash = new int[243];
 
             // generate the correct transaction hash
@@ -40,14 +40,14 @@ namespace Iota.Lib.CSharp.Api.Model
                 .Absorb(transactionTrits, 0, transactionTrits.Length)
                 .Squeeze(hash, 0, hash.Length);
 
-            Hash = Converter.trytes(hash);
+            Hash = Converter.ToTrytes(hash);
             SignatureFragment = trytes.Substring(0, 2187);
             Address = trytes.Substring(2187, 2268 - 2187);
-            Value = "" + Converter.longValue(SubArray(transactionTrits, 6804, 6837));
+            Value = "" + Converter.ToLongValue(SubArray(transactionTrits, 6804, 6837));
             Tag = trytes.Substring(2295, 2322 - 2295);
-            Timestamp = "" + Converter.longValue(SubArray(transactionTrits, 6966, 6993));
-            CurrentIndex = "" + Converter.longValue(SubArray(transactionTrits, 6993, 7020));
-            LastIndex = "" + Converter.longValue(SubArray(transactionTrits, 7020, 7047));
+            Timestamp = "" + Converter.ToLongValue(SubArray(transactionTrits, 6966, 6993));
+            CurrentIndex = "" + Converter.ToLongValue(SubArray(transactionTrits, 6993, 7020));
+            LastIndex = "" + Converter.ToLongValue(SubArray(transactionTrits, 7020, 7047));
             Bundle = trytes.Substring(2349, 2430 - 2349);
             TrunkTransaction = trytes.Substring(2430, 2511 - 2430);
             BranchTransaction = trytes.Substring(2511, 2592 - 2511);
@@ -107,18 +107,18 @@ namespace Iota.Lib.CSharp.Api.Model
 
         public string ToTransactionTrytes()
         {
-            int[] valueTrits = Converter.trits(Value, 81);
-            int[] timestampTrits = Converter.trits(Timestamp, 27);
-            int[] currentIndexTrits = Converter.trits(CurrentIndex, 27);
-            int[] lastIndexTrits = Converter.trits(LastIndex, 27);
+            int[] valueTrits = Converter.ToTrits(Value, 81);
+            int[] timestampTrits = Converter.ToTrits(Timestamp, 27);
+            int[] currentIndexTrits = Converter.ToTrits(CurrentIndex, 27);
+            int[] lastIndexTrits = Converter.ToTrits(LastIndex, 27);
 
             return SignatureFragment
                    + Address
-                   + Converter.trytes(valueTrits)
+                   + Converter.ToTrytes(valueTrits)
                    + Tag
-                   + Converter.trytes(timestampTrits)
-                   + Converter.trytes(currentIndexTrits)
-                   + Converter.trytes(lastIndexTrits)
+                   + Converter.ToTrytes(timestampTrits)
+                   + Converter.ToTrytes(currentIndexTrits)
+                   + Converter.ToTrytes(lastIndexTrits)
                    + Bundle
                    + TrunkTransaction
                    + BranchTransaction

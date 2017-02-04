@@ -2,27 +2,42 @@
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
+    /// <summary>
+    /// This class provides methods to convert Iota to different units
+    /// </summary>
     public class IotaUnitConverter
     {
+        /// <summary>
+        /// Convert the iota amount
+        /// </summary>
+        /// <param name="amount">amount</param>
+        /// <param name="fromUnit">the source unit e.g. the unit of amount</param>
+        /// <param name="toUnit">the target unit</param>
+        /// <returns>the specified amount in the target unit</returns>
         public static double ConvertUnits(long amount, IotaUnits fromUnit, IotaUnits toUnit)
         {
             long amountInSource = (long) (amount*Math.Pow(10, (int) fromUnit));
             return ConvertUnits(amountInSource, toUnit);
         }
 
-        public static long ConvertUnits(long amount, IotaUnits toUnit)
+        private static long ConvertUnits(long amount, IotaUnits toUnit)
         {
             int base10NormalizationExponent = (int) toUnit;
             return (long) (amount/Math.Pow(10, base10NormalizationExponent));
         }
 
-        public static IotaUnits findOptimalIotaUnitToDisplay(long amount)
+        /// <summary>
+        /// Finds the optimal unit to display the specified amount in
+        /// </summary>
+        /// <param name="amount">amount </param>
+        /// <returns>the optimal IotaUnit</returns>
+        public static IotaUnits FindOptimalIotaUnitToDisplay(long amount)
         {
             int length = (amount).ToString().Length;
 
             if (amount < 0)
             {
-// do not count "-" sign
+                // do not count "-" sign
                 length -= 1;
             }
 
