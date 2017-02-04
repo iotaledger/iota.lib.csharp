@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Iota.Lib.CSharp.Api.Model;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
@@ -13,8 +12,8 @@ namespace Iota.Lib.CSharp.Api.Utils
         public static readonly int NumberOfTritsInAByte = 5;
         public static readonly int NumberOfTritsInATryte = 3;
 
-        static int[][] _byteToTritsMappings = new int[243][];
-        static int[][] _tryteToTritsMappings = new int[27][];
+        static readonly int[][] ByteToTritsMappings = new int[243][];
+        static readonly int[][] TryteToTritsMappings = new int[27][];
 
         public static readonly string TryteAlphabet = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -24,18 +23,16 @@ namespace Iota.Lib.CSharp.Api.Utils
 
             for (int i = 0; i < 243; i++)
             {
-                _byteToTritsMappings[i] = new int[NumberOfTritsInAByte];
-                // BYTE_TO_TRITS_MAPPINGS[i] = Arrays.copyOf(trits, NUMBER_OF_TRITS_IN_A_BYTE);
-                _byteToTritsMappings[i] = new int[NumberOfTritsInAByte];
-                Array.Copy(trits, _byteToTritsMappings[i], NumberOfTritsInAByte);
+                ByteToTritsMappings[i] = new int[NumberOfTritsInAByte];
+                ByteToTritsMappings[i] = new int[NumberOfTritsInAByte];
+                Array.Copy(trits, ByteToTritsMappings[i], NumberOfTritsInAByte);
                 Increment(trits, NumberOfTritsInAByte);
             }
 
             for (int i = 0; i < 27; i++)
             {
-                //TRYTE_TO_TRITS_MAPPINGS[i] = Arrays.copyOf(trits, NUMBER_OF_TRITS_IN_A_TRYTE);
-                _tryteToTritsMappings[i] = new int[NumberOfTritsInATryte];
-                Array.Copy(trits, _tryteToTritsMappings[i], NumberOfTritsInATryte);
+                TryteToTritsMappings[i] = new int[NumberOfTritsInATryte];
+                Array.Copy(trits, TryteToTritsMappings[i], NumberOfTritsInATryte);
                 Increment(trits, NumberOfTritsInATryte);
             }
         }
@@ -71,7 +68,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             for (int i = 0; i < bytes.Length && offset < trits.Length; i++)
             {
                 Array.Copy(
-                    _byteToTritsMappings[bytes[i] < 0 ? (bytes[i] + _byteToTritsMappings.Length) : bytes[i]], 0,
+                    ByteToTritsMappings[bytes[i] < 0 ? (bytes[i] + ByteToTritsMappings.Length) : bytes[i]], 0,
                     trits, offset,
                     trits.Length - offset < NumberOfTritsInAByte
                         ? (trits.Length - offset)
@@ -85,12 +82,12 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
         }
 
-        public static int[] ToTritsString(String trytes)
+        public static int[] ToTritsString(string trytes)
         {
             int[] d = new int[3*trytes.Length];
             for (int i = 0; i < trytes.Length; i++)
             {
-                Array.Copy(_tryteToTritsMappings[Constants.TryteAlphabet.IndexOf(trytes[i])], 0, d,
+                Array.Copy(TryteToTritsMappings[Constants.TryteAlphabet.IndexOf(trytes[i])], 0, d,
                     i*NumberOfTritsInATryte, NumberOfTritsInATryte);
             }
             return d;
@@ -111,7 +108,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             return tritsList.ToArray();
         }
 
-        public static int[] ToTrits(String trytes)
+        public static int[] ToTrits(string trytes)
         {
             List<int> trits = new List<int>();
             if (InputValidator.isValue(trytes))
@@ -148,7 +145,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                 int[] d = new int[3*trytes.Length];
                 for (int i = 0; i < trytes.Length; i++)
                 {
-                    Array.Copy(_tryteToTritsMappings[Constants.TryteAlphabet.IndexOf(trytes[i])], 0, d,
+                    Array.Copy(TryteToTritsMappings[Constants.TryteAlphabet.IndexOf(trytes[i])], 0, d,
                         i*NumberOfTritsInATryte, NumberOfTritsInATryte);
                 }
                 return d;
@@ -161,9 +158,9 @@ namespace Iota.Lib.CSharp.Api.Utils
             for (int i = 0; i < input.Length; i++)
             {
                 int index = Constants.TryteAlphabet.IndexOf(input[i]);
-                destination[i*3] = _tryteToTritsMappings[index][0];
-                destination[i*3 + 1] = _tryteToTritsMappings[index][1];
-                destination[i*3 + 2] = _tryteToTritsMappings[index][2];
+                destination[i*3] = TryteToTritsMappings[index][0];
+                destination[i*3 + 1] = TryteToTritsMappings[index][1];
+                destination[i*3 + 2] = TryteToTritsMappings[index][2];
             }
             return destination;
         }
@@ -243,9 +240,9 @@ namespace Iota.Lib.CSharp.Api.Utils
         {
             for (int i = 0; i < size; i++)
             {
-                if (++trits[i] > Converter.MaxTritValue)
+                if (++trits[i] > MaxTritValue)
                 {
-                    trits[i] = Converter.MinTritValue;
+                    trits[i] = MinTritValue;
                 }
                 else
                 {
