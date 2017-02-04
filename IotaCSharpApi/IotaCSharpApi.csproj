@@ -112,9 +112,9 @@
     <Compile Include="Api\Core\GetNodeInfoRequest.cs" />
     <Compile Include="Api\Core\GetNodeInfoResponse.cs" />
     <Compile Include="Api\Utils\ICurl.cs" />
-    <Compile Include="Api\Utils\IllegalStateException.cs" />
-    <Compile Include="Api\Utils\InvalidTryteException.cs" />
-    <Compile Include="Api\Utils\IotaApiException.cs" />
+    <Compile Include="Api\Exception\IllegalStateException.cs" />
+    <Compile Include="Api\Exception\InvalidTryteException.cs" />
+    <Compile Include="Api\Exception\IotaApiException.cs" />
     <Compile Include="Api\Utils\IotaApiUtils.cs" />
     <Compile Include="Api\Utils\Converter.cs" />
     <Compile Include="Api\IotaCoreApi.cs" />
