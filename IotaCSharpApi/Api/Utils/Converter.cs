@@ -70,7 +70,6 @@ namespace Iota.Lib.CSharp.Api.Utils
             int offset = 0;
             for (int i = 0; i < bytes.Length && offset < trits.Length; i++)
             {
-                // TODO: not sure if correct because bytes are encoded differently in java
                 Array.Copy(
                     BYTE_TO_TRITS_MAPPINGS[bytes[i] < 0 ? (bytes[i] + BYTE_TO_TRITS_MAPPINGS.Length) : bytes[i]], 0,
                     trits, offset,
@@ -253,27 +252,6 @@ namespace Iota.Lib.CSharp.Api.Utils
                     break;
                 }
             }
-        }
-
-        // TODO: Move to Transaction class?
-        public static string transactionTrytes(Transaction trx)
-        {
-            int[] valueTrits = Converter.trits(trx.Value, 81);
-            int[] timestampTrits = Converter.trits(trx.Timestamp, 27);
-            int[] currentIndexTrits = Converter.trits(trx.CurrentIndex, 27);
-            int[] lastIndexTrits = Converter.trits(trx.LastIndex, 27);
-
-            return trx.SignatureFragment
-                   + trx.Address
-                   + Converter.trytes(valueTrits)
-                   + trx.Tag
-                   + Converter.trytes(timestampTrits)
-                   + Converter.trytes(currentIndexTrits)
-                   + Converter.trytes(lastIndexTrits)
-                   + trx.Bundle
-                   + trx.TrunkTransaction
-                   + trx.BranchTransaction
-                   + trx.Nonce;
         }
     }
 }

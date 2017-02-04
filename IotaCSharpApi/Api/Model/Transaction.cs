@@ -63,7 +63,7 @@ namespace Iota.Lib.CSharp.Api.Model
 
         public Transaction(string trytes, ICurl curl)
         {
-            if (string.IsNullOrEmpty(trytes))
+            if (String.IsNullOrEmpty(trytes))
             {
                 throw new ArgumentException("trytes must non-null");
             }
@@ -97,6 +97,26 @@ namespace Iota.Lib.CSharp.Api.Model
             TrunkTransaction = trytes.Substring(2430, 2511 - 2430);
             BranchTransaction = trytes.Substring(2511, 2592 - 2511);
             Nonce = trytes.Substring(2592, 2673 - 2592);
+        }
+
+        public static string transactionTrytes(Transaction trx)
+        {
+            int[] valueTrits = Converter.trits(trx.Value, 81);
+            int[] timestampTrits = Converter.trits(trx.Timestamp, 27);
+            int[] currentIndexTrits = Converter.trits(trx.CurrentIndex, 27);
+            int[] lastIndexTrits = Converter.trits(trx.LastIndex, 27);
+
+            return trx.SignatureFragment
+                   + trx.Address
+                   + Converter.trytes(valueTrits)
+                   + trx.Tag
+                   + Converter.trytes(timestampTrits)
+                   + Converter.trytes(currentIndexTrits)
+                   + Converter.trytes(lastIndexTrits)
+                   + trx.Bundle
+                   + trx.TrunkTransaction
+                   + trx.BranchTransaction
+                   + trx.Nonce;
         }
 
         public static T[] SubArray<T>(T[] data, int startIndex, int endIndex)

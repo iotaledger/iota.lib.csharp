@@ -264,7 +264,7 @@ namespace Iota.Lib.CSharp.Api
                 bundle.addTrytes(signatureFragments);
 
                 List<String> bundleTrytes = new List<string>();
-                bundle.Transactions.ForEach(tx => bundleTrytes.Add(Converter.transactionTrytes(tx)));
+                bundle.Transactions.ForEach(tx => bundleTrytes.Add(Transaction.transactionTrytes(tx)));
 
                 bundleTrytes.Reverse();
                 return bundleTrytes;
@@ -575,7 +575,7 @@ namespace Iota.Lib.CSharp.Api
 
             Bundle bundle = GetBundle(transaction);
 
-            bundle.Transactions.ForEach((t) => bundleTrytes.Add(Converter.transactionTrytes(t)));
+            bundle.Transactions.ForEach((t) => bundleTrytes.Add(Transaction.transactionTrytes(t)));
 
             List<Transaction> trxs = SendTrytes(bundleTrytes.ToArray(), depth, minWeightMagnitude).ToList();
 
@@ -702,7 +702,7 @@ namespace Iota.Lib.CSharp.Api
                     throw new InvalidBundleException();
 
                 // Get the transaction trytes
-                string thisTxTrytes = Converter.transactionTrytes(bundleTransaction).Substring(2187, 162);
+                string thisTxTrytes = Transaction.transactionTrytes(bundleTransaction).Substring(2187, 162);
 
                 // Absorb bundle hash + value + timestamp + lastIndex + currentIndex trytes.
                 curl.Absorb(Converter.trits(thisTxTrytes));
