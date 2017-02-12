@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Iota.Lib.CSharp.Api.Exception;
 using Iota.Lib.CSharp.Api.Model;
 using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Iota.Lib.CSharpTests.Api.Utils
 {
     [TestClass]
-    public class InputValidotrTests
+    public class InputValidatorTests
     {
         private static string TEST_ADDRESS_WITHOUT_CHECKSUM =
             "PNGMCSNRCTRHCHPXYTPKEJYPCOWKOMRXZFHH9N9VDIKMNVAZCMIYRHVJIAZARZTUETJVFDMBEBIQE9QTHBFWDAOEFA";
