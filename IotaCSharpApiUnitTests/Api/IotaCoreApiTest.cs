@@ -125,7 +125,7 @@ namespace Iota.Lib.CSharpTests.Api
             GetInclusionStatesResponse res =
                 iotaApi.GetInclusionStates(
                     new[] {"DBPECSH9YLSSTQDGERUHJBBJTKVUDBMTJLG9WPHBINGHIFOSJMDJLARTVOXXWEFQJLLBINOHCZGYFSMUEXWPPMTOFW"},
-                    new[] {"EJDQOQHMLJGBMFWB9WJSPRCYIGNPO9WRHDCEQXIMPVPIJ9JV9RJGVHNX9EPGXFOOKBABCVMMAAX999999"});
+                    new[] { iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone });
             Assert.IsNotNull(res.States);
         }
 
