@@ -29,7 +29,7 @@ GetNodeInfoResponse nodeInfo = iotaApi.GetNodeInfo();
  -   This is pre-release software!
  -   There may be performance and stability issues.
  -   You may loose all your money :)
- -   Please report any issues using the <a href="">Issue Tracker</a>
+ -   Please report any issues using the <a href="https://github.com/iotaledger/iota.lib.csharp/issues">Issue Tracker</a>
 
 ### What is missing
 - Multisig support
