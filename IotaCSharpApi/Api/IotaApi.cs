@@ -422,7 +422,7 @@ namespace Iota.Lib.CSharp.Api
         /// or by providing a list of indexes to get the transfers from.
         /// </summary>
         /// <param name="seed">tryte-encoded seed. It should be noted that this seed is not transferred</param>
-        /// <param name="inclusionStates">Optionanl (default false). If True, it gets the inclusion states of the transfers.</param>
+        /// <param name="inclusionStates">If True, it gets the inclusion states of the transfers.</param>
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns>An Array of Bundle object that represent the transfers</returns>
