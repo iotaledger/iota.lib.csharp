@@ -20,10 +20,10 @@ namespace Iota.Lib.CSharp.Api.Utils
             return ConvertUnits(amountInSource, toUnit);
         }
 
-        private static long ConvertUnits(long amount, IotaUnits toUnit)
+        private static double ConvertUnits(long amount, IotaUnits toUnit)
         {
             int base10NormalizationExponent = (int) toUnit;
-            return (long) (amount/Math.Pow(10, base10NormalizationExponent));
+            return (amount/Math.Pow(10, base10NormalizationExponent));
         }
 
         /// <summary>
