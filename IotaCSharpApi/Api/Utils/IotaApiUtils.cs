@@ -94,13 +94,13 @@ namespace Iota.Lib.CSharp.Api.Utils
                     int[] key = new Signing(curl).Key(Converter.ToTrits(seed), keyIndex, 2);
 
                     //  First 6561 trits for the firstFragment
-                    int[] firstFragment = SubArray(key, 0, 6561);
+                    int[] firstFragment = ArrayUtils.SubArray2(key, 0, 6561);
 
                     //  Get the normalized bundle hash
                     int[] normalizedBundleHash = bundle.NormalizedBundle(bundleHash);
 
                     //  First bundle fragment uses 27 trytes
-                    int[] firstBundleFragment = SubArray(normalizedBundleHash, 0, 27);
+                    int[] firstBundleFragment = ArrayUtils.SubArray2(normalizedBundleHash, 0, 27);
 
                     //  Calculate the new signatureFragment with the first bundle fragment
                     int[] firstSignedFragment = new Signing(curl).SignatureFragment(firstBundleFragment, firstFragment);
@@ -117,10 +117,10 @@ namespace Iota.Lib.CSharp.Api.Utils
                             Int64.Parse(bundle.Transactions[j].Value) == 0)
                         {
                             // Use the second 6562 trits
-                            int[] secondFragment = SubArray(key, 6561, 6561);
+                            int[] secondFragment = ArrayUtils.SubArray2(key, 6561, 6561);
 
                             // The second 27 to 54 trytes of the bundle hash
-                            int[] secondBundleFragment = SubArray(normalizedBundleHash, 27, 27);
+                            int[] secondBundleFragment = ArrayUtils.SubArray2(normalizedBundleHash, 27, 27);
 
                             //  Calculate the new signature
                             int[] secondSignedFragment = new Signing(curl).SignatureFragment(secondBundleFragment,
@@ -142,13 +142,6 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
             bundleTrytes.Reverse();
             return bundleTrytes;
-        }
-
-        public static T[] SubArray<T>(T[] data, int index, int length)
-        {
-            T[] result = new T[length];
-            Array.Copy(data, index, result, 0, length);
-            return result;
         }
 
         public static long CreateTimeStampNow()

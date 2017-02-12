@@ -117,7 +117,7 @@ namespace Iota.Lib.CSharp.Api.Utils
 
             for (int i = 0; i < 27; i++)
             {
-                buffer = Transaction.SubArray(signatureFragment, i*243, 243);
+                buffer = ArrayUtils.SubArray(signatureFragment, i*243, 243);
                 ;
                 ICurl jCurl = curl.Clone();
 
@@ -184,7 +184,7 @@ namespace Iota.Lib.CSharp.Api.Utils
 
             for (int i = 0; i < signatureFragments.Length; i++)
             {
-                int[] digestBuffer = Digest(SliceRow(normalizedBundleFragments, i%3).ToArray(),
+                int[] digestBuffer = Digest(ArrayUtils.SliceRow(normalizedBundleFragments, i%3).ToArray(),
                     Converter.ToTrits(signatureFragments[i]));
 
                 for (int j = 0; j < 243; j++)
@@ -195,14 +195,6 @@ namespace Iota.Lib.CSharp.Api.Utils
             string address = Converter.ToTrytes(Address(digests));
 
             return (expectedAddress.Equals(address));
-        }
-
-        private static IEnumerable<T> SliceRow<T>(T[,] array, int row)
-        {
-            for (var i = array.GetLowerBound(1); i <= array.GetUpperBound(1); i++)
-            {
-                yield return array[row, i];
-            }
         }
     }
 }

@@ -8,12 +8,8 @@ namespace Iota.Lib.CSharp.Api.Model
     /// </summary>
     public class Transaction
     {
-        public Transaction(string address, string value, string tag, string timestamp)
+        public Transaction()
         {
-            Address = address;
-            Value = value;
-            Tag = tag;
-            Timestamp = timestamp;
         }
 
         public Transaction(string trytes, ICurl curl)
@@ -43,22 +39,28 @@ namespace Iota.Lib.CSharp.Api.Model
             Hash = Converter.ToTrytes(hash);
             SignatureFragment = trytes.Substring(0, 2187);
             Address = trytes.Substring(2187, 2268 - 2187);
-            Value = "" + Converter.ToLongValue(SubArray(transactionTrits, 6804, 6837));
+            Value = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6804, 6837));
             Tag = trytes.Substring(2295, 2322 - 2295);
-            Timestamp = "" + Converter.ToLongValue(SubArray(transactionTrits, 6966, 6993));
-            CurrentIndex = "" + Converter.ToLongValue(SubArray(transactionTrits, 6993, 7020));
-            LastIndex = "" + Converter.ToLongValue(SubArray(transactionTrits, 7020, 7047));
+            Timestamp = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6966, 6993));
+            CurrentIndex = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6993, 7020));
+            LastIndex = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7020, 7047));
             Bundle = trytes.Substring(2349, 2430 - 2349);
             TrunkTransaction = trytes.Substring(2430, 2511 - 2430);
             BranchTransaction = trytes.Substring(2511, 2592 - 2511);
             Nonce = trytes.Substring(2592, 2673 - 2592);
         }
-
-        public Transaction()
+        
+        public Transaction(string trytes) : this(trytes, new Curl())
         {
         }
 
-
+        public Transaction(string address, string value, string tag, string timestamp)
+        {
+            Address = address;
+            Value = value;
+            Tag = tag;
+            Timestamp = timestamp;
+        }
 
         public string Tag { get; set; }
 
@@ -102,7 +104,6 @@ namespace Iota.Lib.CSharp.Api.Model
         public string CurrentIndex { get; set; }
 
         public string Nonce { get; set; }
-
         public bool Persistance { get; set; }
 
         public string ToTransactionTrytes()
@@ -125,12 +126,9 @@ namespace Iota.Lib.CSharp.Api.Model
                    + Nonce;
         }
 
-        public static T[] SubArray<T>(T[] data, int startIndex, int endIndex)
+        public override string ToString()
         {
-            int length = endIndex - startIndex;
-            T[] result = new T[endIndex - startIndex];
-            Array.Copy(data, startIndex, result, 0, length);
-            return result;
+            return $"{nameof(Value)}: {Value}, {nameof(Persistance)}: {Value}, {nameof(Tag)}: {Tag}, {nameof(Hash)}: {Hash}, {nameof(Type)}: {Type}, {nameof(SignatureMessageChunk)}: {SignatureMessageChunk}, {nameof(Digest)}: {Digest}, {nameof(Address)}: {Address}, {nameof(Timestamp)}: {Timestamp}, {nameof(Bundle)}: {Bundle}, {nameof(Index)}: {Index}, {nameof(TrunkTransaction)}: {TrunkTransaction}, {nameof(BranchTransaction)}: {BranchTransaction}, {nameof(SignatureFragment)}: {SignatureFragment}, {nameof(LastIndex)}: {LastIndex}, {nameof(CurrentIndex)}: {CurrentIndex}, {nameof(Nonce)}: {Nonce}";
         }
     }
 }
