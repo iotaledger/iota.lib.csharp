@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Iota.Lib.CSharp</id>
-    <version>1.0.0-beta</version>
+    <version>0.9.0-beta</version>
     <authors>sniro</authors>
     <owners>Iota Foundation &amp; Contributors</owners>
     <licenseUrl>https://github.com/iotaledger/iota.lib.charp/blob/master/LICENSE</licenseUrl>
