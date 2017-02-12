@@ -1,8 +1,10 @@
 namespace Iota.Lib.CSharp.Api.Core
 {
+
     /// <summary>
-    /// Created by Adrian on 28.04.2016.
+    /// Attach to Tangle Request
     /// </summary>
+    /// <seealso cref="Iota.Lib.CSharp.Api.Core.IotaRequest" />
     public class AttachToTangleRequest : IotaRequest
     {
         private const int MinWeightMagnitudeMin = 18;

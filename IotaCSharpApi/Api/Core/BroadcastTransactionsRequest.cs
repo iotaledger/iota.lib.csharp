@@ -13,6 +13,12 @@ namespace Iota.Lib.CSharp.Api.Core
             Trytes = trytes;
         }
 
+        /// <summary>
+        /// Gets or sets the trytes.
+        /// </summary>
+        /// <value>
+        /// The trytes.
+        /// </value>
         public List<string> Trytes { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using Iota.Lib.CSharp.Api.Model;
 namespace Iota.Lib.CSharp.Api.Core
 {
     /// <summary>
-    /// Returns information about your node
+    /// Response of <see cref="GetNeighborsRequest"/>
     /// </summary>
     public class GetNeighborsResponse
     {
