@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Iota.Lib.CSharp.Api.Model
 {
@@ -9,7 +10,7 @@ namespace Iota.Lib.CSharp.Api.Model
 
         public override string ToString()
         {
-            return $"{nameof(InputsList)}: {InputsList}, {nameof(TotalBalance)}: {TotalBalance}";
+            return $"Inputs:\n {string.Join(",", InputsList.Select(i => "[" +i + "]"+"\n"))}{nameof(TotalBalance)}: {TotalBalance}";
         }
     }
 }
