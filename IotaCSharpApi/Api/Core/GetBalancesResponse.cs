@@ -2,8 +2,6 @@
 
 namespace Iota.Lib.CSharp.Api.Core
 {
-    /// <summary>
-    /// </summary>
     public class GetBalancesResponse : IotaResponse
     {
         public List<long> Balances { get; set; }
@@ -11,5 +9,10 @@ namespace Iota.Lib.CSharp.Api.Core
         public string Milestone { get; set; }
 
         public int MilestoneIndex { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(Balances)}: {Balances}, {nameof(Milestone)}: {Milestone}, {nameof(MilestoneIndex)}: {MilestoneIndex}";
+        }
     }
 }
