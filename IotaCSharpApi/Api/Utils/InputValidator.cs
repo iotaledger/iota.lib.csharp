@@ -153,7 +153,7 @@ namespace Iota.Lib.CSharp.Api.Utils
 
         public static void CheckIfArrayOfTrytes(string[] trytes)
         {
-            if(IsArrayOfTrytes(trytes, 2673))
+            if(!IsArrayOfTrytes(trytes, 2673))
                 throw new InvalidTryteException();
         }
 
