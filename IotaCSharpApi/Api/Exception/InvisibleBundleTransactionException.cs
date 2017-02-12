@@ -1,6 +1,6 @@
 ﻿namespace Iota.Lib.CSharp.Api.Exception
 {
-    internal class InvisibleBundleTransactionException : System.Exception
+    public class InvisibleBundleTransactionException : System.Exception
     {
     }
 }
