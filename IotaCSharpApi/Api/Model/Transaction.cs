@@ -8,10 +8,23 @@ namespace Iota.Lib.CSharp.Api.Model
     /// </summary>
     public class Transaction
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Transaction"/> class.
+        /// </summary>
         public Transaction()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Transaction"/> class.
+        /// </summary>
+        /// <param name="trytes">The trytes representing the transaction</param>
+        /// <param name="curl">The curl implementation.</param>
+        /// <exception cref="System.ArgumentException">
+        /// trytes must non-null
+        /// or
+        /// position " + i + "must not be '9'
+        /// </exception>
         public Transaction(string trytes, ICurl curl)
         {
             if (string.IsNullOrEmpty(trytes))
@@ -49,11 +62,22 @@ namespace Iota.Lib.CSharp.Api.Model
             BranchTransaction = trytes.Substring(2511, 2592 - 2511);
             Nonce = trytes.Substring(2592, 2673 - 2592);
         }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Transaction"/> class.
+        /// </summary>
+        /// <param name="trytes">The trytes representing the transaction</param>
         public Transaction(string trytes) : this(trytes, new Curl())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Transaction"/> class.
+        /// </summary>
+        /// <param name="address">The address.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="timestamp">The timestamp.</param>
         public Transaction(string address, string value, string tag, string timestamp)
         {
             Address = address;
@@ -62,50 +86,146 @@ namespace Iota.Lib.CSharp.Api.Model
             Timestamp = timestamp;
         }
 
+        /// <summary>
+        /// Gets or sets the tag.
+        /// </summary>
+        /// <value>
+        /// The tag.
+        /// </value>
         public string Tag { get; set; }
 
-        /// <returns> The hash </returns>
+        /// <summary>
+        /// Gets or sets the hash.
+        /// </summary>
+        /// <value>
+        /// The hash.
+        /// </value>
         public string Hash { get; set; }
 
-        /// <returns> The type </returns>
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
         public string Type { get; set; }
 
-        /// <returns> The signatureMessageChunk </returns>
+        /// <summary>
+        /// Gets or sets the signature message chunk.
+        /// </summary>
+        /// <value>
+        /// The signature message chunk.
+        /// </value>
         public string SignatureMessageChunk { get; set; }
 
-        /// <returns> The signatureMessageChunk </returns>
+        /// <summary>
+        /// Gets or sets the digest.
+        /// </summary>
+        /// <value>
+        /// The digest.
+        /// </value>
         public string Digest { get; set; }
 
-        /// <returns> The address </returns>
+        /// <summary>
+        /// Gets or sets the address.
+        /// </summary>
+        /// <value>
+        /// The address.
+        /// </value>
         public string Address { get; set; }
 
-        /// <returns> The value </returns>
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
         public string Value { get; set; }
 
-        /// <returns> The timestamp </returns>
+        /// <summary>
+        /// Gets or sets the timestamp.
+        /// </summary>
+        /// <value>
+        /// The timestamp.
+        /// </value>
         public string Timestamp { get; set; }
 
-        /// <returns> The bundle </returns>
+        /// <summary>
+        /// Gets or sets the bundle.
+        /// </summary>
+        /// <value>
+        /// The bundle.
+        /// </value>
         public string Bundle { get; set; }
 
-        /// <returns> The index </returns>
+        /// <summary>
+        /// Gets or sets the index.
+        /// </summary>
+        /// <value>
+        /// The index.
+        /// </value>
         public int Index { get; set; }
 
-        /// <returns> The transaction </returns>
+        /// <summary>
+        /// Gets or sets the trunk transaction.
+        /// </summary>
+        /// <value>
+        /// The trunk transaction.
+        /// </value>
         public string TrunkTransaction { get; set; }
 
-        /// <returns> The branchTransaction </returns>
+        /// <summary>
+        /// Gets or sets the branch transaction.
+        /// </summary>
+        /// <value>
+        /// The branch transaction.
+        /// </value>
         public string BranchTransaction { get; set; }
 
+        /// <summary>
+        /// Gets or sets the signature fragment.
+        /// </summary>
+        /// <value>
+        /// The signature fragment.
+        /// </value>
         public string SignatureFragment { get; set; }
 
+        /// <summary>
+        /// Gets or sets the last index.
+        /// </summary>
+        /// <value>
+        /// The last index.
+        /// </value>
         public string LastIndex { get; set; }
 
+        /// <summary>
+        /// Gets or sets the index of the current.
+        /// </summary>
+        /// <value>
+        /// The index of the current.
+        /// </value>
         public string CurrentIndex { get; set; }
 
+        /// <summary>
+        /// Gets or sets the nonce.
+        /// </summary>
+        /// <value>
+        /// The nonce.
+        /// </value>
         public string Nonce { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Transaction"/> is persistance.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if persistance; otherwise, <c>false</c>.
+        /// </value>
         public bool Persistance { get; set; }
 
+        /// <summary>
+        /// Converts the transaction to the corresponding trytes representation
+        /// </summary>
+        /// <returns></returns>
         public string ToTransactionTrytes()
         {
             int[] valueTrits = Converter.ToTrits(Value, 81);
@@ -126,6 +246,12 @@ namespace Iota.Lib.CSharp.Api.Model
                    + Nonce;
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return $"{nameof(Value)}: {Value}, {nameof(Persistance)}: {Value}, {nameof(Tag)}: {Tag}, {nameof(Hash)}: {Hash}, {nameof(Type)}: {Type}, {nameof(SignatureMessageChunk)}: {SignatureMessageChunk}, {nameof(Digest)}: {Digest}, {nameof(Address)}: {Address}, {nameof(Timestamp)}: {Timestamp}, {nameof(Bundle)}: {Bundle}, {nameof(Index)}: {Index}, {nameof(TrunkTransaction)}: {TrunkTransaction}, {nameof(BranchTransaction)}: {BranchTransaction}, {nameof(SignatureFragment)}: {SignatureFragment}, {nameof(LastIndex)}: {LastIndex}, {nameof(CurrentIndex)}: {CurrentIndex}, {nameof(Nonce)}: {Nonce}";
