@@ -2,9 +2,8 @@
 {
 
     /// <summary>
-    /// Response of AddNeighborsRequest
+    /// Response of <see cref="AddNeighborsRequest"/>
     /// </summary>
-    /// <seealso cref="AddNeighborsRequest" />
     public class AddNeighborsResponse
     {
         /// <summary>
@@ -14,5 +13,16 @@
         /// The number of added neighbors.
         /// </value>
         public long AddedNeighbors { get; set; }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{nameof(AddedNeighbors)}: {AddedNeighbors}";
+        }
     }
 }

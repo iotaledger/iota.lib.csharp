@@ -1,6 +1,6 @@
 ﻿namespace Iota.Lib.CSharp.Api.Core
 {
-    public class ErrorResponse
+    internal class ErrorResponse
     {
         public string Error { get; set; }
     }

@@ -7,6 +7,10 @@ namespace Iota.Lib.CSharp.Api.Core
     /// </summary>
     public class BroadcastTransactionsRequest : IotaRequest
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BroadcastTransactionsRequest"/> class.
+        /// </summary>
+        /// <param name="trytes">The trytes.</param>
         public BroadcastTransactionsRequest(List<string> trytes)
             : base(Core.Command.BroadcastTransactions.GetCommandString())
         {
@@ -14,11 +18,16 @@ namespace Iota.Lib.CSharp.Api.Core
         }
 
         /// <summary>
-        /// Gets or sets the trytes.
+        /// Gets or sets the trytes representing the transactions
         /// </summary>
         /// <value>
         /// The trytes.
         /// </value>
         public List<string> Trytes { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(Trytes)}: {string.Join(",", Trytes)}";
+        }
     }
 }

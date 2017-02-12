@@ -1,25 +1,42 @@
 ﻿namespace Iota.Lib.CSharp.Api.Core
 {
+    /// <summary>
+    /// This class represents the core API request 'GetInclusionStates'
+    /// </summary>
+    /// <seealso cref="Iota.Lib.CSharp.Api.Core.IotaRequest" />
     public class GetInclusionStatesRequest : IotaRequest
     {
-        private readonly string[] _transactions;
-        private readonly string[] _tips;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetInclusionStatesRequest"/> class.
+        /// </summary>
+        /// <param name="transactions">The transactions.</param>
+        /// <param name="tips">The tips.</param>
         public GetInclusionStatesRequest(string[] transactions, string[] tips)
             : base(Core.Command.GetInclusionStates.GetCommandString())
         {
-            _transactions = transactions;
-            _tips = tips;
+            Transactions = transactions;
+            Tips = tips;
         }
 
-        public string[] Transactions
-        {
-            get { return _transactions; }
-        }
+        /// <summary>
+        /// Gets the transactions.
+        /// </summary>
+        /// <value>
+        /// The transactions.
+        /// </value>
+        public string[] Transactions { get; }
 
-        public string[] Tips
+        /// <summary>
+        /// Gets the tips.
+        /// </summary>
+        /// <value>
+        /// The tips.
+        /// </value>
+        public string[] Tips { get; }
+
+        public override string ToString()
         {
-            get { return _tips; }
+            return $"{nameof(Transactions)}: {Transactions}, {nameof(Tips)}: {Tips}";
         }
     }
 }

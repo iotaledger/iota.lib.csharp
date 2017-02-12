@@ -1,12 +1,29 @@
 ﻿namespace Iota.Lib.CSharp.Api.Core
 {
     /// <summary>
-    /// Created by Adrian on 28.04.2016.
+    /// This class represents the response of <see cref="GetTransactionsToApproveRequest"/>
     /// </summary>
     public class GetTransactionsToApproveResponse : IotaResponse
     {
+        /// <summary>
+        /// Gets or sets the trunk transaction.
+        /// </summary>
+        /// <value>
+        /// The trunk transaction.
+        /// </value>
         public string TrunkTransaction { get; set; }
 
+        /// <summary>
+        /// Gets or sets the branch transaction.
+        /// </summary>
+        /// <value>
+        /// The branch transaction.
+        /// </value>
         public string BranchTransaction { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(TrunkTransaction)}: {TrunkTransaction}, {nameof(BranchTransaction)}: {BranchTransaction}";
+        }
     }
 }

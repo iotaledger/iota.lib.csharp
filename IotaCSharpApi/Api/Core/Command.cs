@@ -2,6 +2,9 @@
 
 namespace Iota.Lib.CSharp.Api.Core
 {
+    /// <summary>
+    /// This enumeration defines the core API call commands
+    /// </summary>
     public enum Command
     {
         [Description("getNodeInfo")] GetNodeInfo,

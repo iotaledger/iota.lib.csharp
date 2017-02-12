@@ -1,12 +1,15 @@
 ﻿namespace Iota.Lib.CSharp.Api.Core
 {
+    /// <summary>
+    /// This class represents the response of <see cref="GetNodeInfoRequest"/>
+    /// </summary>
+    /// <seealso cref="Iota.Lib.CSharp.Api.Core.IotaResponse" />
     public class GetNodeInfoResponse : IotaResponse
     {
         /// <summary>
         /// Name of the IOTA software you're currently using (IRI stands for Initial Reference Implementation).
         /// </summary>
         public string AppName { get; set; }
-
 
         /// <summary>
         /// The version of the IOTA software you're currently running.
@@ -17,7 +20,6 @@
         /// Available cores on your machine for JRE.  
         /// </summary>
         public int JreAvailableProcessors { get; set; }
-
 
         /// <summary>
         /// The amount of free memory in the Java Virtual Machine.
@@ -83,6 +85,12 @@
 
         public string JreVersion { get; set; }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return
