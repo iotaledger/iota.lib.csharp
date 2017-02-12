@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Iota.Lib.CSharp.Api.Exception;
 using Iota.Lib.CSharp.Api.Model;
+using RestSharp.Extensions;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
@@ -44,7 +44,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// </summary>
         /// <param name="value">a string</param>
         /// <returns></returns>
-        public static bool isValue(String value)
+        public static bool isValue(string value)
         {
             return Regex.IsMatch(value, @"^(-){0,1}\d+$");
         }
@@ -54,7 +54,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             if (hashes == null)
                 return false;
 
-            foreach (String hash in hashes)
+            foreach (string hash in hashes)
             {
                 // Check if address with checksum
                 if (hash.Length == 90)
@@ -145,7 +145,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
         }
 
-        public static String PadSeedIfNecessary(String seed)
+        public static string PadSeedIfNecessary(string seed)
         {
             while (seed.Length < 81) seed += 9;
             return seed;
@@ -155,6 +155,11 @@ namespace Iota.Lib.CSharp.Api.Utils
         {
             if(IsArrayOfTrytes(trytes, 2673))
                 throw new InvalidTryteException();
+        }
+
+        public static bool IsNinesTrytes(string signatureFragment, int length)
+        {
+            return signatureFragment.Matches("^[9]{" + (length == 0 ? "0," : length.ToString()) + "}$");
         }
     }
 }
