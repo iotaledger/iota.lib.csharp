@@ -4,7 +4,7 @@ install:
 - nuget restore IotaApi.sln
 - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 script:
-- xbuild /p:Configuration=Release /IotaCSharpApi/IotaCSharpApi.csproj
+- xbuild /p:Configuration=Release ./IotaCSharpApi/IotaCSharpApi.csproj
 deploy:
   provider: script
   skip_cleanup: true
