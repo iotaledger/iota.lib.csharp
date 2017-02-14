@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/iotaledger/iota.lib.csharp.svg?branch=master)](https://travis-ci.org/iotaledger/iota.lib.csharp)
+
 ## Introduction
 
 The Iota.Lib.CSharp library implements the [[Core API calls]](https://iota.readme.io/docs/getnodeinfo) as well as the [[proposed calls]](https://github.com/iotaledger/wiki/blob/master/api-proposal.md).
