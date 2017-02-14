@@ -13,11 +13,13 @@ namespace Iota.Lib.CSharp.Api.Utils
     public static class InputValidator
     {
         /// <summary>
-        /// validates an adress
+        /// Determines whether the specified string is an adrdress.
         /// </summary>
-        /// <param name="address">address to validate</param>
-        /// <returns>Bool</returns>
-        public static bool IsAddress(this string address)
+        /// <param name="address">The address.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified string is an address; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsAddress(string address)
         {
             if (address.Length == Constants.AddressLengthWithoutChecksum ||
                 address.Length == Constants.AddressLengthWithChecksum)
@@ -28,27 +30,35 @@ namespace Iota.Lib.CSharp.Api.Utils
         }
 
         /// <summary>
-        /// Checks whether the specified address is an address
+        /// Checks whether the specified address is an address and throws and exception if the address is invalid
         /// </summary>
         /// <param name="address">address to check</param>
         /// <exception cref="InvalidAddressException">exception which is thrown when the address is invalid</exception>
-        /// <returns></returns>
         public static void CheckAddress(string address)
         {
-            if (!address.IsAddress())
+            if (!IsAddress(address))
                 throw new InvalidAddressException(address);
         }
 
         /// <summary>
-        /// Determines whether the specified string represents a signed integer
+        /// Determines whether the specified string represents an integer value.
         /// </summary>
-        /// <param name="value">a string</param>
-        /// <returns></returns>
-        public static bool isValue(string value)
+        /// <param name="value">The value.</param>
+        /// <returns>
+        ///   <c>true</c> the specified string represents an integer value; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsValue(string value)
         {
             return Regex.IsMatch(value, @"^(-){0,1}\d+$");
         }
 
+        /// <summary>
+        /// Determines whether the specified array contains only valid hashes
+        /// </summary>
+        /// <param name="hashes">The hashes.</param>
+        /// <returns>
+        ///   <c>true</c> the specified array contains only valid hashes; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsArrayOfHashes(string[] hashes)
         {
             if (hashes == null)
@@ -76,30 +86,45 @@ namespace Iota.Lib.CSharp.Api.Utils
         }
 
         /// <summary>
-        /// checks if input is correct trytes consisting of A-Z9 optionally validates length
+        /// Determines whether the specified string contains only characters from the trytes alphabet (see <see cref="Constants.TryteAlphabet"/>)
         /// </summary>
-        /// <param name="trytes">address to validate</param>
-        /// <param name="length">address to validate</param>
-        /// <returns>Bool</returns>
+        /// <param name="trytes">The trytes.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified trytes are trytes otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsTrytes(string trytes, int length)
         {
-            // If no length specified, just validate the trytes
-            var regexTrytes = new Regex("^[9A-Z]{" + (length == 0 ? "0," : length.ToString()) + "}$");
+            string regex = "^[9A-Z]{" + (length == 0 ? "0," : length.ToString()) + "}$";
+            var regexTrytes = new Regex(regex);
             return regexTrytes.IsMatch(trytes);
         }
 
-
-
+        /// <summary>
+        /// Determines whether the specified string array contains only trytes
+        /// </summary>
+        /// <param name="trytes">The trytes.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified array contains only valid trytes otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsArrayOfTrytes(string[] trytes, int length )
         {
            return trytes.ToList().TrueForAll(element => IsTrytes(element, length));
         }
 
-        public static bool IsTransfersCollectionCorrect(List<Transfer> transfers)
+        /// <summary>
+        /// Determines whether the specified transfers are valid
+        /// </summary>
+        /// <param name="transfers">The transfers.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified transfers are valid; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsTransfersCollectionValid(ICollection<Transfer> transfers)
         {
             foreach (Transfer transfer in transfers)
             {
-                if (!IsTransfersArray(transfer))
+                if (!IsValidTransfer(transfer))
                 {
                     return false;
                 }
@@ -107,7 +132,14 @@ namespace Iota.Lib.CSharp.Api.Utils
             return true;
         }
 
-        public static bool IsTransfersArray(Transfer transfer)
+        /// <summary>
+        /// Determines whether the specified transfer is valid.
+        /// </summary>
+        /// <param name="transfer">The transfer.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified transfer is valid; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsValidTransfer(Transfer transfer)
         {
             if (!IsAddress(transfer.Address))
             {
@@ -124,16 +156,30 @@ namespace Iota.Lib.CSharp.Api.Utils
             return IsTrytes(transfer.Tag, 27);
         }
 
+        /// <summary>
+        /// Checks the specified specified transfers are valid. If not, an exception is thrown.
+        /// </summary>
+        /// <param name="transactionsArray">The transactions array.</param>
+        /// <exception cref="System.Exception">Not a transfer array</exception>
         public static void CheckTransferArray(Transfer[] transactionsArray)
         {
-            if (!IsTransfersCollectionCorrect(transactionsArray.ToList()))
+            if (!IsTransfersCollectionValid(transactionsArray.ToList()))
                 throw new System.Exception("Not a transfer array");
         }
 
-        public static void CheckSeed(string seed)
+        /// <summary>
+        /// Checks if the seed is valid. If not, an exception is thrown.
+        /// </summary>
+        /// <param name="seed">The seed.</param>
+        /// <exception cref="IllegalStateException">
+        /// Invalid Seed: Format not in trytes
+        /// or
+        /// Invalid Seed: Seed too long
+        /// </exception>
+        public static void CheckIfValidSeed(string seed)
         {
             // validate the seed
-            if (!InputValidator.IsTrytes(seed, 0))
+            if (!IsTrytes(seed, 0))
             {
                 throw new IllegalStateException("Invalid Seed: Format not in trytes");
             }
@@ -145,21 +191,39 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
         }
 
+        /// <summary>
+        /// Pads the seed if necessary.
+        /// </summary>
+        /// <param name="seed">The seed.</param>
+        /// <returns></returns>
         public static string PadSeedIfNecessary(string seed)
         {
-            while (seed.Length < 81) seed += 9;
+            while (seed.Length < Constants.AddressLengthWithoutChecksum) seed += 9;
             return seed;
         }
 
+        /// <summary>
+        /// Checks if the specified array is an array of trytes. If not an exception is thrown.
+        /// </summary>
+        /// <param name="trytes">The trytes.</param>
+        /// <exception cref="InvalidTryteException"></exception>
         public static void CheckIfArrayOfTrytes(string[] trytes)
         {
             if(!IsArrayOfTrytes(trytes, 2673))
                 throw new InvalidTryteException();
         }
 
-        public static bool IsNinesTrytes(string signatureFragment, int length)
+        /// <summary>
+        /// Determines whether the specified string consist only of '9'.
+        /// </summary>
+        /// <param name="trytes">The trytes.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified string consist only of '9'; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNinesTrytes(string trytes, int length)
         {
-            return signatureFragment.Matches("^[9]{" + (length == 0 ? "0," : length.ToString()) + "}$");
+            return trytes.Matches("^[9]{" + (length == 0 ? "0," : length.ToString()) + "}$");
         }
     }
 }

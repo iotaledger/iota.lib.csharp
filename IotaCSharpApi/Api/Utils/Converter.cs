@@ -4,18 +4,38 @@ using System.Text;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
+    /// <summary>
+    /// This class provides a set of utility methods to are used to convert between different formats
+    /// </summary>
     public class Converter
     {
+        /// <summary>
+        /// The radix
+        /// </summary>
         public static readonly int Radix = 3;
-        public static readonly int MaxTritValue = (Radix - 1)/2, MinTritValue = -MaxTritValue;
 
+        /// <summary>
+        /// The maximum trit value
+        /// </summary>
+        public static readonly int MaxTritValue = (Radix - 1)/2;
+
+        /// <summary>
+        /// The minimum trit value
+        /// </summary>
+        public static readonly int MinTritValue = -MaxTritValue;
+
+        /// <summary>
+        /// The number of trits in a byte
+        /// </summary>
         public static readonly int NumberOfTritsInAByte = 5;
+
+        /// <summary>
+        /// The number of trits in a tryte
+        /// </summary>
         public static readonly int NumberOfTritsInATryte = 3;
 
         static readonly int[][] ByteToTritsMappings = new int[243][];
         static readonly int[][] TryteToTritsMappings = new int[27][];
-
-        public static readonly string TryteAlphabet = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         static Converter()
         {
@@ -37,6 +57,13 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
         }
 
+        /// <summary>
+        /// Converts the specified trits array to bytes
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <param name="offset">The offset to start from.</param>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
         public static byte[] ToBytes(int[] trits, int offset, int size)
         {
             byte[] bytes = new byte[(size + NumberOfTritsInAByte - 1)/NumberOfTritsInAByte];
@@ -57,11 +84,21 @@ namespace Iota.Lib.CSharp.Api.Utils
             return bytes;
         }
 
+        /// <summary>
+        /// Converts the specified trits to trytes
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <returns></returns>
         public static byte[] ToBytes(int[] trits)
         {
             return ToBytes(trits, 0, trits.Length);
         }
 
+        /// <summary>
+        /// Gets the trits from the specified bytes and stores it into the provided trits array
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <param name="trits">The trits.</param>
         public static void GetTrits(sbyte[] bytes, int[] trits)
         {
             int offset = 0;
@@ -82,6 +119,11 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
         }
 
+        /// <summary>
+        /// Converts the specified trinary encoded string into trits
+        /// </summary>
+        /// <param name="trytes">The trytes.</param>
+        /// <returns></returns>
         public static int[] ToTritsString(string trytes)
         {
             int[] d = new int[3*trytes.Length];
@@ -93,6 +135,13 @@ namespace Iota.Lib.CSharp.Api.Utils
             return d;
         }
 
+        /// <summary>
+        /// Converts the specified trinary encoded string into a trits array of the specified length.
+        /// If the trytes string results in a shorter then specified trits array, then the remainder is padded we zeroes
+        /// </summary>
+        /// <param name="trytes">The trytes.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>a trits array</returns>
         public static int[] ToTrits(string trytes, int length)
         {
             int[] tritss = ToTrits(trytes);
@@ -108,10 +157,16 @@ namespace Iota.Lib.CSharp.Api.Utils
             return tritsList.ToArray();
         }
 
+
+        /// <summary>
+        /// Converts the specified trinary encoded trytes string to trits
+        /// </summary>
+        /// <param name="trytes">The trytes.</param>
+        /// <returns></returns>
         public static int[] ToTrits(string trytes)
         {
             List<int> trits = new List<int>();
-            if (InputValidator.isValue(trytes))
+            if (InputValidator.IsValue(trytes))
             {
                 long value = long.Parse(trytes);
 
@@ -153,6 +208,12 @@ namespace Iota.Lib.CSharp.Api.Utils
             return trits.ToArray();
         }
 
+        /// <summary>
+        /// Copies the trits from the input string into the destination array
+        /// </summary>
+        /// <param name="input">The input string</param>
+        /// <param name="destination">The destination array.</param>
+        /// <returns></returns>
         public static int[] CopyTrits(string input, int[] destination)
         {
             for (int i = 0; i < input.Length; i++)
@@ -165,6 +226,13 @@ namespace Iota.Lib.CSharp.Api.Utils
             return destination;
         }
 
+        /// <summary>
+        /// Copies the trits in long representation into the destination array
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="destination">The destination array.</param>
+        /// <param name="offset">The offset from which copying is started.</param>
+        /// <param name="size">The size.</param>
         public static void CopyTrits(long value, int[] destination, int offset, int size)
         {
             long absoluteValue = value < 0 ? -value : value;
@@ -189,6 +257,13 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
         }
 
+        /// <summary>
+        /// Converts the trits array to a trytes string
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <param name="offset">The offset from which copying is started.</param>
+        /// <param name="size">The size.</param>
+        /// <returns>a trytes string</returns>
         public static string ToTrytes(int[] trits, int offset, int size)
         {
             StringBuilder trytes = new StringBuilder();
@@ -197,23 +272,39 @@ namespace Iota.Lib.CSharp.Api.Utils
                 int j = trits[offset + i*3] + trits[offset + i*3 + 1]*3 + trits[offset + i*3 + 2]*9;
                 if (j < 0)
                 {
-                    j += TryteAlphabet.Length;
+                    j += Constants.TryteAlphabet.Length;
                 }
-                trytes.Append(TryteAlphabet[j]);
+                trytes.Append(Constants.TryteAlphabet[j]);
             }
             return trytes.ToString();
         }
 
+        /// <summary>
+        /// Converts the trits array to a trytes string
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <returns>a trytes string</returns>
         public static string ToTrytes(int[] trits)
         {
             return ToTrytes(trits, 0, trits.Length);
         }
 
+        /// <summary>
+        /// Converts the specified trits array to trytes in integer representation
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <param name="offset">The offset.</param>
+        /// <returns>trytes in integer representation</returns>
         public static int ToTryteValue(int[] trits, int offset)
         {
             return trits[offset] + trits[offset + 1]*3 + trits[offset + 2]*9;
         }
 
+        /// <summary>
+        /// Converts the specified trits to its corresponding integer value
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <returns>an integer value representing the corresponding trits</returns>
         public static int ToValue(int[] trits)
         {
             int value = 0;
@@ -225,6 +316,11 @@ namespace Iota.Lib.CSharp.Api.Utils
             return value;
         }
 
+        /// <summary>
+        ///  Converts the specified trits to its corresponding integer value
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <returns></returns>
         public static long ToLongValue(int[] trits)
         {
             long value = 0;
@@ -236,6 +332,11 @@ namespace Iota.Lib.CSharp.Api.Utils
             return value;
         }
 
+        /// <summary>
+        /// Increments the specified trits.
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <param name="size">The size.</param>
         public static void Increment(int[] trits, int size)
         {
             for (int i = 0; i < size; i++)

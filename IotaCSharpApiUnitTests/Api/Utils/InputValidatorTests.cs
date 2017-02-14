@@ -44,19 +44,19 @@ namespace Iota.Lib.CSharpTests.Api.Utils
         [TestMethod]
         public void shouldIsValue()
         {
-            Assert.AreEqual(InputValidator.isValue("1234"), true);
+            Assert.AreEqual(InputValidator.IsValue("1234"), true);
         }
 
         [TestMethod]
         public void IsValueNeg()
         {
-            Assert.AreEqual(InputValidator.isValue("-1234"), true);
+            Assert.AreEqual(InputValidator.IsValue("-1234"), true);
         }
 
         [TestMethod]
         public void IsValueNeg2()
         {
-            Assert.AreEqual(InputValidator.isValue("-"), false);
+            Assert.AreEqual(InputValidator.IsValue("-"), false);
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace Iota.Lib.CSharpTests.Api.Utils
             List<Transfer> transfers = new List<Transfer>();
             transfers.Add(new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG));
             transfers.Add(new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG));
-            Assert.AreEqual(InputValidator.IsTransfersCollectionCorrect(transfers), true);
+            Assert.AreEqual(InputValidator.IsTransfersCollectionValid(transfers), true);
         }
     }
 }

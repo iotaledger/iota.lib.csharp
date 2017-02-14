@@ -50,7 +50,7 @@ namespace Iota.Lib.CSharp.Api
         /// <returns> </returns>
         public Inputs GetInputs(string seed, int start, int end, long threshold = 100)
         {
-            InputValidator.CheckSeed(seed);
+            InputValidator.CheckIfValidSeed(seed);
 
             seed = InputValidator.PadSeedIfNecessary(seed);
 
@@ -72,7 +72,6 @@ namespace Iota.Lib.CSharp.Api
 
                 for (int i = start; i < end; i++)
                 {
-                    // IotaApiUtils.
                     string address = IotaApiUtils.NewAddress(seed, i, false, curl);
                     allAddresses[i] = address;
                 }
@@ -428,7 +427,7 @@ namespace Iota.Lib.CSharp.Api
         /// <returns>An Array of Bundle object that represent the transfers</returns>
         public Bundle[] GetTransfers(string seed, int? start, int? end, bool inclusionStates = false)
         {
-            InputValidator.CheckSeed(seed);
+            InputValidator.CheckIfValidSeed(seed);
             seed = InputValidator.PadSeedIfNecessary(seed);
 
             if (!start.HasValue)

@@ -53,7 +53,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             string address = Converter.ToTrytes(addressTrits);
 
             if (checksum)
-                address = address.AddChecksum();
+                address = Checksum.AddChecksum(address);
 
             return address;
         }

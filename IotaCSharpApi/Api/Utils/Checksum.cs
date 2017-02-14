@@ -14,7 +14,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <param name="address">An address without checksum</param>
         /// <returns>The address with the appended checksum </returns>
         /// <exception cref="InvalidAddressException">is thrown when an invalid address is provided</exception>
-        public static string AddChecksum(this string address)
+        public static string AddChecksum(string address)
         {
             InputValidator.CheckAddress(address);
             string addressWithChecksum = address;
@@ -44,6 +44,13 @@ namespace Iota.Lib.CSharp.Api.Utils
             return addressWithChecksum.Substring(0, Constants.AddressLengthWithoutChecksum);
         }
 
+        /// <summary>
+        /// Determines whether the specified address with checksum has a valid checksum.
+        /// </summary>
+        /// <param name="addressWithChecksum">The address with checksum.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified address with checksum has a valid checksum [the specified address with checksum]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsValidChecksum(this string addressWithChecksum)
         {
             string addressWithoutChecksum = RemoveChecksum(addressWithChecksum);
@@ -54,7 +61,7 @@ namespace Iota.Lib.CSharp.Api.Utils
 
         private static bool IsAddressWithChecksum(string addressWithChecksum)
         {
-            return addressWithChecksum.IsAddress() && addressWithChecksum.Length == Constants.AddressLengthWithChecksum;
+            return InputValidator.IsAddress(addressWithChecksum) && addressWithChecksum.Length == Constants.AddressLengthWithChecksum;
         }
 
         private static string CalculateChecksum(string address)
