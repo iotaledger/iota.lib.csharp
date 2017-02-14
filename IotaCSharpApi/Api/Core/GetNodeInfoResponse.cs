@@ -83,6 +83,12 @@
         /// </summary>
         public long TransactionsToRequest { get; set; }
 
+        /// <summary>
+        /// java runtime environment version.
+        /// </summary>
+        /// <value>
+        /// The jre version.
+        /// </value>
         public string JreVersion { get; set; }
 
         /// <summary>

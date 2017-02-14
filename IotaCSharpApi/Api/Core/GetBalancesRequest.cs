@@ -35,6 +35,12 @@ namespace Iota.Lib.CSharp.Api.Core
         /// </value>
         public List<string> Addresses { get; }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return $"{nameof(Threshold)}: {Threshold}, {nameof(Addresses)}: {string.Join(",",Addresses)}";
