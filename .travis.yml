@@ -1,13 +1,15 @@
 language: csharp
-solution: "IotaApi.sln"
+solution: IotaApi.sln
 install:
-- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./IotaApi.sln
-script:
-<<<<<<< HEAD
-- xbuild ./IotaApi.sln
-- mono ./packages/xunit.runner.console*/tools/xunit.console.exe  ./IotaCSharpApiUnitTests/bin/Release/IotaCSharpApiUnitTests.dll
-=======
+- nuget restore IotaApi.sln
+- nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 script:
 - xbuild /p:Configuration=Release IotaApi.sln
-- mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./IotaCSharpApiUnitTests.Tests/bin/Release/IotaCSharpApiUnitTests.dll
->>>>>>> 8a0d1ff37424e67b26369d45d8a8f24a5d26fc47
+- mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./IotaCSharpApiUnitTests/bin/Release/IotaCSharpApiUnitTests.dll
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: cd iota.lib.csharp && nuget pack ./IotaCSharpApi/IotaCSharpApi.csproj -Version $VERSION -IncludeReferencedProjects -Prop Configuration=Release && nuget push *.nupkg $NUGET_API_KEY -verbosity detailed
+  tags: true
+  repo: iotaledger/iota.lib.csharp
+  all_branches: true
