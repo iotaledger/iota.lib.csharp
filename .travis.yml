@@ -6,4 +6,4 @@ install:
 script:
 script:
 - xbuild /p:Configuration=Release IotaApi.sln
-- mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./IotaCSharpApiUnitTests.Tests/bin/Debug/IotaCSharpApiUnitTests.dll
+- mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./IotaCSharpApiUnitTests.Tests/bin/Release/IotaCSharpApiUnitTests.dll
