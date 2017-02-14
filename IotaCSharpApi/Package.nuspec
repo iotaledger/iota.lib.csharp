@@ -16,6 +16,8 @@
       <group targetFramework="net40">
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="RestSharp" version="105.2.3" />
+        <dependency id="NuGet.CommandLine" version="3.3.0"/>
+        <dependency id="NuGet.Packer" version="1.2.5" />
       </group>
     </dependencies>
   </metadata>
