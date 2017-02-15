@@ -17,14 +17,14 @@
         /// <param name="trits">The trits.</param>
         /// <param name="offset">The offset to start from.</param>
         /// <param name="length">The length.</param>
-        /// <returns></returns>
+        /// <returns>the ICurl instance (used for method chaining)</returns>
         ICurl Absorb(int[] trits, int offset, int length);
 
         /// <summary>
         /// Absorbs the specified trits.
         /// </summary>
         /// <param name="trits">The trits.</param>
-        /// <returns></returns>
+        /// <returns>the ICurl instance (used for method chaining)</returns>
         ICurl Absorb(int[] trits);
 
         /// <summary>
@@ -33,26 +33,26 @@
         /// <param name="trits">The trits.</param>
         /// <param name="offset">The offset to start from.</param>
         /// <param name="length">The length.</param>
-        /// <returns></returns>
+        /// <returns>the squeezed trits</returns>
         int[] Squeeze(int[] trits, int offset, int length);
 
         /// <summary>
         /// Squeezes the specified trits.
         /// </summary>
         /// <param name="trits">The trits.</param>
-        /// <returns></returns>
+        /// <returns>the squeezed trits</returns>
         int[] Squeeze(int[] trits);
 
         /// <summary>
         /// Transforms this instance.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the ICurl instance (used for method chaining)</returns>
         ICurl Transform();
 
         /// <summary>
         /// Resets this state.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the ICurl instance (used for method chaining)</returns>
         ICurl Reset();
 
         /// <summary>

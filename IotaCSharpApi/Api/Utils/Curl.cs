@@ -10,65 +10,106 @@ namespace Iota.Lib.CSharp.Api.Utils
     /// </summary>
     public class Curl : ICurl
     {
-        public const int HASH_LENGTH = 243;
-        private static readonly int STATE_LENGTH = 3*HASH_LENGTH;
+        /// <summary>
+        /// The hash length
+        /// </summary>
+        public const int HashLength = 243;
+        private static readonly int StateLength = 3*HashLength;
+        private const int NumberOfRounds = 27;
+        private static readonly int[] TruthTable = {1, 0, -1, 1, -1, 0, -1, 1, 0};
 
-        private const int NUMBER_OF_ROUNDS = 27;
-        private static readonly int[] TRUTH_TABLE = {1, 0, -1, 1, -1, 0, -1, 1, 0};
+        private int[] state = new int[StateLength];
 
-        private int[] state = new int[STATE_LENGTH];
-
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        /// <returns>a new instance</returns>
         public ICurl Clone()
         {
             return new Curl();
         }
 
+        /// <summary>
+        /// Absorbs the specified trits.
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <param name="offset">The offset to start from.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>the ICurl instance (used for method chaining)</returns>
         public ICurl Absorb(int[] trits, int offset, int length)
         {
             do
             {
-                Array.Copy(trits, offset, state, 0, length < HASH_LENGTH ? length : HASH_LENGTH);
+                Array.Copy(trits, offset, state, 0, length < HashLength ? length : HashLength);
                 Transform();
-                offset += HASH_LENGTH;
-            } while ((length -= HASH_LENGTH) > 0);
+                offset += HashLength;
+            } while ((length -= HashLength) > 0);
 
             return this;
         }
 
+        /// <summary>
+        /// Absorbs the specified trits.
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <returns>
+        /// the ICurl instance (used for method chaining)
+        /// </returns>
         public ICurl Absorb(int[] trits)
         {
             return Absorb(trits, 0, trits.Length);
         }
 
+        /// <summary>
+        /// Squeezes the specified trits.
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <param name="offset">The offset to start from.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>
+        /// the squeezed trits
+        /// </returns>
         public int[] Squeeze(int[] trits, int offset, int length)
         {
             do
             {
-                Array.Copy(state, 0, trits, offset, length < HASH_LENGTH ? length : HASH_LENGTH);
+                Array.Copy(state, 0, trits, offset, length < HashLength ? length : HashLength);
                 Transform();
-                offset += HASH_LENGTH;
-            } while ((length -= HASH_LENGTH) > 0);
+                offset += HashLength;
+            } while ((length -= HashLength) > 0);
 
             return state;
         }
 
+        /// <summary>
+        /// Squeezes the specified trits.
+        /// </summary>
+        /// <param name="trits">The trits.</param>
+        /// <returns>
+        /// the squeezed trits
+        /// </returns>
         public int[] Squeeze(int[] trits)
         {
             return Squeeze(trits, 0, trits.Length);
         }
 
-
+        /// <summary>
+        /// Transforms this instance.
+        /// </summary>
+        /// <returns>
+        /// the ICurl instance (used for method chaining)
+        /// </returns>
         public ICurl Transform()
         {
-            int[] scratchpad = new int[STATE_LENGTH];
+            int[] scratchpad = new int[StateLength];
             int scratchpadIndex = 0;
-            for (int round = 0; round < NUMBER_OF_ROUNDS; round++)
+            for (int round = 0; round < NumberOfRounds; round++)
             {
-                Array.Copy(state, 0, scratchpad, 0, STATE_LENGTH);
-                for (int stateIndex = 0; stateIndex < STATE_LENGTH; stateIndex++)
+                Array.Copy(state, 0, scratchpad, 0, StateLength);
+                for (int stateIndex = 0; stateIndex < StateLength; stateIndex++)
                 {
                     state[stateIndex] =
-                        TRUTH_TABLE[
+                        TruthTable[
                             scratchpad[scratchpadIndex] +
                             scratchpad[scratchpadIndex += (scratchpadIndex < 365 ? 364 : -365)]*3 + 4];
                 }
@@ -77,9 +118,15 @@ namespace Iota.Lib.CSharp.Api.Utils
             return this;
         }
 
+        /// <summary>
+        /// Resets this state.
+        /// </summary>
+        /// <returns>
+        /// the ICurl instance (used for method chaining)
+        /// </returns>
         public ICurl Reset()
         {
-            for (int stateIndex = 0; stateIndex < STATE_LENGTH; stateIndex++)
+            for (int stateIndex = 0; stateIndex < StateLength; stateIndex++)
             {
                 state[stateIndex] = 0;
             }
@@ -87,6 +134,12 @@ namespace Iota.Lib.CSharp.Api.Utils
             return this;
         }
 
+        /// <summary>
+        /// Gets or sets the state.
+        /// </summary>
+        /// <value>
+        /// The state.
+        /// </value>
         public int[] State
         {
             get { return state; }
