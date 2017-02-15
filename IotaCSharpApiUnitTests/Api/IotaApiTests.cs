@@ -145,8 +145,8 @@ namespace Iota.Lib.CSharpTests.Api
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidTryteException))]
-        public void shouldSendNotTrytes()
+        [ExpectedException(typeof(ArgumentException))]
+        public void shouldNotSendTrytes()
         {
             iotaClient.SendTrytes(new[] {TEST_TRYTES}, 9, 18);
         }
