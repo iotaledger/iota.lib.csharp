@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/iotaledger/iota.lib.csharp.svg?branch=master)](https://travis-ci.org/iotaledger/iota.lib.csharp)
 [![Build status](https://ci.appveyor.com/api/projects/status/928xuq2obg1itui7/branch/master?svg=true)](https://ci.appveyor.com/project/adrianziser/iota-lib-csharp/branch/master)
 
 ## Introduction
