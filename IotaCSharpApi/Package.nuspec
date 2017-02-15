@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Iota.Lib.CSharp</id>
+    <version>0.9.0-beta</version>
+    <authors>sniro</authors>
+    <owners>Iota Foundation &amp; Contributors</owners>
+    <licenseUrl>https://github.com/iotaledger/iota.lib.charp/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/iotaledger/iota.lib.charp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Iota C# Library</description>
+    <releaseNotes>First Beta Version</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Iota</tags>
+    <dependencies>
+      <group targetFramework="net40">
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="RestSharp" version="105.2.3" />
+        <dependency id="NuGet.CommandLine" version="3.3.0"/>
+        <dependency id="NuGet.Packer" version="1.2.5" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
