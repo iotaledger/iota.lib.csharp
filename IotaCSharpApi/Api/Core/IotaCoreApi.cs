@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Iota.Lib.CSharp.Api.Core;
 using Iota.Lib.CSharp.Api.Utils;
 
-namespace Iota.Lib.CSharp.Api
+namespace Iota.Lib.CSharp.Api.Core
 {
     /// <summary>
     /// This class provides access to the Iota core API
