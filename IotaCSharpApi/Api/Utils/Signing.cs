@@ -5,6 +5,9 @@ using Iota.Lib.CSharp.Api.Model;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
+    /// <summary>
+    /// Ask cfb
+    /// </summary>
     public class Signing
     {
         private ICurl curl;

@@ -5,7 +5,7 @@ using Iota.Lib.CSharp.Api.Model;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
-    public class IotaApiUtils
+    internal class IotaApiUtils
     {
         /// <summary>
         ///  Generates a new address
@@ -13,8 +13,9 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <param name="seed"></param>
         /// <param name="index"></param>
         /// <param name="checksum"></param>
+        /// <param name="curl"></param>
         /// <returns></returns>
-        public static string NewAddress(string seed, int index, bool checksum, ICurl curl)
+        internal static string NewAddress(string seed, int index, bool checksum, ICurl curl)
         {
             Signing signing = new Signing(curl);
             Stopwatch stopWatch = new Stopwatch();
@@ -58,7 +59,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             return address;
         }
 
-        public static List<string> SignInputsAndReturn(string seed,
+        internal static List<string> SignInputsAndReturn(string seed,
             List<Input> inputs,
             Bundle bundle,
             List<string> signatureFragments, ICurl curl)
@@ -144,7 +145,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             return bundleTrytes;
         }
 
-        public static long CreateTimeStampNow()
+        internal static long CreateTimeStampNow()
         {
             return (long) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
         }

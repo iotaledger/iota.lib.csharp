@@ -1,4 +1,4 @@
-﻿namespace Iota.Lib.CSharp.Api.Utils
+﻿namespace Iota.Lib.CSharp.Api.Exception
 {
     /// <summary>
     /// 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Iota.Lib.CSharp.Api.Utils
+namespace Iota.Lib.CSharp.Api.Exception
 {
     public class IllegalStateException : System.Exception
     {

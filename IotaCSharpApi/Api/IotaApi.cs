@@ -135,7 +135,7 @@ namespace Iota.Lib.CSharp.Api
                 return inputs;
             }
 
-            throw new NotEnoughBalanceException("Not enough balance");
+            throw new NotEnoughBalanceException();
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace Iota.Lib.CSharp.Api
                     // Return not enough balance error
                     if (totalValue > totalBalance)
                     {
-                        throw new NotEnoughBalanceException(totalBalance, totalValue);
+                        throw new NotEnoughBalanceException(totalValue);
                     }
 
                     return AddRemainder(seed, confirmedInputs, bundle, tag, totalValue, remainderAddress,
@@ -353,7 +353,7 @@ namespace Iota.Lib.CSharp.Api
                 }
             }
 
-            throw new NotEnoughBalanceException();
+            throw new NotEnoughBalanceException(totalValue);
         }
 
 
@@ -502,8 +502,9 @@ namespace Iota.Lib.CSharp.Api
                 {
                     gisr = GetLatestInclusion(tailTxArray);
                 }
-                catch (IllegalAccessError ignored)
+                catch (IllegalAccessError)
                 {
+                    // suppress exception (the check is done below)
                 }
                 if (gisr == null || gisr.States == null || gisr.States.Count == 0)
                     throw new ArgumentException("Inclusion states not found");
@@ -769,7 +770,7 @@ namespace Iota.Lib.CSharp.Api
                 totalSum += bundleValue;
 
                 if (long.Parse(bundleTransaction.CurrentIndex) != index)
-                    throw new InvalidBundleException();
+                    throw new InvalidBundleException("The index of the bundle " + bundleTransaction.CurrentIndex + " did not match the expected index " + index);
 
                 // Get the transaction trytes
                 string thisTxTrytes = bundleTransaction.ToTransactionTrytes().Substring(2187, 162);

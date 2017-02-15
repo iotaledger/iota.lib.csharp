@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Cache;
 using System.Text;
 using Iota.Lib.CSharp.Api.Core;
+using Iota.Lib.CSharp.Api.Exception;
 using Newtonsoft.Json;
 
 namespace Iota.Lib.CSharp.Api.Utils.Rest
