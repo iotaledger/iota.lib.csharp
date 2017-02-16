@@ -27,6 +27,16 @@ IotaApi iotaApi = new IotaApi("node.iotawallet.info", 14265);
 GetNodeInfoResponse nodeInfo = iotaApi.GetNodeInfo();
 ```
 
+You can easily add the library to your Visual Studio project using the NuGet package manager or in the Package Manager Console with this command:
+
+```PowerShell
+Install-Package Iota.Lib.CSharp -Pre
+```
+
+### Documentation
+
+Please refer to the [github wiki](https://github.com/iotaledger/iota.lib.csharp/wiki) for the library documentation.
+
 ### Warning
  -   This is pre-release software!
  -   There may be performance and stability issues.
