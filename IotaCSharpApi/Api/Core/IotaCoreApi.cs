@@ -48,7 +48,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// Broadcasts the transactions.
         /// </summary>
         /// <param name="trytes">The transactions in trytes representation</param>
-        /// <returns></returns>
+        /// <returns>the BroadcastTransactionsResponse <see cref="BroadcastTransactionsResponse"/></returns>
         public BroadcastTransactionsResponse BroadcastTransactions(List<string> trytes)
         {
             return
@@ -63,7 +63,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <param name="tags">The tags.</param>
         /// <param name="approves">The approves.</param>
         /// <param name="bundles">The bundles.</param>
-        /// <returns></returns>
+        /// <returns>a FindTransactionsResponse, see <see cref="FindTransactionsResponse"/></returns>
         public FindTransactionsResponse FindTransactions(List<string> addresses, List<string> tags,
             List<string> approves, List<string> bundles)
         {
@@ -88,11 +88,11 @@ namespace Iota.Lib.CSharp.Api.Core
         }
 
         /// <summary>
-        /// Gets the inclusion states.
+        /// Gets the inclusion states of the specified transactions
         /// </summary>
         /// <param name="transactions">The transactions.</param>
         /// <param name="milestones">The milestones.</param>
-        /// <returns></returns>
+        /// <returns>a GetInclusionStatesResponse, see <see cref="GetInclusionStatesResponse"/></returns>
         public GetInclusionStatesResponse GetInclusionStates(string[] transactions, string[] milestones)
         {
             return
@@ -104,7 +104,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// Stores the specified transactions in trytes into the local storage. The trytes to be used for this call are returned by attachToTangle.
         /// </summary>
         /// <param name="trytes">The trytes representing the transactions</param>
-        /// <returns></returns>
+        /// <returns>a <see cref="StoreTransactionsResponse"/></returns>
         public StoreTransactionsResponse StoreTransactions(List<string> trytes)
         {
             return
@@ -115,7 +115,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <summary>
         /// Gets the node information.
         /// </summary>
-        /// <returns>information about the node.</returns>
+        /// <returns>a <see cref="GetNodeInfoResponse"/> containing information about the node.</returns>
         public GetNodeInfoResponse GetNodeInfo()
         {
             return _genericIotaCoreApi.Request<GetNodeInfoRequest, GetNodeInfoResponse>(new GetNodeInfoRequest());
@@ -124,7 +124,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <summary>
         /// Gets the tips.
         /// </summary>
-        /// <returns>a list of tips</returns>
+        /// <returns>a <see cref="GetTipsResponse"/> containing a list of tips</returns>
         public GetTipsResponse GetTips()
         {
             GetTipsRequest getTipsRequest = new GetTipsRequest();
@@ -150,7 +150,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// These trytes can then be easily converted into the actual transaction object using the constructor of Transaction
         /// </summary>
         /// <param name="hashes">The hashes of the transactions</param>
-        /// <returns></returns>
+        /// <returns>a <see cref="GetTrytesResponse"/> containing a list of trytes</returns>
         public GetTrytesResponse GetTrytes(params string[] hashes)
         {
             GetTrytesRequest getTrytesRequest = new GetTrytesRequest() {Hashes = hashes};
@@ -160,7 +160,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <summary>
         /// Interrupts and completely aborts the attachToTangle process.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>an <see cref="InterruptAttachingToTangleResponse"/></returns>
         public InterruptAttachingToTangleResponse InterruptAttachingToTangle()
         {
             InterruptAttachingToTangleRequest request = new InterruptAttachingToTangleRequest();
@@ -172,7 +172,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <summary>
         /// Gets the neighbors the node is connected to
         /// </summary>
-        /// <returns>Returns the set of neighbors the node is connected to as well as their activity count. The activity counter is reset after restarting IRI.</returns>
+        /// <returns>A <see cref="GetNeighborsResponse"/> containing the set of neighbors the node is connected to as well as their activity count. The activity counter is reset after restarting IRI.</returns>
         public GetNeighborsResponse GetNeighbors()
         {
             GetNeighborsRequest getNeighborsRequest = new GetNeighborsRequest();
@@ -183,7 +183,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// Adds the neighbor(s) to the node.  It should be noted that this is only temporary, and the added neighbors will be removed from your set of neighbors after you relaunch IRI.
         /// </summary>
         /// <param name="uris">The uris of the neighbors to add. The URI (Unique Resource Identification) format is "udp://IPADDRESS:PORT" </param>
-        /// <returns>Returns the number of added Neighbors</returns>
+        /// <returns><see cref="AddNeighborsResponse"/> containing the number of added Neighbors</returns>
         public AddNeighborsResponse AddNeighbors(params string[] uris)
         {
             return
@@ -195,7 +195,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// Removes the neighbor(s) from the node. 
         /// </summary>
         /// <param name="uris">The uris of the neighbors to add. The URI (Unique Resource Identification) format is "udp://IPADDRESS:PORT"</param>
-        /// <returns>Returns the number of remvoved neighbors</returns>
+        /// <returns>A <see cref="RemoveNeighborsResponse"/> containing the number of removed neighbors</returns>
         public RemoveNeighborsResponse RemoveNeighbors(params string[] uris)
         {
             RemoveNeighborsRequest removeNeighborsRequest = new RemoveNeighborsRequest(uris.ToList());

@@ -46,8 +46,8 @@ namespace Iota.Lib.CSharp.Api
         /// <param name="seed">tryte-encoded seed. It should be noted that this seed is not transferred</param>
         /// <param name="start">Starting key index</param>
         /// <param name="end">Ending key index</param>
-        /// <param name="threshold">Minimum threshold of accumulated balances from the inputs that is required</param>
-        /// <returns> </returns>
+        /// <param name="threshold">The minimum threshold of accumulated balances from the inputs that is required</param>
+        /// <returns>The inputs (see <see cref="Input"/>) </returns>
         public Inputs GetInputs(string seed, int start, int end, long threshold = 100)
         {
             InputValidator.CheckIfValidSeed(seed);
@@ -143,10 +143,10 @@ namespace Iota.Lib.CSharp.Api
         /// as well as choosing and signing the inputs if necessary (if it's a value transfer). The output of this function is an array of the raw transaction data (trytes)
         /// </summary>
         /// <param name="seed">81-tryte encoded address of recipient</param>
-        /// <param name="transfers"></param>
-        /// <param name="inputs"></param>
+        /// <param name="transfers">the transfers to prepare</param>
+        /// <param name="inputs">Optional (default null). The inputs</param>
         /// <param name="remainderAddress">Optional (default null). if defined, this address will be used for sending the remainder value (of the inputs) to.</param>
-        /// <returns>an array that contains the trytes of the new bundle</returns>
+        /// <returns>a list containing the trytes of the new bundle</returns>
         public List<string> PrepareTransfers(string seed, Transfer[] transfers, List<Input> inputs = null,
             string remainderAddress = null)
         {
@@ -422,8 +422,8 @@ namespace Iota.Lib.CSharp.Api
         /// </summary>
         /// <param name="seed">tryte-encoded seed. It should be noted that this seed is not transferred</param>
         /// <param name="inclusionStates">If True, it gets the inclusion states of the transfers.</param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
+        /// <param name="start">the address start index</param>
+        /// <param name="end">the address end index</param>
         /// <returns>An Array of Bundle object that represent the transfers</returns>
         public Bundle[] GetTransfers(string seed, int? start, int? end, bool inclusionStates = false)
         {
@@ -562,8 +562,8 @@ namespace Iota.Lib.CSharp.Api
         /// <summary>
         /// Gets the transactions objects.
         /// </summary>
-        /// <param name="hashes">The hashes.</param>
-        /// <returns></returns>
+        /// <param name="hashes">The hashes in trytes</param>
+        /// <returns>a list of transactions</returns>
         public List<Transaction> GetTransactionsObjects(string[] hashes)
         {
             if (!InputValidator.IsArrayOfHashes(hashes))
@@ -586,7 +586,7 @@ namespace Iota.Lib.CSharp.Api
         /// Finds the transaction objects by bundle.
         /// </summary>
         /// <param name="bundles">The bundles.</param>
-        /// <returns></returns>
+        /// <returns>a list of Transaction objects</returns>
         public List<Transaction> FindTransactionObjectsByBundle(string[] bundles)
         {
             FindTransactionsResponse ftr = FindTransactions(null, null, null, bundles.ToList());
@@ -604,7 +604,7 @@ namespace Iota.Lib.CSharp.Api
         /// <param name="transaction">The transaction.</param>
         /// <param name="depth">The depth.</param>
         /// <param name="minWeightMagnitude">The minimum weight magnitude.</param>
-        /// <returns></returns>
+        /// <returns>an array of boolean that indicate which transactions have been replayed successfully</returns>
         public bool[] ReplayBundle(string transaction, int depth, int minWeightMagnitude)
         {
             //StopWatch stopWatch = new StopWatch();
@@ -632,7 +632,7 @@ namespace Iota.Lib.CSharp.Api
         /// Finds the transactions by bundles.
         /// </summary>
         /// <param name="bundles">The bundles.</param>
-        /// <returns></returns>
+        /// <returns>a FindTransactionsResponse containing the transactions, see <see cref="FindTransactionsResponse"/></returns>
         public FindTransactionsResponse FindTransactionsByBundles(params string[] bundles)
         {
             return FindTransactions(null, null, null, bundles.ToList());
@@ -642,7 +642,7 @@ namespace Iota.Lib.CSharp.Api
         /// Finds the transactions by approvees.
         /// </summary>
         /// <param name="approvees">The approvees.</param>
-        /// <returns></returns>
+        /// <returns>a FindTransactionsResponse containing the transactions, see <see cref="FindTransactionsResponse"/></returns>
         public FindTransactionsResponse FindTransactionsByApprovees(params string[] approvees)
         {
             return FindTransactions(null, null, approvees.ToList(), null);
@@ -653,7 +653,7 @@ namespace Iota.Lib.CSharp.Api
         /// Finds the transactions by digests.
         /// </summary>
         /// <param name="bundles">The bundles.</param>
-        /// <returns></returns>
+        /// <returns>a FindTransactionsResponse containing the transactions, see <see cref="FindTransactionsResponse"/></returns>
         public FindTransactionsResponse FindTransactionsByDigests(params string[] bundles)
         {
             return FindTransactions(null, bundles.ToList(), null, null);
@@ -663,7 +663,7 @@ namespace Iota.Lib.CSharp.Api
         /// Finds the transactions by addresses.
         /// </summary>
         /// <param name="addresses">The addresses.</param>
-        /// <returns></returns>
+        /// <returns>a FindTransactionsResponse containing the transactions, see <see cref="FindTransactionsResponse"/></returns>
         public FindTransactionsResponse FindTransactionsByAddresses(params string[] addresses)
         {
             return FindTransactions(addresses.ToList(), null, null, null);
@@ -673,11 +673,10 @@ namespace Iota.Lib.CSharp.Api
         /// Gets the latest inclusion.
         /// </summary>
         /// <param name="hashes">The hashes.</param>
-        /// <returns></returns>
+        /// <returns>a GetInclusionStatesResponse cotaining the inclusion state of the specified hashes</returns>
         public GetInclusionStatesResponse GetLatestInclusion(string[] hashes)
         {
             string[] latestMilestone = { GetNodeInfo().LatestSolidSubtangleMilestone };
-
             return GetInclusionStates(hashes, latestMilestone);
         }
 
@@ -691,7 +690,7 @@ namespace Iota.Lib.CSharp.Api
         /// <param name="transfers">Array of transfer objects</param>
         /// <param name="inputs">Option (default null). List of inputs used for funding the transfer</param>
         /// <param name="address">if defined, this address will be used for sending the remainder value (of the inputs) to</param>
-        /// <returns> an array of the transfer (transaction objects)</returns>
+        /// <returns> an array of the boolean that indicates which Transactions where sent successully</returns>
         public bool[] SendTransfer(string seed, int depth, int minWeightMagnitude, Transfer[] transfers,
             Input[] inputs = null, string address = null)
         {
@@ -716,7 +715,7 @@ namespace Iota.Lib.CSharp.Api
         /// <param name="trytes">The trytes.</param>
         /// <param name="depth">The depth.</param>
         /// <param name="minWeightMagnitude">The minimum weight magnitude.</param>
-        /// <returns></returns>
+        /// <returns>an Array of Transactions</returns>
         public Transaction[] SendTrytes(string[] trytes, int depth, int minWeightMagnitude = 18)
         {
             GetTransactionsToApproveResponse transactionsToApproveResponse = GetTransactionsToApprove(depth);
