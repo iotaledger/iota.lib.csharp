@@ -686,10 +686,10 @@ namespace Iota.Lib.CSharp.Api
         /// </summary>
         /// <param name="seed">tryte-encoded seed</param>
         /// <param name="depth">depth</param>
-        /// <param name="minWeightMagnitude"></param>
+        /// <param name="minWeightMagnitude">The minimum weight magnitude</param>
         /// <param name="transfers">Array of transfer objects</param>
-        /// <param name="inputs">Option (default null). List of inputs used for funding the transfer</param>
-        /// <param name="address">if defined, this address will be used for sending the remainder value (of the inputs) to</param>
+        /// <param name="inputs">Optional (default null). List of inputs used for funding the transfer</param>
+        /// <param name="address">Optional (default null). If defined, this address will be used for sending the remainder value (of the inputs) to</param>
         /// <returns> an array of the boolean that indicates which Transactions where sent successully</returns>
         public bool[] SendTransfer(string seed, int depth, int minWeightMagnitude, Transfer[] transfers,
             Input[] inputs = null, string address = null)
@@ -714,7 +714,7 @@ namespace Iota.Lib.CSharp.Api
         /// </summary>
         /// <param name="trytes">The trytes.</param>
         /// <param name="depth">The depth.</param>
-        /// <param name="minWeightMagnitude">The minimum weight magnitude.</param>
+        /// <param name="minWeightMagnitude">Optional (default 18). The minimum weight magnitude.</param>
         /// <returns>an Array of Transactions</returns>
         public Transaction[] SendTrytes(string[] trytes, int depth, int minWeightMagnitude = 18)
         {
