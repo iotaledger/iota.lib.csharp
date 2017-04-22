@@ -109,7 +109,7 @@ namespace Iota.Lib.CSharp.Api.Model
 
 
         /// <summary>
-        /// Normalizeds the bundle.
+        /// Normalized the bundle.
         /// </summary>
         /// <param name="bundleHash">The bundle hash.</param>
         /// <returns></returns>
