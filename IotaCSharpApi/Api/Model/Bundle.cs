@@ -35,7 +35,10 @@ namespace Iota.Lib.CSharp.Api.Model
         /// </value>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public Transaction this[int index] => Transactions[index];
+        public Transaction this[int index]
+        {
+            get { return Transactions[index]; }
+        }
 
         /// <summary>
         /// Gets or sets the transactions.

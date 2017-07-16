@@ -33,7 +33,10 @@ namespace Iota.Lib.CSharp.Api
         /// <param name="curl">a custom curl implementation to be used to perform the pow. Use the other constructor in order to use the default curl implementation provided by the library </param>
         public IotaApi(string host, int port, ICurl curl) : base(host, port)
         {
-            this.curl = curl ?? throw new ArgumentNullException(nameof(curl));
+            if (curl == null)
+                throw new ArgumentNullException(nameof(curl));
+
+            this.curl = curl;
         }
 
         /// <summary>
@@ -610,7 +613,7 @@ namespace Iota.Lib.CSharp.Api
 
             Bundle bundle = GetBundle(transaction);
 
-            bundle.Transactions.ForEach((t) => bundleTrytes.Add(t.ToTransactionTrytes()));
+            bundle.Transactions.ForEach(t => bundleTrytes.Add(t.ToTransactionTrytes()));
 
             List<Transaction> trxs = SendTrytes(bundleTrytes.ToArray(), depth, minWeightMagnitude).ToList();
 

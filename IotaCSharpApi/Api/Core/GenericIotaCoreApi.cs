@@ -29,7 +29,10 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <value>
         /// The hostname.
         /// </value>
-        public string Hostname => host;
+        public string Hostname
+        {
+            get { return host; }
+        }
 
         /// <summary>
         /// Gets the port.
@@ -37,7 +40,10 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <value>
         /// The port.
         /// </value>
-        public int Port => port;
+        public int Port
+        {
+            get { return port; }
+        }
 
         /// <summary>
         /// Requests the specified request.

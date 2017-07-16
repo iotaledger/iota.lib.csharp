@@ -33,7 +33,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// </summary>
         public int MinWeightMagnitude
         {
-            get => _minWeightMagnitude;
+            get { return _minWeightMagnitude; }
             set
             {
                 if (value > MinWeightMagnitudeMin)
