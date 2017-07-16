@@ -3,7 +3,7 @@
     /// <summary>
     /// This class represents the core API call 'GetTransactionsToApprove'
     /// </summary>
-    public class GetTransactionsToApproveRequest : IotaRequest
+    public class GetTransactionsToApproveRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetTransactionsToApproveRequest"/> class.

@@ -26,6 +26,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             {
                 return IsTrytes(address, address.Length);
             }
+
             return false;
         }
 
@@ -82,6 +83,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     }
                 }
             }
+
             return true;
         }
 
@@ -129,6 +131,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -198,7 +201,9 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <returns></returns>
         public static string PadSeedIfNecessary(string seed)
         {
-            while (seed.Length < Constants.AddressLengthWithoutChecksum) seed += 9;
+            while (seed.Length < Constants.AddressLengthWithoutChecksum)
+                seed += 9;
+
             return seed;
         }
 

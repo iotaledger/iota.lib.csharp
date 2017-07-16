@@ -3,7 +3,6 @@ using System.Text;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
-    
     /// <summary>
     /// This class allows to convert between ASCII and tryte encoded strings 
     /// </summary>
@@ -39,8 +38,6 @@ namespace Iota.Lib.CSharp.Api.Utils
 
             return trytes.ToString();
         }
-
-
 
         /// <summary>
         /// Converts the specified tryte encoded String to ASCII

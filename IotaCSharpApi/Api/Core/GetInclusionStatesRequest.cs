@@ -3,8 +3,8 @@
     /// <summary>
     /// This class represents the core API request 'GetInclusionStates'
     /// </summary>
-    /// <seealso cref="Iota.Lib.CSharp.Api.Core.IotaRequest" />
-    public class GetInclusionStatesRequest : IotaRequest
+    /// <seealso cref="IotaRequestBase" />
+    public class GetInclusionStatesRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetInclusionStatesRequest"/> class.

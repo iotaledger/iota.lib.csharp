@@ -29,7 +29,6 @@
         /// </value>
         public int KeyIndex { get; set; }
 
-
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>

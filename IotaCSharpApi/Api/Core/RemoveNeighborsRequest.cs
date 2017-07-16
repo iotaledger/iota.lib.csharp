@@ -5,8 +5,8 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// This class represents the core api request 'RemoveNeighbors'
     /// </summary>
-    /// <seealso cref="Iota.Lib.CSharp.Api.Core.IotaRequest" />
-    public class RemoveNeighborsRequest : IotaRequest
+    /// <seealso cref="IotaRequestBase" />
+    public class RemoveNeighborsRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoveNeighborsRequest"/> class.

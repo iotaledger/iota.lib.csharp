@@ -67,6 +67,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             {
                 units = IotaUnits.Peta;
             }
+
             return units;
         }
     }

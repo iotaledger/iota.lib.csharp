@@ -5,7 +5,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// Broadcast a list of transactions to all neighbors. The input trytes for this call are provided by attachToTangle
     /// </summary>
-    public class BroadcastTransactionsRequest : IotaRequest
+    public class BroadcastTransactionsRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BroadcastTransactionsRequest"/> class.

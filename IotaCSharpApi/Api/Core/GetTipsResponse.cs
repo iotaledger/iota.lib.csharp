@@ -5,7 +5,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// This class represents the response of <see cref="GetTipsRequest"/>
     /// </summary>
-    public class GetTipsResponse : IotaResponse
+    public class GetTipsResponse : IotaResponseBase
     {
         /// <summary>
         /// Gets or sets the hashes.

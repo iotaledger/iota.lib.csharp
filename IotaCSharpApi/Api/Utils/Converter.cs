@@ -67,6 +67,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         public static byte[] ToBytes(int[] trits, int offset, int size)
         {
             byte[] bytes = new byte[(size + NumberOfTritsInAByte - 1)/NumberOfTritsInAByte];
+
             for (int i = 0; i < bytes.Length; i++)
             {
                 int value = 0;
@@ -102,6 +103,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         public static void GetTrits(sbyte[] bytes, int[] trits)
         {
             int offset = 0;
+
             for (int i = 0; i < bytes.Length && offset < trits.Length; i++)
             {
                 Array.Copy(
@@ -113,6 +115,7 @@ namespace Iota.Lib.CSharp.Api.Utils
 
                 offset += NumberOfTritsInAByte;
             }
+
             while (offset < trits.Length)
             {
                 trits[offset++] = 0;
@@ -127,11 +130,13 @@ namespace Iota.Lib.CSharp.Api.Utils
         public static int[] ToTritsString(string trytes)
         {
             int[] d = new int[3*trytes.Length];
+
             for (int i = 0; i < trytes.Length; i++)
             {
                 Array.Copy(TryteToTritsMappings[Constants.TryteAlphabet.IndexOf(trytes[i])], 0, d,
                     i*NumberOfTritsInATryte, NumberOfTritsInATryte);
             }
+
             return d;
         }
 

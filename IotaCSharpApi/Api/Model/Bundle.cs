@@ -195,9 +195,9 @@ namespace Iota.Lib.CSharp.Api.Model
             customCurl.Squeeze(hash, 0, hash.Length);
             string hashInTrytes = Converter.ToTrytes(hash);
 
-            for (int i = 0; i < Transactions.Count; i++)
+            foreach (Transaction t in Transactions)
             {
-                Transactions[i].Bundle = hashInTrytes;
+                t.Bundle = hashInTrytes;
             }
         }
 
