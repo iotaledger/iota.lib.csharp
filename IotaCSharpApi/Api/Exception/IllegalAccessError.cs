@@ -6,6 +6,5 @@
     /// <seealso cref="System.Exception" />
     public class IllegalAccessError : System.Exception
     {
-
     }
 }

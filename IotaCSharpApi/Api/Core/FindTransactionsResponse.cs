@@ -5,7 +5,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// Response of <see cref="FindTransactionsRequest"/>
     /// </summary>
-    public class FindTransactionsResponse
+    public class FindTransactionsResponse : IotaResponseBase
     {
         /// <summary>
         /// Gets or sets the hashes.

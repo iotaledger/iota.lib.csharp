@@ -3,7 +3,7 @@
     /// <summary>
     /// This class represents the core API request 'GetTips'
     /// </summary>
-    public class GetTipsRequest : IotaRequest
+    public class GetTipsRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetTipsRequest"/> class.

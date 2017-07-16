@@ -3,7 +3,7 @@
     /// <summary>
     /// This class represents the core API request 'GetTrytes'
     /// </summary>
-    public class GetTrytesRequest : IotaRequest
+    public class GetTrytesRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetTrytesRequest"/> class.

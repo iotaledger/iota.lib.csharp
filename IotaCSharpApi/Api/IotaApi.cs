@@ -33,9 +33,7 @@ namespace Iota.Lib.CSharp.Api
         /// <param name="curl">a custom curl implementation to be used to perform the pow. Use the other constructor in order to use the default curl implementation provided by the library </param>
         public IotaApi(string host, int port, ICurl curl) : base(host, port)
         {
-            if(curl == null)
-                throw new ArgumentNullException(nameof(curl));
-            this.curl = curl;
+            this.curl = curl ?? throw new ArgumentNullException(nameof(curl));
         }
 
         /// <summary>
@@ -56,7 +54,7 @@ namespace Iota.Lib.CSharp.Api
 
             // If start value bigger than end, return error
             if (start > end)
-                throw new ArgumentException("start must be smaller than end", "start");
+                throw new ArgumentException("start must be smaller than end", nameof(start));
 
             // or if difference between end and start is bigger than 500 keys
             if (end - start > 500)
@@ -162,17 +160,17 @@ namespace Iota.Lib.CSharp.Api
             //  Iterate over all transfers, get totalValue
             //  and prepare the signatureFragments, message and tag
             //
-            for (int i = 0; i < transfers.Length; i++)
+            foreach (Transfer t in transfers)
             {
                 int signatureMessageLength = 1;
 
                 // If message longer than 2187 trytes, increase signatureMessageLength (add 2nd transaction)
-                if (transfers[i].Message.Length > 2187)
+                if (t.Message.Length > 2187)
                 {
                     // Get total length, message / maxLength (2187 trytes)
-                    signatureMessageLength += (int) Math.Floor(((double) transfers[i].Message.Length/2187));
+                    signatureMessageLength += (int) Math.Floor(((double) t.Message.Length/2187));
 
-                    var msgCopy = transfers[i].Message;
+                    var msgCopy = t.Message;
 
                     // While there is still a message, copy it
                     while (msgCopy != null)
@@ -194,10 +192,10 @@ namespace Iota.Lib.CSharp.Api
                     // Else, get single fragment with 2187 of 9's trytes
                     string fragment = "";
 
-                    if (transfers[i].Message != null)
+                    if (t.Message != null)
                     {
-                        fragment = transfers[i].Message.Substring(0,
-                            transfers[i].Message.Length < 2187 ? transfers[i].Message.Length : 2187);
+                        fragment = t.Message.Substring(0,
+                            t.Message.Length < 2187 ? t.Message.Length : 2187);
                     }
 
                     for (var j = 0; fragment.Length < 2187; j++)
@@ -212,7 +210,7 @@ namespace Iota.Lib.CSharp.Api
                 long timestamp = IotaApiUtils.CreateTimeStampNow();
 
                 // If no tag defined, get 27 tryte tag.
-                tag = transfers[i].Tag != null ? transfers[i].Tag : "999999999999999999999999999";
+                tag = t.Tag ?? "999999999999999999999999999";
 
                 // Pad for required 27 tryte length
                 for (var j = 0; tag.Length < 27; j++)
@@ -222,9 +220,9 @@ namespace Iota.Lib.CSharp.Api
 
                 // Add first entries to the bundle
                 // Slice the address in case the user provided a checksummed one
-                bundle.AddEntry(signatureMessageLength, transfers[i].Address, transfers[i].Value, tag, timestamp);
+                bundle.AddEntry(signatureMessageLength, t.Address, t.Value, tag, timestamp);
                 // Sum up total value
-                totalValue += transfers[i].Value;
+                totalValue += t.Value;
             }
 
             // Get inputs if we are sending tokens
@@ -296,7 +294,6 @@ namespace Iota.Lib.CSharp.Api
             }
         }
 
-
         private List<string> AddRemainder(string seed, List<Input> inputs, Bundle bundle, string tag, long totalValue,
             string remainderAddress, List<string> signatureFragments)
         {
@@ -355,7 +352,6 @@ namespace Iota.Lib.CSharp.Api
 
             throw new NotEnoughBalanceException(totalValue);
         }
-
 
         /// <summary>
         /// Generates a new address from a seed and returns the remainderAddress. This is either done deterministically, or by providing the index of the new remainderAddress 
@@ -446,11 +442,9 @@ namespace Iota.Lib.CSharp.Api
             // If a transaction is non tail, get the tail transactions associated with it
             // add it to the list of tail transactions
 
-            string[] addresses = GetNewAddress(seed, start.Value, false,
-                end.HasValue ? end.Value : end.Value - start.Value, true);
-
-
+            string[] addresses = GetNewAddress(seed, start.Value, false, end.Value, true);
             Bundle[] bundles = BundlesFromAddresses(addresses, inclusionStates);
+
             return bundles;
         }
 
@@ -496,6 +490,7 @@ namespace Iota.Lib.CSharp.Api
             // If inclusionStates, get the confirmation status
             // of the tail transactions, and thus the bundles
             GetInclusionStatesResponse gisr = null;
+
             if (inclusionStates)
             {
                 try
@@ -506,14 +501,14 @@ namespace Iota.Lib.CSharp.Api
                 {
                     // suppress exception (the check is done below)
                 }
-                if (gisr == null || gisr.States == null || gisr.States.Count == 0)
+
+                if (gisr?.States == null || gisr.States.Count == 0)
                     throw new ArgumentException("Inclusion states not found");
             }
-
-
+            
             GetInclusionStatesResponse finalInclusionStates = gisr;
 
-            Parallel.ForEach(tailTransactions, (param) =>
+            Parallel.ForEach(tailTransactions, param =>
             {
                 try
                 {
@@ -521,12 +516,14 @@ namespace Iota.Lib.CSharp.Api
 
                     if (inclusionStates)
                     {
-                        bool thisInclusion = finalInclusionStates.States[tailTxArray.ToList().IndexOf(param)];
+                        bool thisInclusion = finalInclusionStates != null && finalInclusionStates.States[tailTxArray.ToList().IndexOf(param)];
+
                         foreach (Transaction t in b.Transactions)
                         {
                             t.Persistance = thisInclusion;
                         }
                     }
+
                     finalBundles.Add(b);
                 }
                 catch (System.Exception ex)
@@ -537,10 +534,12 @@ namespace Iota.Lib.CSharp.Api
 
             finalBundles.Sort();
             Bundle[] returnValue = new Bundle[finalBundles.Count];
+
             for (int i = 0; i < finalBundles.Count; i++)
             {
                 returnValue[i] = new Bundle(finalBundles[i].Transactions, finalBundles[i].Transactions.Count);
             }
+
             return returnValue;
         }
 
@@ -552,7 +551,7 @@ namespace Iota.Lib.CSharp.Api
         public List<Transaction> FindTransactionObjects(string[] adresses)
         {
             FindTransactionsResponse ftr = FindTransactions(adresses.ToList(), null, null, null);
-            if (ftr == null || ftr.Hashes == null)
+            if (ftr?.Hashes == null)
                 return null;
 
             // get the transaction objects of the transactions
@@ -579,6 +578,7 @@ namespace Iota.Lib.CSharp.Api
             {
                 trxs.Add(new Transaction(tryte, curl));
             }
+
             return trxs;
         }
 
@@ -597,7 +597,6 @@ namespace Iota.Lib.CSharp.Api
             return GetTransactionsObjects(ftr.Hashes.ToArray());
         }
 
-
         /// <summary>
         /// Replays the bundle.
         /// </summary>
@@ -607,8 +606,6 @@ namespace Iota.Lib.CSharp.Api
         /// <returns>an array of boolean that indicate which transactions have been replayed successfully</returns>
         public bool[] ReplayBundle(string transaction, int depth, int minWeightMagnitude)
         {
-            //StopWatch stopWatch = new StopWatch();
-
             List<string> bundleTrytes = new List<string>();
 
             Bundle bundle = GetBundle(transaction);
@@ -648,7 +645,6 @@ namespace Iota.Lib.CSharp.Api
             return FindTransactions(null, null, approvees.ToList(), null);
         }
 
-
         /// <summary>
         /// Finds the transactions by digests.
         /// </summary>
@@ -680,7 +676,6 @@ namespace Iota.Lib.CSharp.Api
             return GetInclusionStates(hashes, latestMilestone);
         }
 
-
         /// <summary>
         /// Wrapper function that basically does prepareTransfers, as well as attachToTangle and finally, it broadcasts and stores the transactions locally.
         /// </summary>
@@ -702,7 +697,6 @@ namespace Iota.Lib.CSharp.Api
             for (int i = 0; i < trxs.Length; i++)
             {
                 FindTransactionsResponse response = FindTransactionsByBundles(trxs[i].Bundle);
-
                 successful[i] = response.Hashes.Count != 0;
             }
 
@@ -738,6 +732,7 @@ namespace Iota.Lib.CSharp.Api
             {
                 trx.Add(new Transaction(tx, curl));
             }
+
             return trx.ToArray();
         }
 
@@ -832,7 +827,6 @@ namespace Iota.Lib.CSharp.Api
 
             return bundle;
         }
-
 
         private Bundle TraverseBundle(string trunkTransaction, string bundleHash, Bundle bundle)
         {

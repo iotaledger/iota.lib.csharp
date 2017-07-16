@@ -35,10 +35,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// </value>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public Transaction this[int index]
-        {
-            get { return Transactions[index]; }
-        }
+        public Transaction this[int index] => Transactions[index];
 
         /// <summary>
         /// Gets or sets the transactions.
@@ -195,9 +192,9 @@ namespace Iota.Lib.CSharp.Api.Model
             customCurl.Squeeze(hash, 0, hash.Length);
             string hashInTrytes = Converter.ToTrytes(hash);
 
-            for (int i = 0; i < Transactions.Count; i++)
+            foreach (Transaction t in Transactions)
             {
-                Transactions[i].Bundle = hashInTrytes;
+                t.Bundle = hashInTrytes;
             }
         }
 

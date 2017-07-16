@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace Iota.Lib.CSharp.Api.Core
@@ -20,11 +21,11 @@ namespace Iota.Lib.CSharp.Api.Core
 
             MemberInfo[] memInfo = type.GetMember(en.ToString());
 
-            if (memInfo != null && memInfo.Length > 0)
+            if (memInfo.Any())
             {
                 object[] attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-                if (attrs != null && attrs.Length > 0)
+                if (attrs.Any())
                 {
                     return ((DescriptionAttribute) attrs[0]).Description;
                 }

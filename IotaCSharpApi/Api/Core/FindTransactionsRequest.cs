@@ -5,7 +5,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// This class represents the core api request 'FindTransactions'
     /// </summary>
-    public class FindTransactionsRequest : IotaRequest
+    public class FindTransactionsRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FindTransactionsRequest"/> class.

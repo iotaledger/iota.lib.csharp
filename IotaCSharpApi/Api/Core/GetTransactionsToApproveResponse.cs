@@ -3,7 +3,7 @@
     /// <summary>
     /// This class represents the response of <see cref="GetTransactionsToApproveRequest"/>
     /// </summary>
-    public class GetTransactionsToApproveResponse : IotaResponse
+    public class GetTransactionsToApproveResponse : IotaResponseBase
     {
         /// <summary>
         /// Gets or sets the trunk transaction.

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Iota.Lib.CSharp.Api.Exception
+﻿namespace Iota.Lib.CSharp.Api.Exception
 {
     /// <summary>
     /// This exception occurs when an illegal state is encountered

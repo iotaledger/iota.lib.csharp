@@ -6,7 +6,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// This class represents the core API request 'StoreTransactions'.
     /// It stores transactions into the local storage. The trytes to be used for this call are returned by attachToTangle.
     /// </summary>
-    public class StoreTransactionsRequest : IotaRequest
+    public class StoreTransactionsRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoreTransactionsRequest"/> class.
