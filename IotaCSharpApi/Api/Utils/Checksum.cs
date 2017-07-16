@@ -1,6 +1,5 @@
 ﻿using Iota.Lib.CSharp.Api.Exception;
 
-
 namespace Iota.Lib.CSharp.Api.Utils
 {
     /// <summary>
@@ -21,8 +20,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             addressWithChecksum += CalculateChecksum(address);
             return addressWithChecksum;
         }
-
-
+        
         /// <summary>
         /// Removes the checksum from the specified address with checksum
         /// </summary>
@@ -37,8 +35,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             }
             throw new InvalidAddressException(addressWithChecksum);
         }
-
-
+        
         internal static string GetAddress(string addressWithChecksum)
         {
             return addressWithChecksum.Substring(0, Constants.AddressLengthWithoutChecksum);
@@ -57,7 +54,6 @@ namespace Iota.Lib.CSharp.Api.Utils
             string adressWithRecalculateChecksum = addressWithoutChecksum + CalculateChecksum(addressWithoutChecksum);
             return adressWithRecalculateChecksum.Equals(addressWithChecksum);
         }
-
 
         private static bool IsAddressWithChecksum(string addressWithChecksum)
         {

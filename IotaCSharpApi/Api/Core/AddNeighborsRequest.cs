@@ -2,13 +2,12 @@
 
 namespace Iota.Lib.CSharp.Api.Core
 {
-
     /// <summary>
     /// This class represents the core API request 'AddNeighbors'.
     /// It is used to add a neighbor to the node
     /// </summary>
-    /// <seealso cref="Iota.Lib.CSharp.Api.Core.IotaRequest" />
-    public class AddNeighborsRequest : IotaRequest
+    /// <seealso cref="IotaRequestBase" />
+    public class AddNeighborsRequest : IotaRequestBase
     {
         /// <summary>
         /// Gets or sets the uris.
