@@ -3,8 +3,8 @@
     /// <summary>
     /// This class represents the response of <see cref="GetNodeInfoRequest"/>
     /// </summary>
-    /// <seealso cref="Iota.Lib.CSharp.Api.Core.IotaResponse" />
-    public class GetNodeInfoResponse : IotaResponse
+    /// <seealso cref="IotaResponseBase" />
+    public class GetNodeInfoResponse : IotaResponseBase
     {
         /// <summary>
         /// Name of the IOTA software you're currently using (IRI stands for Initial Reference Implementation).

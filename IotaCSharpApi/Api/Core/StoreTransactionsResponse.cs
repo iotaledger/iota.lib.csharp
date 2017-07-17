@@ -3,7 +3,7 @@
     /// <summary>
     /// This class represents the response of <see cref="StoreTransactionsRequest"/>
     /// </summary>
-    public class StoreTransactionsResponse
+    public class StoreTransactionsResponse : IotaResponseBase
     {
     }
 }

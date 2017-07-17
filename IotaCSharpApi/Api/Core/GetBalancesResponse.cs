@@ -5,7 +5,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// Response of <see cref="GetBalancesRequest"/>
     /// </summary>
-    public class GetBalancesResponse : IotaResponse
+    public class GetBalancesResponse : IotaResponseBase
     {
         /// <summary>
         /// Gets or sets the balances.

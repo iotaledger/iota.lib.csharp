@@ -1,11 +1,10 @@
 namespace Iota.Lib.CSharp.Api.Core
 {
-
     /// <summary>
     /// This class represents the core API request 'AttachToTangle'.
     /// It is used to attach trytes to the tangle.
     /// </summary>
-    public class AttachToTangleRequest : IotaRequest
+    public class AttachToTangleRequest : IotaRequestBase
     {
         private const int MinWeightMagnitudeMin = 18;
         private int _minWeightMagnitude = MinWeightMagnitudeMin;

@@ -4,7 +4,6 @@ using Iota.Lib.CSharp.Api;
 using Iota.Lib.CSharp.Api.Core;
 using Iota.Lib.CSharp.Api.Exception;
 using Iota.Lib.CSharp.Api.Model;
-using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iota.Lib.CSharpTests.Api
@@ -68,8 +67,7 @@ namespace Iota.Lib.CSharpTests.Api
         {
             iotaClient = new IotaApi("node.iotawallet.info", 14265);
         }
-
-
+        
         [TestMethod]
         public void shouldGetInputs()
         {
@@ -91,10 +89,14 @@ namespace Iota.Lib.CSharpTests.Api
         [TestMethod]
         public void shouldPrepareTransfer()
         {
-            List<Transfer> transfers = new List<Transfer>();
-            transfers.Add(new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG));
-            transfers.Add(new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 1, TEST_MESSAGE, TEST_TAG));
+            List<Transfer> transfers = new List<Transfer>
+            {
+                new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG),
+                new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 1, TEST_MESSAGE, TEST_TAG)
+            };
+
             List<string> trytes = null;
+
             try
             {
                 trytes = iotaClient.PrepareTransfers(TEST_SEED1, transfers.ToArray(), null, null);
@@ -103,6 +105,7 @@ namespace Iota.Lib.CSharpTests.Api
             {
                 Console.WriteLine(ex.ToString());
             }
+
             Assert.IsNotNull(trytes);
             Assert.IsFalse(trytes.Count == 0);
         }
@@ -124,7 +127,6 @@ namespace Iota.Lib.CSharpTests.Api
             Assert.IsNotNull(ftr);
         }
         
-
         [TestMethod]
         [ExpectedException(typeof(InvisibleBundleTransactionException))]
         public void shouldGetBundleWithInvisibleBundleCauseAInvisibleBundleTransactionException()
@@ -161,12 +163,13 @@ namespace Iota.Lib.CSharpTests.Api
         [TestMethod]
         public void shouldSendTransfer()
         {
-            List<Transfer> transfers = new List<Transfer>();
-            transfers.Add(new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM, 0, "JUSTANOTHERTEST", TEST_TAG));
+            List<Transfer> transfers = new List<Transfer>
+            {
+                new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM, 0, "JUSTANOTHERTEST", TEST_TAG)
+            };
+
             bool[] str = iotaClient.SendTransfer(TEST_SEED2, 9, 18, transfers.ToArray(), null, null);
             Assert.IsNotNull(str);
         }
-
     }
-
 }

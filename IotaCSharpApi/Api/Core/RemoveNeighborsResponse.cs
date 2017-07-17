@@ -3,7 +3,7 @@
     /// <summary>
     /// This class represents the response of <see cref="RemoveNeighborsRequest"/>
     /// </summary>
-    public class RemoveNeighborsResponse
+    public class RemoveNeighborsResponse : IotaResponseBase
     {
         /// <summary>
         /// Gets or sets the number of removed neighbors.

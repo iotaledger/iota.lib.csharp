@@ -1,10 +1,9 @@
 ﻿namespace Iota.Lib.CSharp.Api.Core
 {
-
     /// <summary>
     /// Response of <see cref="AddNeighborsRequest"/>
     /// </summary>
-    public class AddNeighborsResponse
+    public class AddNeighborsResponse : IotaResponseBase
     {
         /// <summary>
         /// Gets the number of added neighbors.

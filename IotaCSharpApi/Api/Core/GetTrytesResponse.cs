@@ -5,7 +5,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// This class represents the response of <see cref="GetTrytesRequest"/>
     /// </summary>
-    public class GetTrytesResponse
+    public class GetTrytesResponse : IotaResponseBase
     {
 
         /// <summary>

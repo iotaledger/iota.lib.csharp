@@ -6,7 +6,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// Response of <see cref="GetNeighborsRequest"/>
     /// </summary>
-    public class GetNeighborsResponse
+    public class GetNeighborsResponse : IotaResponseBase
     {
         /// <summary>
         /// Gets or sets the neighbors.

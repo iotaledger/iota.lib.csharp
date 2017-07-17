@@ -16,14 +16,14 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <returns>the specified amount in the target unit</returns>
         public static double ConvertUnits(long amount, IotaUnits fromUnit, IotaUnits toUnit)
         {
-            long amountInSource = (long) (amount*Math.Pow(10, (int) fromUnit));
+            long amountInSource = (long)(amount * Math.Pow(10, (int)fromUnit));
             return ConvertUnits(amountInSource, toUnit);
         }
 
         private static double ConvertUnits(long amount, IotaUnits toUnit)
         {
-            int base10NormalizationExponent = (int) toUnit;
-            return (amount/Math.Pow(10, base10NormalizationExponent));
+            int base10NormalizationExponent = (int)toUnit;
+            return amount / Math.Pow(10, base10NormalizationExponent);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <returns>the optimal IotaUnit</returns>
         public static IotaUnits FindOptimalIotaUnitToDisplay(long amount)
         {
-            int length = (amount).ToString().Length;
+            int length = amount.ToString().Length;
 
             if (amount < 0)
             {
@@ -67,6 +67,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             {
                 units = IotaUnits.Peta;
             }
+
             return units;
         }
     }

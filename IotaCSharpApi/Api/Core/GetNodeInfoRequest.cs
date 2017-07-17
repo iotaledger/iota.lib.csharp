@@ -3,7 +3,7 @@
     /// <summary>
     /// Returns information about your node
     /// </summary>
-    public class GetNodeInfoRequest : IotaRequest
+    public class GetNodeInfoRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetNodeInfoRequest"/> class.

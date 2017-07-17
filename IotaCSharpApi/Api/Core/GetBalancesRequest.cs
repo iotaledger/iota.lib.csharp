@@ -5,7 +5,7 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <summary>
     /// This class represents the core api request 'GetBalances'
     /// </summary>
-    public class GetBalancesRequest : IotaRequest
+    public class GetBalancesRequest : IotaRequestBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetBalancesRequest"/> class.
