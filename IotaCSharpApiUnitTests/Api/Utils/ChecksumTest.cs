@@ -15,19 +15,19 @@ namespace Iota.Lib.CSharpTests.Api.Utils
         [TestMethod]
         public void shouldAddChecksum()
         {
-            Assert.AreEqual(Checksum.AddChecksum(TEST_ADDRESS_WITHOUT_CHECKSUM), TEST_ADDRESS_WITH_CHECKSUM);
+            Assert.AreEqual(TEST_ADDRESS_WITHOUT_CHECKSUM.AddChecksum(), TEST_ADDRESS_WITH_CHECKSUM);
         }
 
         [TestMethod]
         public void shouldRemoveChecksum()
         {
-            Assert.AreEqual(Checksum.RemoveChecksum(TEST_ADDRESS_WITH_CHECKSUM), TEST_ADDRESS_WITHOUT_CHECKSUM);
+            Assert.AreEqual(TEST_ADDRESS_WITH_CHECKSUM.RemoveChecksum(), TEST_ADDRESS_WITHOUT_CHECKSUM);
         }
 
         [TestMethod]
         public void shouldIsValidChecksum()
         {
-            Assert.AreEqual(Checksum.IsValidChecksum(TEST_ADDRESS_WITH_CHECKSUM), true);
+            Assert.AreEqual(TEST_ADDRESS_WITH_CHECKSUM.IsValidChecksum(), true);
         }
     }
 }

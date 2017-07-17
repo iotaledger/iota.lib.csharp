@@ -13,7 +13,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <param name="address">An address without checksum</param>
         /// <returns>The address with the appended checksum </returns>
         /// <exception cref="InvalidAddressException">is thrown when an invalid address is provided</exception>
-        public static string AddChecksum(string address)
+        public static string AddChecksum(this string address)
         {
             InputValidator.CheckAddress(address);
             string addressWithChecksum = address;

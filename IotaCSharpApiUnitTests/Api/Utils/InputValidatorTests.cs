@@ -68,9 +68,12 @@ namespace Iota.Lib.CSharpTests.Api.Utils
         [TestMethod]
         public void shouldIsTransfersCollectionCorrect()
         {
-            List<Transfer> transfers = new List<Transfer>();
-            transfers.Add(new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG));
-            transfers.Add(new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG));
+            List<Transfer> transfers = new List<Transfer>
+            {
+                new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG),
+                new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG)
+            };
+
             Assert.AreEqual(InputValidator.IsTransfersCollectionValid(transfers), true);
         }
     }

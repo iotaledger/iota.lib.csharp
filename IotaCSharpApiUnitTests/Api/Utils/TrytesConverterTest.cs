@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
 using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,7 +30,7 @@ namespace Iota.Lib.CSharpTests.Api.Utils
             Assert.AreEqual(str, back);
         }
 
-        private static Random random = new Random();
+        private static Random random = new Random(DateTime.Now.Millisecond);
 
         public static string RandomString(int length)
         {

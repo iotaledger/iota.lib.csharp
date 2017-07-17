@@ -2,7 +2,6 @@
 using Iota.Lib.CSharp.Api;
 using Iota.Lib.CSharp.Api.Core;
 using Iota.Lib.CSharp.Api.Exception;
-using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iota.Lib.CSharpTests.Api
