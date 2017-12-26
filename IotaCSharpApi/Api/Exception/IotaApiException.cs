@@ -13,5 +13,15 @@
         public IotaApiException(string error) : base(error)
         {
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IotaApiException"/> class.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="innerException">The inner exception.</param>
+        public IotaApiException(string message, System.Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }
