@@ -60,8 +60,6 @@ namespace Iota.Lib.CSharp.Api.Utils.Rest
             }
             catch (WebException ex)
             {
-                Console.WriteLine("catched: " + ex);
-
                 using (var stream = ex.Response.GetResponseStream())
                 using (var reader = new StreamReader(stream))
                 {
