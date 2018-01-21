@@ -1,4 +1,5 @@
-﻿using System;
+
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
@@ -22,6 +23,7 @@ namespace Iota.Lib.CSharp.Api.Utils.Rest
             request.Method = "POST";
             request.AutomaticDecompression = (DecompressionMethods.GZip | DecompressionMethods.Deflate);
             request.CachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
+            request.Headers.Add("X-IOTA-API-Version", "1");
             request.Headers.Add("Origin", "iota.lib.csharp");
             request.Headers.Add("Accept-Language", "de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4 ");
             request.KeepAlive = false;
