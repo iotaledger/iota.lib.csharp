@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Iota.Lib.CSharp.Api.Utils.Rest;
 
 namespace Iota.Lib.CSharp.Api.Core
@@ -54,9 +55,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <returns></returns>
         public TResponse Request<TRequest, TResponse>(TRequest request) where TResponse : new()
         {
-            JsonWebClient jsonWebClient = new JsonWebClient();
-            return jsonWebClient.GetPOSTResponseSync<TResponse>(new Uri(CreateBaseUrl()),
-                new JsonSerializer().Serialize(request));
+            return JsonWebClient.GetPOSTResponseSync<TResponse>(new Uri(CreateBaseUrl()), new JsonSerializer().Serialize(request));
         }
 
         /// <summary>
@@ -65,13 +64,9 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <typeparam name="TRequest">The type of the request.</typeparam>
         /// <typeparam name="TResponse">The type of the response.</typeparam>
         /// <param name="request">The request.</param>
-        /// <param name="responseAction">The response action.</param>
-        public void RequestAsync<TRequest, TResponse>(TRequest request, Action<TResponse> responseAction)
-            where TResponse : new()
+        public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request) where TResponse : new()
         {
-            JsonWebClient jsonWebClient = new JsonWebClient();
-            jsonWebClient.GetPOSTResponseAsync<TResponse>(new Uri(CreateBaseUrl()),
-                new JsonSerializer().Serialize(request), responseAction);
+            return await JsonWebClient.GetPOSTResponseAsync<TResponse>(new Uri(CreateBaseUrl()), new JsonSerializer().Serialize(request));
         }
 
         private string CreateBaseUrl()

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Iota.Lib.CSharp.Api.Core
+﻿namespace Iota.Lib.CSharp.Api.Core
 {
     /// <summary>
     /// This enumeration defines the core API call commands
@@ -10,71 +8,71 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <summary>
         /// Get information about the node.
         /// </summary>
-        [Description("getNodeInfo")] GetNodeInfo,
+        GetNodeInfo,
 
         /// <summary>
         /// Gets the tips of the node
         /// </summary>
-        [Description("getTips")] GetTips,
+        GetTips,
 
         /// <summary>
         /// Finds the transactions using different search criteria <see cref="FindTransactionsRequest"/>
         /// </summary>
-        [Description("findTransactions")] FindTransactions,
+        FindTransactions,
 
         /// <summary>
         /// Gets the transactions to approve
         /// </summary>
-        [Description("getTransactionsToApprove")] GetTransactionsToApprove,
+        GetTransactionsToApprove,
 
         /// <summary>
         /// Attaches to the tangle
         /// </summary>
-        [Description("attachToTangle")] AttachToTangle,
+        AttachToTangle,
 
         /// <summary>
         /// Gets the balances
         /// </summary>
-        [Description("getBalances")] GetBalances,
+        GetBalances,
 
         /// <summary>
         /// Gets the inclusion state
         /// </summary>
-        [Description("getInclusionStates")] GetInclusionStates,
+        GetInclusionStates,
 
         /// <summary>
         /// Gets the trytes
         /// </summary>
-        [Description("getTrytes")] GetTrytes,
+        GetTrytes,
 
         /// <summary>
         /// Gets the neighbours of the node
         /// </summary>
-        [Description("getNeighbors")] GetNeighbors,
+        GetNeighbors,
 
         /// <summary>
         /// Adds neighbours to the node
         /// </summary>
-        [Description("addNeighbors")] AddNeighbors,
+        AddNeighbors,
 
         /// <summary>
         /// Removes neighbours from the node
         /// </summary>
-        [Description("removeNeighbors")] RemoveNeighbors,
+        RemoveNeighbors,
 
         /// <summary>
         /// Interrupt attaching to the tangle
         /// </summary>
-        [Description("interruptAttachingToTangle")] InterruptAttachingToTangle,
+        InterruptAttachingToTangle,
 
         /// <summary>
         /// Broadcasts transactions
         /// </summary>
-        [Description("broadcastTransactions")] BroadcastTransactions,
+        BroadcastTransactions,
 
         /// <summary>
         /// Stores transactions
         /// </summary>
-        [Description("storeTransactions")] StoreTransactions
+        StoreTransactions
     }
 }

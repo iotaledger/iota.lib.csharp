@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Iota.Lib.CSharp.Api.Core
 {
@@ -39,7 +40,6 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <typeparam name="TResponse">The type of the response.</typeparam>
         /// <param name="request">The request.</param>
         /// <param name="responseAction">The response action.</param>
-        void RequestAsync<TRequest, TResponse>(TRequest request, Action<TResponse> responseAction)
-            where TResponse : new();
+        Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request) where TResponse : new();
     }
 }
