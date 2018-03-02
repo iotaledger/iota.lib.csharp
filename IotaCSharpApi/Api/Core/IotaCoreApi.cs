@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Iota.Lib.CSharp.Api.Utils;
 
 namespace Iota.Lib.CSharp.Api.Core
@@ -34,14 +35,21 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <returns>The returned value contains a different set of tryte values which you can input into broadcastTransactions and storeTransactions. 
         /// The returned tryte value, the last 243 trytes basically consist of the: trunkTransaction + branchTransaction + nonce. 
         /// These are valid trytes which are then accepted by the network.</returns>
-        public AttachToTangleResponse AttachToTangle(string trunkTransaction, string branchTransaction,
-            string[] trytes, int minWeightMagnitude = 18)
+        public AttachToTangleResponse AttachToTangle(string trunkTransaction, string branchTransaction, string[] trytes, int minWeightMagnitude = 18)
         {
             InputValidator.CheckIfArrayOfTrytes(trytes);
 
             AttachToTangleRequest attachToTangleRequest = new AttachToTangleRequest(trunkTransaction, branchTransaction,
                 trytes, minWeightMagnitude);
             return _genericIotaCoreApi.Request<AttachToTangleRequest, AttachToTangleResponse>(attachToTangleRequest);
+        }
+
+        public async Task<AttachToTangleResponse> AttachToTangleAsync(string trunkTransaction, string branchTransaction, string[] trytes, int minWeightMagnitude = 18)
+        {
+            InputValidator.CheckIfArrayOfTrytes(trytes);
+
+            AttachToTangleRequest attachToTangleRequest = new AttachToTangleRequest(trunkTransaction, branchTransaction, trytes, minWeightMagnitude);
+            return await _genericIotaCoreApi.RequestAsync<AttachToTangleRequest, AttachToTangleResponse>(attachToTangleRequest);
         }
 
         /// <summary>
@@ -54,6 +62,11 @@ namespace Iota.Lib.CSharp.Api.Core
             return
                 _genericIotaCoreApi.Request<BroadcastTransactionsRequest, BroadcastTransactionsResponse>(
                     new BroadcastTransactionsRequest(trytes));
+        }
+        
+        public async Task<BroadcastTransactionsResponse> BroadcastTransactionsAsync(List<string> trytes)
+        {
+            return await _genericIotaCoreApi.RequestAsync<BroadcastTransactionsRequest, BroadcastTransactionsResponse>(new BroadcastTransactionsRequest(trytes));
         }
 
         /// <summary>
@@ -73,6 +86,12 @@ namespace Iota.Lib.CSharp.Api.Core
                 _genericIotaCoreApi.Request<FindTransactionsRequest, FindTransactionsResponse>(findTransactionsRequest);
         }
 
+        public async Task<FindTransactionsResponse> FindTransactionsAsync(List<string> addresses, List<string> tags, List<string> approves, List<string> bundles)
+        {
+            FindTransactionsRequest findTransactionsRequest = new FindTransactionsRequest(bundles, addresses, tags, approves);
+            return await _genericIotaCoreApi.RequestAsync<FindTransactionsRequest, FindTransactionsResponse>(findTransactionsRequest);
+        }
+
         /// <summary>
         /// Gets the balances.
         /// </summary>
@@ -83,8 +102,12 @@ namespace Iota.Lib.CSharp.Api.Core
         /// The balances is returned as a list in the same order as the addresses were provided as input.</returns>
         public GetBalancesResponse GetBalances(List<string> addresses, long threshold = 100)
         {
-            GetBalancesRequest getBalancesRequest = new GetBalancesRequest(addresses, threshold);
-            return _genericIotaCoreApi.Request<GetBalancesRequest, GetBalancesResponse>(getBalancesRequest);
+            return _genericIotaCoreApi.Request<GetBalancesRequest, GetBalancesResponse>(new GetBalancesRequest(addresses, threshold));
+        }
+
+        public async Task<GetBalancesResponse> GetBalancesAsync(List<string> addresses, long threshold = 100)
+        {
+            return await _genericIotaCoreApi.RequestAsync<GetBalancesRequest, GetBalancesResponse>(new GetBalancesRequest(addresses, threshold));
         }
 
         /// <summary>
@@ -100,6 +123,11 @@ namespace Iota.Lib.CSharp.Api.Core
                     new GetInclusionStatesRequest(transactions, milestones));
         }
 
+        public async Task<GetInclusionStatesResponse> GetInclusionStatesAsync(string[] transactions, string[] milestones)
+        {
+            return await _genericIotaCoreApi.RequestAsync<GetInclusionStatesRequest, GetInclusionStatesResponse>(new GetInclusionStatesRequest(transactions, milestones));
+        }
+
         /// <summary>
         /// Stores the specified transactions in trytes into the local storage. The trytes to be used for this call are returned by attachToTangle.
         /// </summary>
@@ -112,6 +140,11 @@ namespace Iota.Lib.CSharp.Api.Core
                     new StoreTransactionsRequest(trytes));
         }
 
+        public async Task<StoreTransactionsResponse> StoreTransactionsAsync(List<string> trytes)
+        {
+            return await _genericIotaCoreApi.RequestAsync<StoreTransactionsRequest, StoreTransactionsResponse>(new StoreTransactionsRequest(trytes));
+        }
+
         /// <summary>
         /// Gets the node information.
         /// </summary>
@@ -121,14 +154,23 @@ namespace Iota.Lib.CSharp.Api.Core
             return _genericIotaCoreApi.Request<GetNodeInfoRequest, GetNodeInfoResponse>(new GetNodeInfoRequest());
         }
 
+        public async Task<GetNodeInfoResponse> GetNodeInfoAsync()
+        {
+            return await _genericIotaCoreApi.RequestAsync<GetNodeInfoRequest, GetNodeInfoResponse>(new GetNodeInfoRequest());
+        }
+
         /// <summary>
         /// Gets the tips.
         /// </summary>
         /// <returns>a <see cref="GetTipsResponse"/> containing a list of tips</returns>
         public GetTipsResponse GetTips()
         {
-            GetTipsRequest getTipsRequest = new GetTipsRequest();
-            return _genericIotaCoreApi.Request<GetTipsRequest, GetTipsResponse>(getTipsRequest);
+            return _genericIotaCoreApi.Request<GetTipsRequest, GetTipsResponse>(new GetTipsRequest());
+        }
+
+        public async Task<GetTipsResponse> GetTipsAsync()
+        {
+            return await _genericIotaCoreApi.RequestAsync<GetTipsRequest, GetTipsResponse>(new GetTipsRequest());
         }
 
         /// <summary>
@@ -145,6 +187,11 @@ namespace Iota.Lib.CSharp.Api.Core
                     getTransactionsToApproveRequest);
         }
 
+        public async Task<GetTransactionsToApproveResponse> GetTransactionsToApproveAsync(int depth)
+        {
+            return await _genericIotaCoreApi.RequestAsync<GetTransactionsToApproveRequest, GetTransactionsToApproveResponse>(new GetTransactionsToApproveRequest(depth));
+        }
+
         /// <summary>
         /// Gets the raw transaction data (trytes) of a specific transaction.
         /// These trytes can then be easily converted into the actual transaction object using the constructor of Transaction
@@ -155,6 +202,11 @@ namespace Iota.Lib.CSharp.Api.Core
         {
             GetTrytesRequest getTrytesRequest = new GetTrytesRequest() {Hashes = hashes};
             return _genericIotaCoreApi.Request<GetTrytesRequest, GetTrytesResponse>(getTrytesRequest);
+        }
+
+        public async Task<GetTrytesResponse> GetTrytesAsync(params string[] hashes)
+        {
+            return await _genericIotaCoreApi.RequestAsync<GetTrytesRequest, GetTrytesResponse>(new GetTrytesRequest() { Hashes = hashes });
         }
 
         /// <summary>
@@ -169,6 +221,11 @@ namespace Iota.Lib.CSharp.Api.Core
                     request);
         }
 
+        public async Task<InterruptAttachingToTangleResponse> InterruptAttachingToTangleAsync()
+        {
+            return await _genericIotaCoreApi.RequestAsync<InterruptAttachingToTangleRequest, InterruptAttachingToTangleResponse>(new InterruptAttachingToTangleRequest());
+        }
+
         /// <summary>
         /// Gets the neighbors the node is connected to
         /// </summary>
@@ -177,6 +234,11 @@ namespace Iota.Lib.CSharp.Api.Core
         {
             GetNeighborsRequest getNeighborsRequest = new GetNeighborsRequest();
             return _genericIotaCoreApi.Request<GetNeighborsRequest, GetNeighborsResponse>(getNeighborsRequest);
+        }
+
+        public async Task<GetNeighborsResponse> GetNeighborsAsync()
+        {
+            return await _genericIotaCoreApi.RequestAsync<GetNeighborsRequest, GetNeighborsResponse>(new GetNeighborsRequest());
         }
 
         /// <summary>
@@ -191,6 +253,11 @@ namespace Iota.Lib.CSharp.Api.Core
                     new AddNeighborsRequest(uris.ToList()));
         }
 
+        public async Task<AddNeighborsResponse> AddNeighborsAsync(params string[] uris)
+        {
+            return await _genericIotaCoreApi.RequestAsync<AddNeighborsRequest, AddNeighborsResponse>(new AddNeighborsRequest(uris.ToList()));
+        }
+
         /// <summary>
         /// Removes the neighbor(s) from the node. 
         /// </summary>
@@ -200,6 +267,11 @@ namespace Iota.Lib.CSharp.Api.Core
         {
             RemoveNeighborsRequest removeNeighborsRequest = new RemoveNeighborsRequest(uris.ToList());
             return _genericIotaCoreApi.Request<RemoveNeighborsRequest, RemoveNeighborsResponse>(removeNeighborsRequest);
+        }
+
+        public async Task<RemoveNeighborsResponse> RemoveNeighborsAsync(params string[] uris)
+        {
+            return await _genericIotaCoreApi.RequestAsync<RemoveNeighborsRequest, RemoveNeighborsResponse>(new RemoveNeighborsRequest(uris.ToList()));
         }
     }
 }

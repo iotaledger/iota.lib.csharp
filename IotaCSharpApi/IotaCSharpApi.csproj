@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Iota.Lib.CSharp</RootNamespace>
     <AssemblyName>IotaApi</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -27,6 +27,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\IotaApi.xml</DocumentationFile>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\IotaApi.xml</DocumentationFile>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -64,8 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Core\Command.cs" />
-    <Compile Include="Api\Core\ErrorResponse.cs" />
-    <Compile Include="Api\Core\GetInclusionStatesRequest.cs" />
+    <Compile Include="Api\Core\Response\ErrorResponse.cs" />
+    <Compile Include="Api\Core\Request\GetInclusionStatesRequest.cs" />
     <Compile Include="Api\Model\Input.cs" />
     <Compile Include="Api\Model\Inputs.cs" />
     <Compile Include="Api\Model\Signature.cs" />
@@ -77,19 +79,19 @@
     <Compile Include="Api\Exception\InvalidSignatureException.cs" />
     <Compile Include="Api\Utils\ArrayUtils.cs" />
     <Compile Include="Api\Utils\Constants.cs" />
-    <Compile Include="Api\Core\StoreTransactionsResponse.cs" />
-    <Compile Include="Api\Core\StoreTransactionsRequest.cs" />
-    <Compile Include="Api\Core\InterruptAttachingToTangleResponse.cs" />
-    <Compile Include="Api\Core\InterruptAttachingToTangleRequest.cs" />
-    <Compile Include="Api\Core\GetTransactionsToApproveResponse.cs" />
-    <Compile Include="Api\Core\GetTransactionsToApproveRequest.cs" />
-    <Compile Include="Api\Core\GetTrytesResponse.cs" />
-    <Compile Include="Api\Core\RemoveNeighborsResponse.cs" />
-    <Compile Include="Api\Core\RemoveNeighborsRequest.cs" />
-    <Compile Include="Api\Core\AddNeighborsRequest.cs" />
-    <Compile Include="Api\Core\AddNeighborsResponse.cs" />
-    <Compile Include="Api\Core\GetNeighborsResponse.cs" />
-    <Compile Include="Api\Core\GetNeighborsRequest.cs" />
+    <Compile Include="Api\Core\Response\StoreTransactionsResponse.cs" />
+    <Compile Include="Api\Core\Request\StoreTransactionsRequest.cs" />
+    <Compile Include="Api\Core\Response\InterruptAttachingToTangleResponse.cs" />
+    <Compile Include="Api\Core\Request\InterruptAttachingToTangleRequest.cs" />
+    <Compile Include="Api\Core\Response\GetTransactionsToApproveResponse.cs" />
+    <Compile Include="Api\Core\Request\GetTransactionsToApproveRequest.cs" />
+    <Compile Include="Api\Core\Response\GetTrytesResponse.cs" />
+    <Compile Include="Api\Core\Response\RemoveNeighborsResponse.cs" />
+    <Compile Include="Api\Core\Request\RemoveNeighborsRequest.cs" />
+    <Compile Include="Api\Core\Request\AddNeighborsRequest.cs" />
+    <Compile Include="Api\Core\Response\AddNeighborsResponse.cs" />
+    <Compile Include="Api\Core\Response\GetNeighborsResponse.cs" />
+    <Compile Include="Api\Core\Request\GetNeighborsRequest.cs" />
     <Compile Include="Api\Model\Bundle.cs" />
     <Compile Include="Api\Model\Transfer.cs" />
     <Compile Include="Api\Model\Transaction.cs" />
@@ -97,23 +99,23 @@
     <Compile Include="Api\Core\IGenericIotaCoreApi.cs" />
     <Compile Include="Api\Core\GenericIotaCoreApi.cs" />
     <Compile Include="Api\IotaApi.cs" />
-    <Compile Include="Api\Core\AttachToTangleRequest.cs" />
-    <Compile Include="Api\Core\GetTrytesRequest.cs" />
+    <Compile Include="Api\Core\Request\AttachToTangleRequest.cs" />
+    <Compile Include="Api\Core\Request\GetTrytesRequest.cs" />
     <Compile Include="Api\Core\EnumHelper.cs" />
-    <Compile Include="Api\Core\FindTransactionsRequest.cs" />
-    <Compile Include="Api\Core\GetBalancesRequest.cs" />
-    <Compile Include="Api\Core\GetInclusionStatesResponse.cs" />
-    <Compile Include="Api\Core\GetBalancesResponse.cs" />
-    <Compile Include="Api\Core\BroadcastTransactionsRequest.cs" />
-    <Compile Include="Api\Core\BroadcastTransactionsResponse.cs" />
-    <Compile Include="Api\Core\AttachToTangleResponse.cs" />
-    <Compile Include="Api\Core\FindTransactionsResponse.cs" />
-    <Compile Include="Api\Core\GetTipsRequest.cs" />
-    <Compile Include="Api\Core\GetTipsResponse.cs" />
-    <Compile Include="Api\Core\IotaRequest.cs" />
-    <Compile Include="Api\Core\IotaResponse.cs" />
-    <Compile Include="Api\Core\GetNodeInfoRequest.cs" />
-    <Compile Include="Api\Core\GetNodeInfoResponse.cs" />
+    <Compile Include="Api\Core\Request\FindTransactionsRequest.cs" />
+    <Compile Include="Api\Core\Request\GetBalancesRequest.cs" />
+    <Compile Include="Api\Core\Response\GetInclusionStatesResponse.cs" />
+    <Compile Include="Api\Core\Response\GetBalancesResponse.cs" />
+    <Compile Include="Api\Core\Request\BroadcastTransactionsRequest.cs" />
+    <Compile Include="Api\Core\Response\BroadcastTransactionsResponse.cs" />
+    <Compile Include="Api\Core\Response\AttachToTangleResponse.cs" />
+    <Compile Include="Api\Core\Response\FindTransactionsResponse.cs" />
+    <Compile Include="Api\Core\Request\GetTipsRequest.cs" />
+    <Compile Include="Api\Core\Response\GetTipsResponse.cs" />
+    <Compile Include="Api\Core\Request\IotaRequest.cs" />
+    <Compile Include="Api\Core\Response\IotaResponse.cs" />
+    <Compile Include="Api\Core\Request\GetNodeInfoRequest.cs" />
+    <Compile Include="Api\Core\Response\GetNodeInfoResponse.cs" />
     <Compile Include="Api\Utils\ICurl.cs" />
     <Compile Include="Api\Exception\IllegalStateException.cs" />
     <Compile Include="Api\Exception\InvalidTryteException.cs" />
