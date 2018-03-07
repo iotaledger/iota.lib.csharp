@@ -128,7 +128,7 @@ namespace Iota.Lib.CSharpTests.Api
         [ExpectedException(typeof(IotaApiException), "One of the tips absents")]
         public void ShouldNotGetInclusionStates()
         {
-            var res = _iotaApi.GetInclusionStates(new[] {TEST_ADDRESS_WITH_CHECKSUM},
+            var res = _iotaApi.GetInclusionStates(new[] {TEST_HASH},
                 new[] {"DNSBRJWNOVUCQPILOQIFDKBFJMVOTGHLIMLLRXOHFTJZGRHJUEDAOWXQRYGDI9KHYFGYDWQJZKX999999"});
             Assert.IsNotNull(res.States);
         }
@@ -138,10 +138,7 @@ namespace Iota.Lib.CSharpTests.Api
         {
             var res =
                 _iotaApi.GetInclusionStates(
-                    new[]
-                    {
-                        "DBPECSH9YLSSTQDGERUHJBBJTKVUDBMTJLG9WPHBINGHIFOSJMDJLARTVOXXWEFQJLLBINOHCZGYFSMUEXWPPMTOFW"
-                    },
+                    new[] {TEST_HASH},
                     new[] {_iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone});
             Assert.IsNotNull(res.States);
         }
@@ -168,7 +165,7 @@ namespace Iota.Lib.CSharpTests.Api
         {
             var res = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList());
             Assert.IsNotNull(res.Balances);
-            Assert.IsNotNull(res.Milestone);
+            Assert.IsNotNull(res.References);
             Assert.IsNotNull(res.MilestoneIndex);
         }
     }

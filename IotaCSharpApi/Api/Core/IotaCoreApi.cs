@@ -83,7 +83,14 @@ namespace Iota.Lib.CSharp.Api.Core
         /// The balances is returned as a list in the same order as the addresses were provided as input.</returns>
         public GetBalancesResponse GetBalances(List<string> addresses, long threshold = 100)
         {
-            GetBalancesRequest getBalancesRequest = new GetBalancesRequest(addresses, threshold);
+            List<string> addressesWithoutChecksum = new List<string>();
+            foreach (var address in addresses)
+            {
+                string address0 = address.RemoveChecksum();
+                addressesWithoutChecksum.Add(address0);
+            }
+
+            GetBalancesRequest getBalancesRequest = new GetBalancesRequest(addressesWithoutChecksum, threshold);
             return _genericIotaCoreApi.Request<GetBalancesRequest, GetBalancesResponse>(getBalancesRequest);
         }
 

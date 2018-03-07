@@ -666,7 +666,14 @@ namespace Iota.Lib.CSharp.Api
         /// <returns>a FindTransactionsResponse containing the transactions, see <see cref="FindTransactionsResponse"/></returns>
         public FindTransactionsResponse FindTransactionsByAddresses(params string[] addresses)
         {
-            return FindTransactions(addresses.ToList(), null, null, null);
+            List<string> addressesWithoutChecksum = new List<string>();
+            foreach (var address in addresses)
+            {
+                string address0 = address.RemoveChecksum();
+                addressesWithoutChecksum.Add(address0);
+            }
+
+            return FindTransactions(addressesWithoutChecksum, null, null, null);
         }
 
         /// <summary>
