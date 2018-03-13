@@ -1,4 +1,5 @@
 ﻿using Iota.Lib.CSharp.Api.Exception;
+using Iota.Lib.CSharp.Api.Pow;
 
 
 namespace Iota.Lib.CSharp.Api.Utils
@@ -26,16 +27,22 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <summary>
         /// Removes the checksum from the specified address with checksum
         /// </summary>
-        /// <param name="addressWithChecksum">The address with checksum.</param>
+        /// <param name="address">The address with checksum or without checksum.</param>
         /// <returns>the specified address without checksum</returns>
         /// <exception cref="InvalidAddressException">is thrown when the specified address is not an address with checksum</exception>
-        public static string RemoveChecksum(this string addressWithChecksum)
+        public static string RemoveChecksum(this string address)
         {
-            if (IsAddressWithChecksum(addressWithChecksum))
+            if (IsAddressWithChecksum(address))
             {
-                return GetAddress(addressWithChecksum);
+                return GetAddress(address);
             }
-            throw new InvalidAddressException(addressWithChecksum);
+
+            if (IsAddressWithoutChecksum(address))
+            {
+                return address;
+            }
+
+            throw new InvalidAddressException(address);
         }
 
 
@@ -64,14 +71,21 @@ namespace Iota.Lib.CSharp.Api.Utils
             return InputValidator.IsAddress(addressWithChecksum) && addressWithChecksum.Length == Constants.AddressLengthWithChecksum;
         }
 
+        private static bool IsAddressWithoutChecksum(string address)
+        {
+            return InputValidator.CheckAddress(address) && address.Length == Constants.AddressLengthWithoutChecksum;
+        }
+
         private static string CalculateChecksum(string address)
         {
             // TODO inject curl
-            Curl curl = new Curl();
+            ICurl curl = new Kerl();
             curl.Reset();
-            curl.State = Converter.CopyTrits(address, curl.State);
-            curl.Transform();
-            return Converter.ToTrytes(curl.State).Substring(0, 9);
+            curl.Absorb(Converter.ToTrits(address));
+            int[] checksumTrits = new int[Curl.HashLength];
+            curl.Squeeze(checksumTrits);
+            string checksum = Converter.ToTrytes(checksumTrits);
+            return checksum.Substring(72, 9);
         }
     }
 }

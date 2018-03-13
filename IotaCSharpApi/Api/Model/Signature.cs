@@ -12,7 +12,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// </summary>
         public Signature()
         {
-            this.SignatureFragments = new List<string>();
+            SignatureFragments = new List<string>();
         }
         
         /// <summary>

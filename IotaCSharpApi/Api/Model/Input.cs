@@ -29,7 +29,13 @@
         /// </value>
         public int KeyIndex { get; set; }
 
-
+        /// <summary>
+        /// Get or sets the security.
+        /// </summary>
+        /// <value>
+        /// The security.
+        /// </value>
+        public int Security { get; set; }
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
@@ -38,7 +44,7 @@
         /// </returns>
         public override string ToString()
         {
-            return $"{nameof(Address)}: {Address}, {nameof(Balance)}: {Balance}, {nameof(KeyIndex)}: {KeyIndex}";
+            return $"{nameof(Address)}: {Address}, {nameof(Balance)}: {Balance}, {nameof(KeyIndex)}: {KeyIndex}, {nameof(Security)}: {Security}";
         }
     }
 }

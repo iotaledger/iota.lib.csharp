@@ -42,6 +42,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -54,7 +60,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -67,6 +73,7 @@
     <Compile Include="Api\Core\Command.cs" />
     <Compile Include="Api\Core\ErrorResponse.cs" />
     <Compile Include="Api\Core\GetInclusionStatesRequest.cs" />
+    <Compile Include="Api\Model\AccountData.cs" />
     <Compile Include="Api\Model\Input.cs" />
     <Compile Include="Api\Model\Inputs.cs" />
     <Compile Include="Api\Model\Signature.cs" />
@@ -76,6 +83,8 @@
     <Compile Include="Api\Exception\InvisibleBundleTransactionException.cs" />
     <Compile Include="Api\Exception\IllegalAccessError.cs" />
     <Compile Include="Api\Exception\InvalidSignatureException.cs" />
+    <Compile Include="Api\Pow\CurlMode.cs" />
+    <Compile Include="Api\Pow\Kerl.cs" />
     <Compile Include="Api\Utils\ArrayUtils.cs" />
     <Compile Include="Api\Utils\Constants.cs" />
     <Compile Include="Api\Core\StoreTransactionsResponse.cs" />
@@ -115,7 +124,7 @@
     <Compile Include="Api\Core\IotaResponse.cs" />
     <Compile Include="Api\Core\GetNodeInfoRequest.cs" />
     <Compile Include="Api\Core\GetNodeInfoResponse.cs" />
-    <Compile Include="Api\Utils\ICurl.cs" />
+    <Compile Include="Api\Pow\ICurl.cs" />
     <Compile Include="Api\Exception\IllegalStateException.cs" />
     <Compile Include="Api\Exception\InvalidTryteException.cs" />
     <Compile Include="Api\Exception\IotaApiException.cs" />
@@ -124,7 +133,7 @@
     <Compile Include="Api\Core\IotaCoreApi.cs" />
     <Compile Include="Api\Utils\Rest\JsonSerializer.cs" />
     <Compile Include="Api\Utils\Checksum.cs" />
-    <Compile Include="Api\Utils\Curl.cs" />
+    <Compile Include="Api\Pow\Curl.cs" />
     <Compile Include="Api\Utils\InputValidator.cs" />
     <Compile Include="Api\Exception\InvalidAddressException.cs" />
     <Compile Include="Api\Utils\IotaUnitConverter.cs" />

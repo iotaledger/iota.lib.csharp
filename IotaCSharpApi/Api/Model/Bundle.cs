@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Iota.Lib.CSharp.Api.Pow;
 using Iota.Lib.CSharp.Api.Utils;
 
 namespace Iota.Lib.CSharp.Api.Model
@@ -35,10 +36,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// </value>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public Transaction this[int index]
-        {
-            get { return Transactions[index]; }
-        }
+        public Transaction this[int index] => Transactions[index];
 
         /// <summary>
         /// Gets or sets the transactions.
@@ -82,11 +80,11 @@ namespace Iota.Lib.CSharp.Api.Model
             string emptySignatureFragment = "";
             string emptyHash = Constants.EmptyHash;
 
-            for (int j = 0; emptySignatureFragment.Length < 2187; j++)
+            while (emptySignatureFragment.Length < 2187)
             {
                 emptySignatureFragment += '9';
             }
-
+            
             for (int i = 0; i < Transactions.Count; i++)
             {
                 Transaction transaction = Transactions[i];
@@ -178,7 +176,7 @@ namespace Iota.Lib.CSharp.Api.Model
                 int[] currentIndexTrits = Converter.ToTrits(Transactions[i].CurrentIndex = ("" + i), 27);
 
                 int[] lastIndexTrits = Converter.ToTrits(
-                    Transactions[i].LastIndex = ("" + (this.Transactions.Count - 1)), 27);
+                    Transactions[i].LastIndex = ("" + (Transactions.Count - 1)), 27);
 
                 string stringToConvert = Transactions[i].Address
                                          + Converter.ToTrytes(valueTrits)
@@ -195,18 +193,10 @@ namespace Iota.Lib.CSharp.Api.Model
             customCurl.Squeeze(hash, 0, hash.Length);
             string hashInTrytes = Converter.ToTrytes(hash);
 
-            for (int i = 0; i < Transactions.Count; i++)
+            foreach (var transaction in Transactions)
             {
-                Transactions[i].Bundle = hashInTrytes;
+                transaction.Bundle = hashInTrytes;
             }
-        }
-
-        /// <summary>
-        /// Finalizes the bundle.
-        /// </summary>
-        public void FinalizeBundle()
-        {
-            FinalizeBundle(new Curl());
         }
 
         /// <summary>

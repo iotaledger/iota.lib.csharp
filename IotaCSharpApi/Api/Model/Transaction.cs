@@ -1,4 +1,5 @@
 ﻿using System;
+using Iota.Lib.CSharp.Api.Pow;
 using Iota.Lib.CSharp.Api.Utils;
 
 namespace Iota.Lib.CSharp.Api.Model
@@ -67,7 +68,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// Initializes a new instance of the <see cref="Transaction"/> class.
         /// </summary>
         /// <param name="trytes">The trytes representing the transaction</param>
-        public Transaction(string trytes) : this(trytes, new Curl())
+        public Transaction(string trytes) : this(trytes, new Curl(CurlMode.CurlP81))
         {
         }
 

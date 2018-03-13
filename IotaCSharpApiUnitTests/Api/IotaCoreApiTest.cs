@@ -94,6 +94,7 @@ namespace Iota.Lib.CSharpTests.Api
         {
             var trans = _iotaApi.FindTransactionsByAddresses(TEST_ADDRESS_WITH_CHECKSUM);
             Assert.IsNotNull(trans.Hashes);
+            Assert.IsTrue(trans.Hashes.Count > 0);
         }
 
         [TestMethod]
@@ -163,7 +164,7 @@ namespace Iota.Lib.CSharpTests.Api
         [TestMethod]
         public void ShouldGetBalances()
         {
-            var res = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList());
+            var res = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), 100);
             Assert.IsNotNull(res.Balances);
             Assert.IsNotNull(res.References);
             Assert.IsNotNull(res.MilestoneIndex);
