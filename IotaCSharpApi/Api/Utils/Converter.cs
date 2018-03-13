@@ -9,6 +9,17 @@ namespace Iota.Lib.CSharp.Api.Utils
     /// </summary>
     public class Converter
     {
+        // ReSharper disable InconsistentNaming
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly uint HIGH_INTEGER_BITS = 0xFFFFFFFF;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly ulong HIGH_LONG_BITS = 0xFFFFFFFFFFFFFFFFL;
+        // ReSharper restore InconsistentNaming
+
         /// <summary>
         /// The radix
         /// </summary>

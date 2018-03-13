@@ -67,8 +67,7 @@ namespace Iota.Lib.CSharp.Api.Core
         public FindTransactionsResponse FindTransactions(List<string> addresses, List<string> tags,
             List<string> approves, List<string> bundles)
         {
-            FindTransactionsRequest findTransactionsRequest = new FindTransactionsRequest(bundles, addresses, tags,
-                approves);
+            var findTransactionsRequest = new FindTransactionsRequest(bundles, addresses, tags, approves);
             return
                 _genericIotaCoreApi.Request<FindTransactionsRequest, FindTransactionsResponse>(findTransactionsRequest);
         }
@@ -81,9 +80,16 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <returns> It returns the confirmed balance which a list of addresses have at the latest confirmed milestone. 
         /// In addition to the balances, it also returns the milestone as well as the index with which the confirmed balance was determined. 
         /// The balances is returned as a list in the same order as the addresses were provided as input.</returns>
-        public GetBalancesResponse GetBalances(List<string> addresses, long threshold = 100)
+        public GetBalancesResponse GetBalances(List<string> addresses, long threshold)
         {
-            GetBalancesRequest getBalancesRequest = new GetBalancesRequest(addresses, threshold);
+            List<string> addressesWithoutChecksum = new List<string>();
+            foreach (var address in addresses)
+            {
+                string address0 = address.RemoveChecksum();
+                addressesWithoutChecksum.Add(address0);
+            }
+
+            GetBalancesRequest getBalancesRequest = new GetBalancesRequest(addressesWithoutChecksum, threshold);
             return _genericIotaCoreApi.Request<GetBalancesRequest, GetBalancesResponse>(getBalancesRequest);
         }
 

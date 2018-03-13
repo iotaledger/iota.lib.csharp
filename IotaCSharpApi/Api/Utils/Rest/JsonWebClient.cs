@@ -22,6 +22,7 @@ namespace Iota.Lib.CSharp.Api.Utils.Rest
             request.Method = "POST";
             request.AutomaticDecompression = (DecompressionMethods.GZip | DecompressionMethods.Deflate);
             request.CachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
+            request.Headers.Add("X-IOTA-API-Version", "1");
             request.Headers.Add("Origin", "iota.lib.csharp");
             request.Headers.Add("Accept-Language", "de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4 ");
             request.KeepAlive = false;
@@ -60,7 +61,7 @@ namespace Iota.Lib.CSharp.Api.Utils.Rest
             }
             catch (WebException ex)
             {
-                Console.WriteLine("catched: " + ex.ToString() + ex.Message);
+                Console.WriteLine("catched: " + ex + ex.Message);
 
                 using (var stream = ex.Response.GetResponseStream())
                 using (var reader = new StreamReader(stream))
@@ -73,12 +74,12 @@ namespace Iota.Lib.CSharp.Api.Utils.Rest
 
         public void GetPOSTResponseAsync<TResponse>(Uri uri, string data, Action<TResponse> callback)
         {
-            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(uri);
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
 
             request.Method = "POST";
             request.ContentType = "application-type/json;charset=utf-8";
 
-            System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+            UTF8Encoding encoding = new UTF8Encoding();
             byte[] bytes = encoding.GetBytes(data);
 
             request.ContentLength = bytes.Length;
@@ -100,7 +101,6 @@ namespace Iota.Lib.CSharp.Api.Utils.Rest
                             StreamReader reader = new StreamReader(stream, Encoding.UTF8);
                             string responseString = reader.ReadToEnd();
                             callback(JsonConvert.DeserializeObject<TResponse>(responseString));
-                            ;
                         }
                     }
                 }

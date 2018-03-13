@@ -14,10 +14,10 @@
         /// <param name="tag">The tag.</param>
         public Transfer(string address, long value, string message, string tag)
         {
-            this.Address = address;
-            this.Value = value;
-            this.Message = message;
-            this.Tag = tag;
+            Address = address;
+            Value = value;
+            Message = message;
+            Tag = tag;
         }
 
         /// <summary>

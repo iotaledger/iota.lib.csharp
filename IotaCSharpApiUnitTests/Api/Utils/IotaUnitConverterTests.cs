@@ -7,37 +7,37 @@ namespace Iota.Lib.CSharpTests.Api.Utils
     public class IotaUnitConverterTest
     {
         [TestMethod]
-        public void shouldConvertUnitItoKi()
+        public void ShouldConvertUnitItoKi()
         {
             Assert.AreEqual(IotaUnitConverter.ConvertUnits(1000, IotaUnits.Iota, IotaUnits.Kilo), 1);
         }
 
         [TestMethod]
-        public void shouldConvertUnitKiToMi()
+        public void ShouldConvertUnitKiToMi()
         {
             Assert.AreEqual(IotaUnitConverter.ConvertUnits(1000, IotaUnits.Kilo, IotaUnits.Mega), 1);
         }
 
         [TestMethod]
-        public void shouldConvertUnitMiToGi()
+        public void ShouldConvertUnitMiToGi()
         {
             Assert.AreEqual(IotaUnitConverter.ConvertUnits(1000, IotaUnits.Mega, IotaUnits.Giga), 1);
         }
 
         [TestMethod]
-        public void shouldConvertUnitGiToTi()
+        public void ShouldConvertUnitGiToTi()
         {
             Assert.AreEqual(IotaUnitConverter.ConvertUnits(1000, IotaUnits.Giga, IotaUnits.Terra), 1);
         }
 
         [TestMethod]
-        public void shouldConvertUnitTiToPi()
+        public void ShouldConvertUnitTiToPi()
         {
             Assert.AreEqual(IotaUnitConverter.ConvertUnits(1000, IotaUnits.Terra, IotaUnits.Peta), 1);
         }
 
         [TestMethod]
-        public void shouldFindOptimizeUnitToDisplay()
+        public void ShouldFindOptimizeUnitToDisplay()
         {
             Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1), IotaUnits.Iota);
             Assert.AreEqual(IotaUnitConverter.FindOptimalIotaUnitToDisplay(1000), IotaUnits.Kilo);
