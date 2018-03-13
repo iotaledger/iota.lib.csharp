@@ -61,7 +61,9 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// </returns>
         public static bool IsValue(string value)
         {
-            return long.TryParse(value, out _);
+            // ReSharper disable once NotAccessedVariable
+            long tempValue;
+            return long.TryParse(value, out tempValue);
             //return Regex.IsMatch(value, @"^(-){0,1}\d+$");
         }
 
