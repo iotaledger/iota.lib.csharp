@@ -25,7 +25,11 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// <param name="curl"></param>
         public Signing(ICurl curl)
         {
-            _curl = curl ?? new Kerl();
+            // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+            if (curl == null)
+                _curl = new Kerl();
+            else
+                _curl = curl;
         }
 
         /// <summary>

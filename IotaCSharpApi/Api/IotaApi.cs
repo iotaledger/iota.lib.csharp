@@ -37,7 +37,11 @@ namespace Iota.Lib.CSharp.Api
         /// </param>
         public IotaApi(string host, int port, ICurl curl) : base(host, port)
         {
-            _curl = curl ?? throw new ArgumentNullException(nameof(curl));
+            // ReSharper disable once JoinNullCheckWithUsage
+            if (curl == null)
+                throw new ArgumentNullException(nameof(curl));
+
+            _curl = curl;
         }
 
         /// <summary>
@@ -229,7 +233,13 @@ namespace Iota.Lib.CSharp.Api
                 var timestamp = IotaApiUtils.CreateTimeStampNow();
 
                 // If no tag defined, get 27 tryte tag.
-                tag = transfer.Tag ?? "999999999999999999999999999";
+
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (transfer.Tag == null)
+                    tag = "999999999999999999999999999";
+                else
+                    tag = transfer.Tag;
+                
 
                 // Pad for required 27 tryte length
                 while (tag.Length < 27) tag += '9';
