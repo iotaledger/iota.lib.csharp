@@ -46,9 +46,9 @@ namespace Iota.Lib.CSharp.Api.Model
             int[] hash = new int[243];
 
             // generate the correct transaction hash
-            curl.Reset()
-                .Absorb(transactionTrits, 0, transactionTrits.Length)
-                .Squeeze(hash, 0, hash.Length);
+            curl.Reset();
+            curl.Absorb(transactionTrits, 0, transactionTrits.Length);
+            curl.Squeeze(hash, 0, hash.Length);
 
             Hash = Converter.ToTrytes(hash);
             SignatureFragment = trytes.Substring(0, 2187);

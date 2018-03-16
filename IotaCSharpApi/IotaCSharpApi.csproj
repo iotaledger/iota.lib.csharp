@@ -85,6 +85,7 @@
     <Compile Include="Api\Exception\InvalidSignatureException.cs" />
     <Compile Include="Api\Pow\CurlMode.cs" />
     <Compile Include="Api\Pow\Kerl.cs" />
+    <Compile Include="Api\Pow\Sponge.cs" />
     <Compile Include="Api\Utils\ArrayUtils.cs" />
     <Compile Include="Api\Utils\Constants.cs" />
     <Compile Include="Api\Core\StoreTransactionsResponse.cs" />
