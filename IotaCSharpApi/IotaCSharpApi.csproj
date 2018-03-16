@@ -128,8 +128,8 @@
     <Compile Include="Api\Exception\IllegalStateException.cs" />
     <Compile Include="Api\Exception\InvalidTryteException.cs" />
     <Compile Include="Api\Exception\IotaApiException.cs" />
-    <Compile Include="Api\Utils\IotaApiUtils.cs" />
     <Compile Include="Api\Utils\Converter.cs" />
+    <Compile Include="Api\Utils\IotaApiUtils.cs" />
     <Compile Include="Api\Core\IotaCoreApi.cs" />
     <Compile Include="Api\Utils\Rest\JsonSerializer.cs" />
     <Compile Include="Api\Utils\Checksum.cs" />
@@ -140,6 +140,7 @@
     <Compile Include="Api\Utils\IotaUnits.cs" />
     <Compile Include="Api\Utils\Rest\JsonWebClient.cs" />
     <Compile Include="Api\Utils\Signing.cs" />
+    <Compile Include="Api\Utils\TritsConverter.cs" />
     <Compile Include="Api\Utils\TrytesConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
