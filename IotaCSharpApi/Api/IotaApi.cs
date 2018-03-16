@@ -303,11 +303,11 @@ namespace Iota.Lib.CSharp.Api
         private List<string> AddRemainder(
             string seed,
             int security,
-            List<Input> inputs, 
-            Bundle bundle, 
-            string tag, 
+            List<Input> inputs,
+            Bundle bundle,
+            string tag,
             long totalValue,
-            string remainderAddress, 
+            string remainderAddress,
             List<string> signatureFragments)
         {
             var totalTransferValue = totalValue;
@@ -341,7 +341,7 @@ namespace Iota.Lib.CSharp.Api
                     {
                         // Generate a new Address by calling getNewAddress
                         // ReSharper disable RedundantArgumentDefaultValue
-                        var address = GetNewAddress(seed,security,0,false,0,false)[0];
+                        var address = GetNewAddress(seed, security, 0, false, 0, false)[0];
                         // ReSharper restore RedundantArgumentDefaultValue
 
                         // Remainder bundle entry
@@ -475,7 +475,7 @@ namespace Iota.Lib.CSharp.Api
 
             foreach (var trx in trxs)
                 // Sort tail and nonTails
-                if (long.Parse(trx.CurrentIndex) == 0)
+                if (trx.CurrentIndex == 0)
                 {
                     tailTransactions.Add(trx.Hash);
                 }
@@ -487,7 +487,7 @@ namespace Iota.Lib.CSharp.Api
             var bundleObjects = FindTransactionObjectsByBundle(nonTailBundleHashes.ToArray());
             foreach (var trx in bundleObjects)
                 // Sort tail and nonTails
-                if (long.Parse(trx.CurrentIndex) == 0)
+                if (trx.CurrentIndex == 0)
                     if (tailTransactions.IndexOf(trx.Hash) == -1)
                         tailTransactions.Add(trx.Hash);
 
@@ -546,11 +546,14 @@ namespace Iota.Lib.CSharp.Api
         /// <summary>
         ///     Finds the transaction objects.
         /// </summary>
-        /// <param name="adresses">The adresses.</param>
+        /// <param name="addresses">The addresses.</param>
         /// <returns>a list of transactions</returns>
-        public List<Transaction> FindTransactionObjects(string[] adresses)
+        public List<Transaction> FindTransactionObjects(string[] addresses)
         {
-            var ftr = FindTransactions(adresses.ToList(), null, null, null);
+            var addressesWithoutChecksum =
+                addresses.Select(address => address.RemoveChecksum()).ToList();
+
+            var ftr = FindTransactions(addressesWithoutChecksum, null, null, null);
             if (ftr == null || ftr.Hashes == null)
                 return null;
 
@@ -705,8 +708,8 @@ namespace Iota.Lib.CSharp.Api
             Input[] inputs, string remainderAddress,
             bool validateInputs, bool validateInputAddresses)
         {
-            var trytes = PrepareTransfers(seed, security, transfers, 
-                remainderAddress, inputs?.ToList(),validateInputs);
+            var trytes = PrepareTransfers(seed, security, transfers,
+                remainderAddress, inputs?.ToList(), validateInputs);
             var trxs = SendTrytes(trytes.ToArray(), depth, minWeightMagnitude);
 
             var successful = new bool[trxs.Length];
@@ -781,10 +784,10 @@ namespace Iota.Lib.CSharp.Api
             for (var index = 0; index < bundle.Transactions.Count; index++)
             {
                 var bundleTransaction = bundle.Transactions[index];
-                var bundleValue = long.Parse(bundleTransaction.Value);
+                var bundleValue = bundleTransaction.Value;
                 totalSum += bundleValue;
 
-                if (long.Parse(bundleTransaction.CurrentIndex) != index)
+                if (bundleTransaction.CurrentIndex != index)
                     throw new InvalidBundleException("The index of the bundle " + bundleTransaction.CurrentIndex +
                                                      " did not match the expected index " + index);
 
@@ -807,7 +810,7 @@ namespace Iota.Lib.CSharp.Api
                         var newBundleTx = bundle.Transactions[i];
 
                         // Check if new tx is part of the signature fragment
-                        if (newBundleTx.Address == address && long.Parse(newBundleTx.Value) == 0)
+                        if (newBundleTx.Address == address && newBundleTx.Value == 0)
                         {
                             if (sig.SignatureFragments.IndexOf(newBundleTx.SignatureFragment) == -1)
                                 sig.SignatureFragments.Add(newBundleTx.SignatureFragment);
@@ -866,22 +869,24 @@ namespace Iota.Lib.CSharp.Api
         /// <param name="threshold"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public AccountData GetAccountData(String seed, int security, int index, bool checksum, int total, bool returnAll, int start, int end, bool inclusionStates, long threshold)
+        public AccountData GetAccountData(String seed, int security, int index, bool checksum, int total,
+            bool returnAll, int start, int end, bool inclusionStates, long threshold)
         {
 
-        if (start > end || end > (start + 1000)) {
-            throw new ArgumentException("Invalid input provided.");
+            if (start > end || end > (start + 1000))
+            {
+                throw new ArgumentException("Invalid input provided.");
+            }
+
+            var addresses = GetNewAddress(seed, security, index, checksum, total, returnAll);
+            var bundle = GetTransfers(seed, security, start, end, inclusionStates);
+            var inputs = GetInputs(seed, security, start, end, threshold);
+
+            return new AccountData(new List<string>(addresses), bundle, inputs.InputsList, inputs.TotalBalance);
         }
 
-        var addresses = GetNewAddress(seed, security, index, checksum, total, returnAll);
-        var bundle = GetTransfers(seed, security, start, end, inclusionStates);
-        var inputs = GetInputs(seed, security, start, end, threshold);
 
-            return new AccountData(new List<string>(addresses),bundle,inputs.InputsList,inputs.TotalBalance);
-    }
-
-
-private Bundle TraverseBundle(string trunkTransaction, string bundleHash, Bundle bundle)
+        private Bundle TraverseBundle(string trunkTransaction, string bundleHash, Bundle bundle)
         {
             var gtr = GetTrytes(trunkTransaction);
 
@@ -902,7 +907,7 @@ private Bundle TraverseBundle(string trunkTransaction, string bundleHash, Bundle
             if (bundleHash != transaction.Bundle) return bundle;
 
             // If only one bundle element, return
-            if (long.Parse(transaction.LastIndex) == 0 && long.Parse(transaction.CurrentIndex) == 0)
+            if (transaction.LastIndex == 0 && transaction.CurrentIndex == 0)
                 return new Bundle(new List<Transaction> {transaction}, 1);
 
             // Define new trunkTransaction for search

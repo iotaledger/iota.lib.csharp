@@ -53,15 +53,20 @@ namespace Iota.Lib.CSharp.Api.Model
             Hash = Converter.ToTrytes(hash);
             SignatureFragment = trytes.Substring(0, 2187);
             Address = trytes.Substring(2187, 2268 - 2187);
-            Value = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6804, 6837));
-            Tag = trytes.Substring(2295, 2322 - 2295);
-            Timestamp = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6966, 6993));
-            CurrentIndex = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6993, 7020));
-            LastIndex = "" + Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7020, 7047));
+            Value = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6804, 6837));
+            ObsoleteTag = trytes.Substring(2295, 2322 - 2295);
+            Timestamp = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6966, 6993));
+            CurrentIndex = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6993, 7020));
+            LastIndex = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7020, 7047));
             Bundle = trytes.Substring(2349, 2430 - 2349);
             TrunkTransaction = trytes.Substring(2430, 2511 - 2430);
             BranchTransaction = trytes.Substring(2511, 2592 - 2511);
-            Nonce = trytes.Substring(2592, 2673 - 2592);
+            Tag = trytes.Substring(2592, 2619 - 2592);
+            // TODO(gjc): need check
+            AttachmentTimestamp = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7857, 7884));
+            AttachmentTimestampLowerBound = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7884, 7911));
+            AttachmentTimestampUpperBound = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7911, 7938));
+            Nonce = trytes.Substring(2646, 2673 - 2646);
         }
 
         /// <summary>
@@ -79,11 +84,12 @@ namespace Iota.Lib.CSharp.Api.Model
         /// <param name="value">The value.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="timestamp">The timestamp.</param>
-        public Transaction(string address, string value, string tag, string timestamp)
+        public Transaction(string address, long value, string tag, long timestamp)
         {
             Address = address;
             Value = value;
             Tag = tag;
+            ObsoleteTag = tag;
             Timestamp = timestamp;
         }
 
@@ -93,7 +99,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// <value>
         /// The tag.
         /// </value>
-        public string Tag { get; set; }
+        public string ObsoleteTag { get; set; }
 
         /// <summary>
         /// Gets or sets the hash.
@@ -141,7 +147,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// <value>
         /// The value.
         /// </value>
-        public string Value { get; set; }
+        public long Value { get; set; }
 
         /// <summary>
         /// Gets or sets the timestamp.
@@ -149,7 +155,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// <value>
         /// The timestamp.
         /// </value>
-        public string Timestamp { get; set; }
+        public long Timestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the bundle.
@@ -197,7 +203,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// <value>
         /// The last index.
         /// </value>
-        public string LastIndex { get; set; }
+        public long LastIndex { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the current.
@@ -205,7 +211,7 @@ namespace Iota.Lib.CSharp.Api.Model
         /// <value>
         /// The index of the current.
         /// </value>
-        public string CurrentIndex { get; set; }
+        public long CurrentIndex { get; set; }
 
         /// <summary>
         /// Gets or sets the nonce.
@@ -224,6 +230,26 @@ namespace Iota.Lib.CSharp.Api.Model
         public bool Persistance { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string Tag { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long AttachmentTimestamp { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long AttachmentTimestampLowerBound { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long AttachmentTimestampUpperBound { get; set; }
+
+        /// <summary>
         /// Converts the transaction to the corresponding trytes representation
         /// </summary>
         /// <returns></returns>
@@ -233,17 +259,27 @@ namespace Iota.Lib.CSharp.Api.Model
             int[] timestampTrits = Converter.ToTrits(Timestamp, 27);
             int[] currentIndexTrits = Converter.ToTrits(CurrentIndex, 27);
             int[] lastIndexTrits = Converter.ToTrits(LastIndex, 27);
+            int[] attachmentTimestampTrits = Converter.ToTrits(AttachmentTimestamp, 27);
+            int[] attachmentTimestampLowerBoundTrits = Converter.ToTrits(AttachmentTimestampLowerBound, 27);
+            int[] attachmentTimestampUpperBoundTrits = Converter.ToTrits(AttachmentTimestampUpperBound, 27);
+
+            if (string.IsNullOrEmpty(Tag))
+                Tag = ObsoleteTag;
 
             return SignatureFragment
                    + Address
                    + Converter.ToTrytes(valueTrits)
-                   + Tag
+                   + ObsoleteTag
                    + Converter.ToTrytes(timestampTrits)
                    + Converter.ToTrytes(currentIndexTrits)
                    + Converter.ToTrytes(lastIndexTrits)
                    + Bundle
                    + TrunkTransaction
                    + BranchTransaction
+                   + Tag
+                   + Converter.ToTrytes(attachmentTimestampTrits)
+                   + Converter.ToTrytes(attachmentTimestampLowerBoundTrits)
+                   + Converter.ToTrytes(attachmentTimestampUpperBoundTrits)
                    + Nonce;
         }
 
@@ -255,7 +291,24 @@ namespace Iota.Lib.CSharp.Api.Model
         /// </returns>
         public override string ToString()
         {
-            return $"{nameof(Value)}: {Value}, {nameof(Persistance)}: {Value}, {nameof(Tag)}: {Tag}, {nameof(Hash)}: {Hash}, {nameof(Type)}: {Type}, {nameof(SignatureMessageChunk)}: {SignatureMessageChunk}, {nameof(Digest)}: {Digest}, {nameof(Address)}: {Address}, {nameof(Timestamp)}: {Timestamp}, {nameof(Bundle)}: {Bundle}, {nameof(Index)}: {Index}, {nameof(TrunkTransaction)}: {TrunkTransaction}, {nameof(BranchTransaction)}: {BranchTransaction}, {nameof(SignatureFragment)}: {SignatureFragment}, {nameof(LastIndex)}: {LastIndex}, {nameof(CurrentIndex)}: {CurrentIndex}, {nameof(Nonce)}: {Nonce}";
+            return
+$@"{nameof(Value)}: {Value}, 
+{nameof(Persistance)}: {Value}, 
+{nameof(Tag)}: {Tag}, 
+{nameof(Hash)}: {Hash}, 
+{nameof(Type)}: {Type}, 
+{nameof(SignatureMessageChunk)}: {SignatureMessageChunk}, 
+{nameof(Digest)}: {Digest}, 
+{nameof(Address)}: {Address}, 
+{nameof(Timestamp)}: {Timestamp},
+{nameof(Bundle)}: {Bundle},
+{nameof(Index)}: {Index}, 
+{nameof(TrunkTransaction)}: {TrunkTransaction}, 
+{nameof(BranchTransaction)}: {BranchTransaction}, 
+{nameof(SignatureFragment)}: {SignatureFragment}, 
+{nameof(LastIndex)}: {LastIndex}, 
+{nameof(CurrentIndex)}: {CurrentIndex}, 
+{nameof(Nonce)}: {Nonce}";
         }
     }
 }
