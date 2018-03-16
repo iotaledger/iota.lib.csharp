@@ -11,7 +11,6 @@ namespace Iota.Lib.CSharp.Api.Pow
     /// </summary>
     public class Kerl : Curl
     {
-        private new const int HashLength = 243;
         private const int BitHashLength = 384;
         private const int ByteHashLength = BitHashLength / 8;
 

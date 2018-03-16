@@ -52,7 +52,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             //  Get the corresponding private key and calculate the signatureFragment
             for (int i = 0; i < bundle.Transactions.Count; i++)
             {
-                if (Int64.Parse(bundle.Transactions[i].Value) < 0)
+                if (bundle.Transactions[i].Value < 0)
                 {
                     string thisAddress = bundle.Transactions[i].Address;
 
@@ -93,7 +93,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     {
                         //  Same address as well as value = 0 (as we already spent the input)
                         if (bundle.Transactions[j].Address.Equals(thisAddress) &&
-                            Int64.Parse(bundle.Transactions[j].Value) == 0)
+                            bundle.Transactions[j].Value == 0)
                         {
                             // Use the second 6562 trits
                             int[] secondFragment = ArrayUtils.SubArray2(key, 6561, 6561);
@@ -119,6 +119,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             {
                 bundleTrytes.Add(tx.ToTransactionTrytes());
             }
+
             bundleTrytes.Reverse();
             return bundleTrytes;
         }

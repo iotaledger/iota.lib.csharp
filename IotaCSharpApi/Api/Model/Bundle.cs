@@ -66,7 +66,7 @@ namespace Iota.Lib.CSharp.Api.Model
         {
             for (int i = 0; i < signatureMessageLength; i++)
             {
-                Transaction trx = new Transaction(address, (i == 0 ? value : 0).ToString(), tag, timestamp.ToString());
+                Transaction trx = new Transaction(address, (i == 0 ? value : 0), tag, timestamp);
                 Transactions.Add(trx);
             }
         }
@@ -122,7 +122,7 @@ namespace Iota.Lib.CSharp.Api.Model
                 {
                     sum +=
                     (normalizedBundle[i*27 + j] =
-                        Converter.ToValue(Converter.ToTritsString("" + bundleHash[i*27 + j])));
+                        Converter.ToValue(Converter.ToTrits("" + bundleHash[i*27 + j])));
                 }
 
                 if (sum >= 0)
@@ -173,10 +173,10 @@ namespace Iota.Lib.CSharp.Api.Model
 
                 int[] timestampTrits = Converter.ToTrits(Transactions[i].Timestamp, 27);
 
-                int[] currentIndexTrits = Converter.ToTrits(Transactions[i].CurrentIndex = ("" + i), 27);
+                int[] currentIndexTrits = Converter.ToTrits(Transactions[i].CurrentIndex = i, 27);
 
                 int[] lastIndexTrits = Converter.ToTrits(
-                    Transactions[i].LastIndex = ("" + (Transactions.Count - 1)), 27);
+                    Transactions[i].LastIndex = (Transactions.Count - 1), 27);
 
                 string stringToConvert = Transactions[i].Address
                                          + Converter.ToTrytes(valueTrits)
@@ -208,8 +208,8 @@ namespace Iota.Lib.CSharp.Api.Model
         /// </returns>
         public int CompareTo(Bundle other)
         {
-            long timeStamp1 = long.Parse(Transactions[0].Timestamp);
-            long timeStamp2 = long.Parse(other.Transactions[0].Timestamp);
+            long timeStamp1 = Transactions[0].Timestamp;
+            long timeStamp2 = other.Transactions[0].Timestamp;
 
             if (timeStamp1 < timeStamp2)
                 return -1;

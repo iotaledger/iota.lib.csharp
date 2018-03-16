@@ -24,6 +24,7 @@ namespace Iota.Lib.CSharpTests.Api.Utils
             Assert.AreEqual(TrytesConverter.ToString("TBYBCCKBEATBYBCCKB"), "JOTA JOTA");
         }
 
+        [TestMethod]
         public void ShouldConvertBackAndForth()
         {
             var str = RandomString(1000);
