@@ -38,6 +38,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -61,6 +64,7 @@
     <Compile Include="Api\Utils\IotaUnitConverterTests.cs" />
     <Compile Include="Api\Utils\TrytesConverterTest.cs" />
     <Compile Include="Api\Utils\SigningTest.cs" />
+    <Compile Include="Api\Utils\BigIntConverterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +72,9 @@
       <Project>{fc2c2f96-49ea-4046-95bd-3b570bdd1e13}</Project>
       <Name>IotaCSharpApi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

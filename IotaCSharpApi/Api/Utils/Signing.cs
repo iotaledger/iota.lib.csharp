@@ -44,7 +44,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         public int[] Key(int[] seed, int index, int security)
         {
             var subseed = new int[seed.Length];
-            seed.CopyTo(subseed,0);
+            seed.CopyTo(subseed, 0);
 
             for (var i = 0; i < index; i++)
             for (var j = 0; j < 243; j++)
@@ -59,7 +59,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             _curl.Reset();
             _curl.Absorb(subseed, 0, subseed.Length);
 
-            IList<int> key = new List<int>();
+            var key = new List<int>();
             var buffer = new int[subseed.Length];
             var offset = 0;
 
@@ -70,15 +70,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     for (var j = 0; j < 243; j++) key.Add(buffer[j]);
                 }
 
-            return ToIntArray(key);
-        }
-
-        private static int[] ToIntArray(IList<int> key)
-        {
-            var a = new int[key.Count];
-            var i = 0;
-            foreach (var v in key) a[i++] = v;
-            return a;
+            return key.ToArray();
         }
 
         /// <summary>

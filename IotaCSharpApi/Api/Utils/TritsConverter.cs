@@ -5,6 +5,7 @@ using System.Text;
 namespace Iota.Lib.CSharp.Api.Utils
 {
     /// <summary>
+    /// use sbyte for trits
     /// </summary>
     public class TritsConverter
     {
