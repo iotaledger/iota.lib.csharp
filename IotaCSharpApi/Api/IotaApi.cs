@@ -411,7 +411,7 @@ namespace Iota.Lib.CSharp.Api
             {
                 // Increase index with each iteration
                 for (var i = index; i < index + total; i++)
-                    allAdresses.Add(IotaApiUtils.NewAddress(seed, security, i, checksum, _curl));
+                    allAdresses.Add(IotaApiUtils.NewAddress(seed, security, i, checksum, new Kerl()));
 
                 return allAdresses.ToArray();
             }
@@ -426,7 +426,7 @@ namespace Iota.Lib.CSharp.Api
 
             for (var i = index;; i++)
             {
-                var newAddress = IotaApiUtils.NewAddress(seed, security, i, checksum, _curl.Clone());
+                var newAddress = IotaApiUtils.NewAddress(seed, security, i, checksum, new Kerl());
                 var response = FindTransactionsByAddresses(newAddress);
 
                 if (returnAll) addresses.Add(newAddress);

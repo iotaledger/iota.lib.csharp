@@ -48,7 +48,7 @@ namespace Iota.Lib.CSharp.Api.Utils
         public int[] Key(int[] seed, int index, int security)
         {
             var subseed = new int[seed.Length];
-            seed.CopyTo(subseed,0);
+            seed.CopyTo(subseed, 0);
 
             for (var i = 0; i < index; i++)
             for (var j = 0; j < 243; j++)
@@ -63,7 +63,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             _curl.Reset();
             _curl.Absorb(subseed, 0, subseed.Length);
 
-            IList<int> key = new List<int>();
+            var key = new List<int>();
             var buffer = new int[subseed.Length];
             var offset = 0;
 
@@ -74,15 +74,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     for (var j = 0; j < 243; j++) key.Add(buffer[j]);
                 }
 
-            return ToIntArray(key);
-        }
-
-        private static int[] ToIntArray(IList<int> key)
-        {
-            var a = new int[key.Count];
-            var i = 0;
-            foreach (var v in key) a[i++] = v;
-            return a;
+            return key.ToArray();
         }
 
         /// <summary>
@@ -136,7 +128,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             {
                 buffer = ArrayUtils.SubArray(signatureFragment, i * 243, (i + 1) * 243);
 
-                var jCurl = _curl.Clone();
+                var jCurl = new Kerl();
 
                 for (var j = normalizedBundleFragment[i] + 13; j-- > 0;)
                 {
@@ -160,7 +152,9 @@ namespace Iota.Lib.CSharp.Api.Utils
         public int[] Address(int[] digests)
         {
             var address = new int[243];
-            _curl.Reset().Absorb(digests, 0, digests.Length).Squeeze(address, 0, address.Length);
+            _curl.Reset();
+            _curl.Absorb(digests, 0, digests.Length);
+            _curl.Squeeze(address, 0, address.Length);
             return address;
         }
 
@@ -178,9 +172,12 @@ namespace Iota.Lib.CSharp.Api.Utils
                 Array.Copy(keyFragment, i * 243, hash, 0, 243);
 
                 for (var j = 0; j < 13 - normalizedBundleFragment[i]; j++)
-                    _curl.Reset()
-                        .Absorb(hash, 0, hash.Length)
-                        .Squeeze(hash, 0, hash.Length);
+                {
+                    _curl.Reset();
+                    _curl.Absorb(hash, 0, hash.Length);
+                    _curl.Squeeze(hash, 0, hash.Length);
+                }
+                    
 
                 for (var j = 0; j < 243; j++) Array.Copy(hash, j, keyFragment, i * 243 + j, 1);
             }

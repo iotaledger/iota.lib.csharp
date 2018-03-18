@@ -56,18 +56,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Net.Http.dll</HintPath>
-    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Core\Command.cs" />
@@ -85,7 +76,9 @@
     <Compile Include="Api\Exception\InvalidSignatureException.cs" />
     <Compile Include="Api\Pow\CurlMode.cs" />
     <Compile Include="Api\Pow\Kerl.cs" />
+    <Compile Include="Api\Pow\Sponge.cs" />
     <Compile Include="Api\Utils\ArrayUtils.cs" />
+    <Compile Include="Api\Utils\BigIntConverter.cs" />
     <Compile Include="Api\Utils\Constants.cs" />
     <Compile Include="Api\Core\StoreTransactionsResponse.cs" />
     <Compile Include="Api\Core\StoreTransactionsRequest.cs" />
@@ -128,8 +121,9 @@
     <Compile Include="Api\Exception\IllegalStateException.cs" />
     <Compile Include="Api\Exception\InvalidTryteException.cs" />
     <Compile Include="Api\Exception\IotaApiException.cs" />
-    <Compile Include="Api\Utils\IotaApiUtils.cs" />
     <Compile Include="Api\Utils\Converter.cs" />
+    <Compile Include="Api\Utils\FixedBigIntConverter.cs" />
+    <Compile Include="Api\Utils\IotaApiUtils.cs" />
     <Compile Include="Api\Core\IotaCoreApi.cs" />
     <Compile Include="Api\Utils\Rest\JsonSerializer.cs" />
     <Compile Include="Api\Utils\Checksum.cs" />
@@ -140,6 +134,7 @@
     <Compile Include="Api\Utils\IotaUnits.cs" />
     <Compile Include="Api\Utils\Rest\JsonWebClient.cs" />
     <Compile Include="Api\Utils\Signing.cs" />
+    <Compile Include="Api\Utils\TritsConverter.cs" />
     <Compile Include="Api\Utils\TrytesConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
