@@ -66,6 +66,19 @@ namespace Iota.Lib.CSharpTests.Api.Utils
         }
 
         [TestMethod]
+        public void ShouldIsArrayOfTrytes()
+        {
+            Assert.AreEqual(InputValidator.IsArrayOfTrytes(new [] { TEST_TRYTES, TEST_TRYTES },2673), true);
+        }
+
+        [TestMethod]
+        public void ShouldIsNinesTrytes()
+        {
+            Assert.AreEqual(InputValidator.IsNinesTrytes("999999999", 9), true);
+        }
+
+
+        [TestMethod]
         public void ShouldIsTransfersCollectionCorrect()
         {
             var transfers = new List<Transfer>

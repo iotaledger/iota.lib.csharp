@@ -85,7 +85,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     int[] firstSignedFragment = new Signing(curl).SignatureFragment(firstBundleFragment, firstFragment);
 
                     //  Convert signature to trytes and assign the new signatureFragment
-                    bundle.Transactions[i].SignatureFragment = Converter.ToTrytes(firstSignedFragment);
+                    bundle.Transactions[i].SignatureMessageFragment = Converter.ToTrytes(firstSignedFragment);
 
                     //  Because the signature is > 2187 trytes, we need to
                     //  find the second transaction to add the remainder of the signature
@@ -106,7 +106,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                                 secondFragment);
 
                             //  Convert signature to trytes and assign it again to this bundle entry
-                            bundle.Transactions[j].SignatureFragment = (Converter.ToTrytes(secondSignedFragment));
+                            bundle.Transactions[j].SignatureMessageFragment = (Converter.ToTrytes(secondSignedFragment));
                         }
                     }
                 }

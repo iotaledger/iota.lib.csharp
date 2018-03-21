@@ -185,6 +185,38 @@ namespace Iota.Lib.CSharp.Api.Utils
             return keyFragment;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="signedBundle"></param>
+        /// <param name="inputAddress"></param>
+        /// <returns></returns>
+        public bool ValidateSignatures(Bundle signedBundle, string inputAddress)
+        {
+            string bundleHash = "";
+
+            List<String> signatureFragments = new List<string>();
+
+            foreach (var trx in signedBundle.Transactions)
+            {
+                if (trx.Address.Equals(inputAddress))
+                {
+                    bundleHash = trx.Bundle;
+
+                    // if we reached remainder bundle
+                    String signatureFragment = trx.SignatureMessageFragment;
+                    if (InputValidator.IsNinesTrytes(signatureFragment, signatureFragment.Length))
+                    {
+                        break;
+                    }
+                    signatureFragments.Add(signatureFragment);
+                }
+            }
+
+            return ValidateSignatures(inputAddress, signatureFragments.ToArray(), bundleHash);
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="expectedAddress"></param>

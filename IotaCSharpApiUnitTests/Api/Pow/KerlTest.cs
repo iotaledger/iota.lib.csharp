@@ -2,7 +2,7 @@
 using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iota.Lib.CSharpTests.Api
+namespace Iota.Lib.CSharpTests.Api.Pow
 {
     [TestClass]
     public class KerlTest

@@ -37,7 +37,6 @@ namespace Iota.Lib.CSharp.Api
         /// </param>
         public IotaApi(string host, int port, ICurl curl) : base(host, port)
         {
-            // ReSharper disable once JoinNullCheckWithUsage
             if (curl == null)
                 throw new ArgumentNullException(nameof(curl));
 
@@ -564,7 +563,7 @@ namespace Iota.Lib.CSharp.Api
                 addresses.Select(address => address.RemoveChecksum()).ToList();
 
             var ftr = FindTransactions(addressesWithoutChecksum, null, null, null);
-            if (ftr == null || ftr.Hashes == null)
+            if (ftr?.Hashes == null)
                 return null;
 
             // get the transaction objects of the transactions
@@ -812,7 +811,7 @@ namespace Iota.Lib.CSharp.Api
                 {
                     var address = bundleTransaction.Address;
                     var sig = new Signature {Address = address};
-                    sig.SignatureFragments.Add(bundleTransaction.SignatureFragment);
+                    sig.SignatureFragments.Add(bundleTransaction.SignatureMessageFragment);
 
                     // Find the subsequent txs with the remaining signature fragment
                     for (var i = index + 1; i < bundle.Transactions.Count; i++)
@@ -822,8 +821,8 @@ namespace Iota.Lib.CSharp.Api
                         // Check if new tx is part of the signature fragment
                         if (newBundleTx.Address == address && newBundleTx.Value == 0)
                         {
-                            if (sig.SignatureFragments.IndexOf(newBundleTx.SignatureFragment) == -1)
-                                sig.SignatureFragments.Add(newBundleTx.SignatureFragment);
+                            if (sig.SignatureFragments.IndexOf(newBundleTx.SignatureMessageFragment) == -1)
+                                sig.SignatureFragments.Add(newBundleTx.SignatureMessageFragment);
                         }
 
                     }
@@ -894,7 +893,185 @@ namespace Iota.Lib.CSharp.Api
 
             return new AccountData(new List<string>(addresses), bundle, inputs.InputsList, inputs.TotalBalance);
         }
+        
+        /// <summary>
+        ///     Wrapper function that broadcasts and stores the specified trytes
+        /// </summary>
+        /// <param name="trytes">trytes</param>
+        public void BroadcastAndStore(List<string> trytes)
+        {
+            BroadcastTransactions(trytes);
+            StoreTransactions(trytes);
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="securitySum"></param>
+        /// <param name="inputAddress"></param>
+        /// <param name="remainderAddress"></param>
+        /// <param name="transfers"></param>
+        /// <param name="testMode"></param>
+        /// <returns></returns>
+        public List<Transaction> InitiateTransfer(
+            int securitySum, string inputAddress, string remainderAddress,
+            List<Transfer> transfers, bool testMode)
+        {
+            // validate input address
+            if (!InputValidator.IsAddress(inputAddress))
+                throw new ArgumentException("Invalid addresses provided.");
+
+            // validate remainder address
+            if (remainderAddress != null && !InputValidator.IsAddress(remainderAddress))
+            {
+                throw new ArgumentException("Invalid addresses provided.");
+            }
+
+            // Input validation of transfers object
+            if (!InputValidator.IsTransfersCollectionValid(transfers))
+            {
+                throw new ArgumentException("Invalid transfers provided.");
+            }
+
+            // Create a new bundle
+            Bundle bundle = new Bundle();
+
+            long totalValue = 0;
+            List<String> signatureFragments = new List<string>();
+            String tag = "";
+            //
+
+            //  Iterate over all transfers, get totalValue
+            //  and prepare the signatureFragments, message and tag
+            foreach (Transfer transfer in transfers)
+            {
+
+                // remove the checksum of the address if provided
+                if (transfer.Address.IsValidChecksum())
+                {
+                    transfer.Address = transfer.Address.RemoveChecksum();
+                }
+
+                int signatureMessageLength = 1;
+
+                // If message longer than 2187 trytes, increase signatureMessageLength (add next transaction)
+                if (transfer.Message.Length > Constants.MessageLength)
+                {
+
+                    // Get total length, message / maxLength (2187 trytes)
+                    signatureMessageLength += (int)Math.Floor((double)transfer.Message.Length / Constants.MessageLength);
+
+                    String msgCopy = transfer.Message;
+
+                    // While there is still a message, copy it
+                    
+                    while (!string.IsNullOrEmpty(msgCopy))
+                    {
+
+                        string fragment = msgCopy.Substring(0, Constants.MessageLength);
+                        msgCopy = msgCopy.Substring(Constants.MessageLength, msgCopy.Length - Constants.MessageLength);
+
+                        // Pad remainder of fragment
+                        fragment = fragment.PadRight(Constants.MessageLength, '9');
+                        
+
+                        signatureFragments.Add(fragment);
+                    }
+
+                }
+                else
+                {
+
+                    // Else, get single fragment with 2187 of 9's trytes
+                    String fragment = transfer.Message;
+
+                    if (transfer.Message.Length < Constants.MessageLength)
+                    {
+                        fragment = fragment.PadRight(Constants.MessageLength, '9');
+                    }
+
+                    signatureFragments.Add(fragment);
+
+                }
+
+                tag = transfer.Tag;
+
+                // pad for required 27 tryte length
+                if (transfer.Tag.Length < Constants.TagLength)
+                {
+                    tag = tag.PadRight(Constants.TagLength, '9');
+                }
+
+                // get current timestamp in seconds
+                long timestamp = (long)Math.Floor(GetCurrentTimestampInSeconds());
+
+                // Add first entry to the bundle
+                bundle.AddEntry(signatureMessageLength, transfer.Address, transfer.Value, tag, timestamp);
+                // Sum up total value
+                totalValue += transfer.Value;
+            }
+
+            // Get inputs if we are sending tokens
+            if (totalValue != 0)
+            {
+                GetBalancesResponse balancesResponse = GetBalances(new List<string> { inputAddress }, 100);
+                var balances = balancesResponse.Balances;
+
+                long totalBalance = 0;
+                
+                foreach (var balance in balances)
+                {
+                    totalBalance += balance;
+                }
+
+                // get current timestamp in seconds
+                long timestamp = (long)Math.Floor(GetCurrentTimestampInSeconds());
+
+                // bypass the balance checks during unit testing
+                if (testMode)
+                    totalBalance += 1000;
+
+                if (totalBalance > 0)
+                {
+
+                    long toSubtract = 0 - totalBalance;
+
+                    // Add input as bundle entry
+                    // Only a single entry, signatures will be added later
+                    bundle.AddEntry(securitySum, inputAddress, toSubtract, tag, timestamp);
+                }
+                // Return not enough balance error
+                if (totalValue > totalBalance)
+                {
+                    throw new IllegalStateException("Not enough balance.");
+                }
+
+                // If there is a remainder value
+                // Add extra output to send remaining funds to
+                if (totalBalance > totalValue)
+                {
+
+                    long remainder = totalBalance - totalValue;
+
+                    // Remainder bundle entry if necessary
+                    if (remainderAddress == null)
+                    {
+                        throw new IllegalStateException("No remainder address defined.");
+                    }
+
+                    bundle.AddEntry(1, remainderAddress, remainder, tag, timestamp);
+                }
+
+                bundle.FinalizeBundle(new Curl(CurlMode.CurlP81));
+                bundle.AddTrytes(signatureFragments);
+
+                return bundle.Transactions;
+            }
+            else
+            {
+                throw new System.Exception("Invalid value transfer: the transfer does not require a signature.");
+            }
+        }
 
         private Bundle TraverseBundle(string trunkTransaction, string bundleHash, Bundle bundle)
         {
@@ -908,7 +1085,7 @@ namespace Iota.Lib.CSharp.Api
             var transaction = new Transaction(trytes, _curl);
 
             // If first transaction to search is not a tail, return error
-            if (bundleHash == null && transaction.Index != 0) throw new InvalidTailTransactionException();
+            if (bundleHash == null && transaction.CurrentIndex != 0) throw new InvalidTailTransactionException();
 
             // If no bundle hash, define it
             if (bundleHash == null) bundleHash = transaction.Bundle;
@@ -918,7 +1095,7 @@ namespace Iota.Lib.CSharp.Api
 
             // If only one bundle element, return
             if (transaction.LastIndex == 0 && transaction.CurrentIndex == 0)
-                return new Bundle(new List<Transaction> {transaction}, 1);
+                return new Bundle(new List<Transaction> { transaction }, 1);
 
             // Define new trunkTransaction for search
             var trunkTx = transaction.TrunkTransaction;
@@ -930,14 +1107,13 @@ namespace Iota.Lib.CSharp.Api
             return TraverseBundle(trunkTx, bundleHash, bundle);
         }
 
-        /// <summary>
-        ///     Wrapper function that broadcasts and stores the specified trytes
-        /// </summary>
-        /// <param name="trytes">trytes</param>
-        public void BroadcastAndStore(List<string> trytes)
+        private double GetCurrentTimestampInSeconds()
         {
-            BroadcastTransactions(trytes);
-            StoreTransactions(trytes);
+            DateTime now = DateTime.UtcNow;
+            DateTime epoch = new DateTime
+                (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            return (now - epoch).TotalSeconds;
         }
     }
 }
