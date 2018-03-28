@@ -46,5 +46,11 @@
         /// </summary>
         /// <returns></returns>
         public abstract void Reset();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract ICurl Clone();
     }
 }

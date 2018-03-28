@@ -36,6 +36,15 @@ namespace Iota.Lib.CSharp.Api.Pow
             _keccak.Reset();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override ICurl Clone()
+        {
+            return new Kerl();
+        }
+
         /// <inheritdoc />
         /// <summary>
         /// </summary>

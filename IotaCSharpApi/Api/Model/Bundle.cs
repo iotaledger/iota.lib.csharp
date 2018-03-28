@@ -101,6 +101,7 @@ namespace Iota.Lib.CSharp.Api.Model
         {
             var emptySignatureFragment = "";
             var emptyHash = Constants.EmptyHash;
+            long emptyTimestamp = 999999999L;
 
             while (emptySignatureFragment.Length < 2187) emptySignatureFragment += '9';
 
@@ -119,8 +120,11 @@ namespace Iota.Lib.CSharp.Api.Model
                 // Fill empty branchTransaction
                 transaction.BranchTransaction = emptyHash;
 
+                transaction.AttachmentTimestamp = emptyTimestamp;
+                transaction.AttachmentTimestampLowerBound = emptyTimestamp;
+                transaction.AttachmentTimestampUpperBound = emptyTimestamp;
                 // Fill empty nonce
-                transaction.Nonce = emptyHash;
+                transaction.Nonce = "999999999999999999999999999";
             }
         }
 
