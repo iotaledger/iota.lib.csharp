@@ -37,10 +37,7 @@ namespace Iota.Lib.CSharp.Api
         /// </param>
         public IotaApi(string host, int port, ICurl curl) : base(host, port)
         {
-            if (curl == null)
-                throw new ArgumentNullException(nameof(curl));
-
-            _curl = curl;
+            _curl = curl ?? throw new ArgumentNullException(nameof(curl));
         }
 
         /// <summary>
@@ -177,11 +174,21 @@ namespace Iota.Lib.CSharp.Api
             List<Input> inputs,
             bool validateInputs)
         {
+            // validate seed
+            if (!InputValidator.IsValidSeed(seed))
+                throw new IllegalStateException("Invalid seed provided.");
+            
+
+            if(security<1)
+                throw new ArgumentException("Invalid security level provided.");
+
+            // Input validation of transfers object
             InputValidator.CheckTransferArray(transfers);
 
             // Create a new bundle
             var bundle = new Bundle();
             var signatureFragments = new List<string>();
+
             long totalValue = 0;
             var tag = "";
 
@@ -191,35 +198,37 @@ namespace Iota.Lib.CSharp.Api
             //
             foreach (var transfer in transfers)
             {
+                // remove the checksum of the address if provided
+                transfer.Address = transfer.Address.RemoveChecksum();
+                
                 var signatureMessageLength = 1;
 
                 // If message longer than 2187 trytes, increase signatureMessageLength (add 2nd transaction)
-                if (transfer.Message.Length > 2187)
+                if (transfer.Message.Length > Constants.MessageLength)
                 {
                     // Get total length, message / maxLength (2187 trytes)
-                    signatureMessageLength += (int) Math.Floor((double) transfer.Message.Length / 2187);
+                    signatureMessageLength += (int) Math.Floor((double) transfer.Message.Length / Constants.MessageLength);
 
                     var msgCopy = transfer.Message;
 
                     // While there is still a message, copy it
-                    while (msgCopy != null)
+                    while (!string.IsNullOrEmpty(msgCopy))
                     {
                         var fragment = msgCopy.Substring(0, 2187 > msgCopy.Length ? msgCopy.Length : 2187);
                         msgCopy = msgCopy.Substring(2187, msgCopy.Length - 2187);
 
                         // Pad remainder of fragment
                         while (fragment.Length < 2187) fragment += '9';
-
-
+                        
                         signatureFragments.Add(fragment);
                     }
                 }
                 else
                 {
                     // Else, get single fragment with 2187 of 9's trytes
-                    var fragment = "";
+                    var fragment = string.Empty;
 
-                    if (transfer.Message != null)
+                    if (!string.IsNullOrEmpty(transfer.Message))
                         fragment = transfer.Message.Substring(0,
                             transfer.Message.Length < 2187 ? transfer.Message.Length : 2187);
 
@@ -229,15 +238,11 @@ namespace Iota.Lib.CSharp.Api
                 }
 
                 // get current timestamp in seconds
-                var timestamp = IotaApiUtils.CreateTimeStampNow();
+                var timestamp = (long)Math.Floor((double)IotaApiUtils.CreateTimeStampNow()/1000);
 
                 // If no tag defined, get 27 tryte tag.
-
-                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
-                if (transfer.Tag == null)
-                    tag = "999999999999999999999999999";
-                else
-                    tag = transfer.Tag;
+                
+                tag = string.IsNullOrEmpty(transfer.Tag) ? "999999999999999999999999999" : transfer.Tag;
                 
 
                 // Pad for required 27 tryte length
@@ -298,7 +303,7 @@ namespace Iota.Lib.CSharp.Api
                 }
 
             // If no input required, don't sign and simply finalize the bundle
-            bundle.FinalizeBundle(_curl);
+            bundle.FinalizeBundle(_curl.Clone());
             bundle.AddTrytes(signatureFragments);
 
             var bundleTrytes = new List<string>();

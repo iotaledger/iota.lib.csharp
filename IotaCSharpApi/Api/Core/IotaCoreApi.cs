@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Iota.Lib.CSharp.Api.Model;
 using Iota.Lib.CSharp.Api.Utils;
+using RestSharp.Extensions;
 
 namespace Iota.Lib.CSharp.Api.Core
 {
@@ -10,6 +13,11 @@ namespace Iota.Lib.CSharp.Api.Core
     public class IotaCoreApi
     {
         private readonly IGenericIotaCoreApi _genericIotaCoreApi;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ILocalPoW LocalPow { get; set; }
 
         /// <summary>
         /// Creates a core api object that uses the specified connection settings to connect to a node
@@ -37,7 +45,46 @@ namespace Iota.Lib.CSharp.Api.Core
         public AttachToTangleResponse AttachToTangle(string trunkTransaction, string branchTransaction,
             string[] trytes, int minWeightMagnitude = 18)
         {
-            InputValidator.CheckIfArrayOfTrytes(trytes);
+            if (!InputValidator.IsHash(trunkTransaction))
+                throw new ArgumentException("Invalid hashes provided.");
+
+            if (!InputValidator.IsHash(branchTransaction))
+                throw new ArgumentException("Invalid hashes provided.");
+
+            if (!InputValidator.IsArrayOfTrytes(trytes, 2673))
+                throw new ArgumentException("Invalid trytes provided.");
+
+            if (LocalPow != null)
+            {
+                var response = new AttachToTangleResponse
+                {
+                    Trytes = new List<string>()
+                };
+
+                string previousTransaction = null;
+                foreach (var t in trytes)
+                {
+                    var txn = new Transaction(t)
+                    {
+                        TrunkTransaction = previousTransaction ?? trunkTransaction,
+                        BranchTransaction = previousTransaction == null ? branchTransaction : trunkTransaction
+                    };
+
+                    if (string.IsNullOrEmpty(txn.Tag) || txn.Tag.Matches("9*"))
+                        txn.Tag = txn.ObsoleteTag;
+                    txn.AttachmentTimestamp = IotaApiUtils.CreateTimeStampNow();
+                    txn.AttachmentTimestampLowerBound = 0;
+                    txn.AttachmentTimestampUpperBound = 3_812_798_742_493L;
+
+                    var resultTrytes = LocalPow.PerformPoW(txn.ToTransactionTrytes(), minWeightMagnitude);
+
+                    previousTransaction = new Transaction(resultTrytes).Hash;
+
+                    response.Trytes.Add(resultTrytes);
+                }
+
+                return response;
+            }
 
             AttachToTangleRequest attachToTangleRequest = new AttachToTangleRequest(trunkTransaction, branchTransaction,
                 trytes, minWeightMagnitude);

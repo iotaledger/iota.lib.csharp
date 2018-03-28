@@ -28,7 +28,7 @@ namespace Iota.Lib.CSharp.Api.Pow
         /// <param name="numberOfThreads"></param>
         /// <returns></returns>
         // ReSharper disable once RedundantAssignment
-        public async Task<bool> Search(int[] transactionTrits, int minWeightMagnitude, int numberOfThreads)
+        public bool Search(int[] transactionTrits, int minWeightMagnitude, int numberOfThreads)
         {
             if (transactionTrits.Length != TransactionLength)
                 throw new ArgumentException($"Invalid transaction trits length: {transactionTrits.Length}");
@@ -120,67 +120,61 @@ namespace Iota.Lib.CSharp.Api.Pow
             // step2
             if (numberOfThreads <= 0) numberOfThreads = Math.Max(Environment.ProcessorCount - 1, 1);
 
-            bool ParallelFunc()
+            Parallel.For(0, numberOfThreads, threadIndex =>
             {
-                Parallel.For(0, numberOfThreads, threadIndex =>
+                var midCurlStateCopyLow = new long[CurlStateLength];
+                var midCurlStateCopyHigh = new long[CurlStateLength];
+                Array.Copy(midCurlStateLow, 0, midCurlStateCopyLow, 0, CurlStateLength);
+                Array.Copy(midCurlStateHigh, 0, midCurlStateCopyHigh, 0, CurlStateLength);
+                for (var i = threadIndex; i > 0; i--)
+                    Increment(midCurlStateCopyLow, midCurlStateCopyHigh, 162 + CurlHashLength / 9,
+                        162 + CurlHashLength / 9 * 2);
+
+                var curlStateLow = new long[CurlStateLength];
+                var curlStateHigh = new long[CurlStateLength];
+                var curlScratchpadLowStep2 = new long[CurlStateLength];
+                var curlScratchpadHighStep2 = new long[CurlStateLength];
+                long outMask = 1;
+
+                while (_state == State.Running)
                 {
-                    var midCurlStateCopyLow = new long[CurlStateLength];
-                    var midCurlStateCopyHigh = new long[CurlStateLength];
-                    Array.Copy(midCurlStateLow, 0, midCurlStateCopyLow, 0, CurlStateLength);
-                    Array.Copy(midCurlStateHigh, 0, midCurlStateCopyHigh, 0, CurlStateLength);
-                    for (var i = threadIndex; i > 0; i--)
-                        Increment(midCurlStateCopyLow, midCurlStateCopyHigh, 162 + CurlHashLength / 9,
-                            162 + CurlHashLength / 9 * 2);
+                    Increment(midCurlStateCopyLow, midCurlStateCopyHigh, 162 + CurlHashLength / 9 * 2,
+                        CurlHashLength);
 
-                    var curlStateLow = new long[CurlStateLength];
-                    var curlStateHigh = new long[CurlStateLength];
-                    var curlScratchpadLowStep2 = new long[CurlStateLength];
-                    var curlScratchpadHighStep2 = new long[CurlStateLength];
-                    long outMask = 1;
+                    Array.Copy(midCurlStateCopyLow, 0, curlStateLow, 0, CurlStateLength);
+                    Array.Copy(midCurlStateCopyHigh, 0, curlStateHigh, 0, CurlStateLength);
 
-                    while (_state == State.Running)
+                    Transform(curlStateLow, curlStateHigh, curlScratchpadLowStep2, curlScratchpadHighStep2);
+
+                    var mask = HighBits;
+                    for (var i = minWeightMagnitude; i-- > 0;)
                     {
-                        Increment(midCurlStateCopyLow, midCurlStateCopyHigh, 162 + CurlHashLength / 9 * 2,
-                            CurlHashLength);
-
-                        Array.Copy(midCurlStateCopyLow, 0, curlStateLow, 0, CurlStateLength);
-                        Array.Copy(midCurlStateCopyHigh, 0, curlStateHigh, 0, CurlStateLength);
-
-                        Transform(curlStateLow, curlStateHigh, curlScratchpadLowStep2, curlScratchpadHighStep2);
-
-                        var mask = HighBits;
-                        for (var i = minWeightMagnitude; i-- > 0;)
-                        {
-                            mask &= ~(curlStateLow[CurlHashLength - 1 - i] ^ curlStateHigh[CurlHashLength - 1 - i]);
-                            if (mask == 0) break;
-                        }
-
-                        if (mask == 0) continue;
-
-                        //sync
-                        lock (SyncObj)
-                        {
-                            if (_state == State.Running)
-                            {
-                                _state = State.Completed;
-                                while ((outMask & mask) == 0) outMask <<= 1;
-
-                                for (var i = 0; i < CurlHashLength; i++)
-                                    transactionTrits[TransactionLength - CurlHashLength + i] =
-                                        (midCurlStateCopyLow[i] & outMask) == 0 ? 1
-                                        : (midCurlStateCopyHigh[i] & outMask) == 0 ? -1 : 0;
-                            }
-                        }
-
-                        break;
+                        mask &= ~(curlStateLow[CurlHashLength - 1 - i] ^ curlStateHigh[CurlHashLength - 1 - i]);
+                        if (mask == 0) break;
                     }
-                });
 
-                return _state == State.Completed;
-            }
+                    if (mask == 0) continue;
 
-            var result = await Task.FromResult(ParallelFunc());
-            return result;
+                    //sync
+                    lock (SyncObj)
+                    {
+                        if (_state == State.Running)
+                        {
+                            _state = State.Completed;
+                            while ((outMask & mask) == 0) outMask <<= 1;
+
+                            for (var i = 0; i < CurlHashLength; i++)
+                                transactionTrits[TransactionLength - CurlHashLength + i] =
+                                    (midCurlStateCopyLow[i] & outMask) == 0 ? 1
+                                    : (midCurlStateCopyHigh[i] & outMask) == 0 ? -1 : 0;
+                        }
+                    }
+
+                    break;
+                }
+            });
+
+            return _state == State.Completed;
         }
 
         /// <summary>

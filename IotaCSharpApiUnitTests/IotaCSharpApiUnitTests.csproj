@@ -60,6 +60,7 @@
     <Compile Include="Api\IotaCoreApiTest.cs" />
     <Compile Include="Api\Pow\KerlTest.cs" />
     <Compile Include="Api\Pow\PearlDiverTest.cs" />
+    <Compile Include="Api\Pow\LocalPoWTest.cs" />
     <Compile Include="Api\Utils\ChecksumTest.cs" />
     <Compile Include="Api\Utils\InputValidatorTests.cs" />
     <Compile Include="Api\Utils\IotaUnitConverterTests.cs" />

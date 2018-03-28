@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Threading.Tasks;
 using Iota.Lib.CSharp.Api.Pow;
 using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,11 +27,11 @@ namespace Iota.Lib.CSharpTests.Api.Pow
 
 
         [TestMethod]
-        public async Task TestRandomTryteHash()
+        public void TestRandomTryteHash()
         {
             string testTrytes = GetRandomTrytes();
             
-            string hash = await GetHashFor(testTrytes);
+            string hash = GetHashFor(testTrytes);
 
             string subHash = hash.Substring(Sponge.HashLength / 3 - MinWeightMagnitude / 3);
 
@@ -47,13 +46,13 @@ namespace Iota.Lib.CSharpTests.Api.Pow
 
         [TestMethod]
         [Ignore]
-        public async Task TestRandomTryteHash100()
+        public void TestRandomTryteHash100()
         {
             for (int i = 0; i < 100; i++)
             {
                 string testTrytes = GetRandomTrytes();
 
-                string hash = await GetHashFor(testTrytes);
+                string hash = GetHashFor(testTrytes);
 
                 string subHash = hash.Substring(Sponge.HashLength / 3 - MinWeightMagnitude / 3);
 
@@ -79,12 +78,12 @@ namespace Iota.Lib.CSharpTests.Api.Pow
             return trytes.ToString();
         }
 
-        private async Task<string> GetHashFor(string trytes)
+        private string GetHashFor(string trytes)
         {
             Sponge curl = new Curl(CurlMode.CurlP81);
             int[] myTrits = Converter.ToTrits(trytes);
             
-            bool result  = await _pearlDiver.Search(myTrits, MinWeightMagnitude, NumCores);
+            bool result  = _pearlDiver.Search(myTrits, MinWeightMagnitude, NumCores);
             
             Assert.IsTrue(result,"Search Failed");
            

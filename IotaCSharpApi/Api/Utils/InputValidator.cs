@@ -240,5 +240,15 @@ namespace Iota.Lib.CSharp.Api.Utils
         {
             return trytes.Matches("^[9]{" + (length == 0 ? "0," : length.ToString()) + "}$");
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="seed"></param>
+        /// <returns></returns>
+        public static bool IsValidSeed(string seed)
+        {
+            return IsTrytes(seed, seed.Length);
+        }
     }
 }

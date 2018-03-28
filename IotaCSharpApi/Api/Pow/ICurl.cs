@@ -44,5 +44,10 @@
         /// <returns>the ICurl instance (used for method chaining)</returns>
         void Reset();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        ICurl Clone();
     }
 }

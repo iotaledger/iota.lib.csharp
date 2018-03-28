@@ -173,7 +173,7 @@ namespace Iota.Lib.CSharp.Api.Pow
         ///     Clones this instance.
         /// </summary>
         /// <returns>a new instance</returns>
-        public virtual ICurl Clone()
+        public override ICurl Clone()
         {
             return new Curl(CurlMode.CurlP81);
         }
@@ -248,7 +248,7 @@ namespace Iota.Lib.CSharp.Api.Pow
                 }
             }
         }
-
+        
         #endregion
     }
 }
