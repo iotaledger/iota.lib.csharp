@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaCSharpApi", "IotaCSharpApi\IotaCSharpApi.csproj", "{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaCSharpApiUnitTests", "IotaCSharpApiUnitTests\IotaCSharpApiUnitTests.csproj", "{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaApi.Standard", "IotaApi.Standard\IotaApi.Standard.csproj", "{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaApi.Standard.Tests", "IotaApi.Standard.Tests\IotaApi.Standard.Tests.csproj", "{1797EB77-756A-4B7C-94FD-FC86B7EB7930}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +25,19 @@ Global
 		{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {953B5A71-F598-4C42-A718-80390ACB8FF8}
 	EndGlobalSection
 EndGlobal

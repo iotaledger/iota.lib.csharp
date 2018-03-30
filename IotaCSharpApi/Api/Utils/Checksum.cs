@@ -77,7 +77,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             ICurl curl = new Kerl();
             curl.Reset();
             curl.Absorb(Converter.ToTrits(address));
-            var checksumTrits = new int[Curl.HashLength];
+            var checksumTrits = new int[Sponge.HashLength];
             curl.Squeeze(checksumTrits);
             var checksum = Converter.ToTrytes(checksumTrits);
             return checksum.Substring(72, 9);
