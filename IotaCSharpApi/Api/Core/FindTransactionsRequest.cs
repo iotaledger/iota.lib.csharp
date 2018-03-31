@@ -63,5 +63,41 @@ namespace Iota.Lib.CSharp.Api.Core
         /// The approvees.
         /// </value>
         public List<string> Approvees { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool ShouldSerializeBundles()
+        {
+            return Bundles.Count > 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool ShouldSerializeAddresses()
+        {
+            return Addresses.Count > 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool ShouldSerializeTags()
+        {
+            return Tags.Count > 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool ShouldSerializeApprovees()
+        {
+            return Approvees.Count > 0;
+        }
     }
 }

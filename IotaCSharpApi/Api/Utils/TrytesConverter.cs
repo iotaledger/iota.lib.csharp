@@ -1,71 +1,69 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
-    
     /// <summary>
-    /// This class allows to convert between ASCII and tryte encoded strings 
+    ///     This class allows to convert between ASCII and tryte encoded strings
     /// </summary>
     public class TrytesConverter
     {
         /// <summary>
-        /// Converts the ASCII encoded string to trytes
+        ///     Converts the ASCII encoded string to trytes
         /// </summary>
         /// <param name="inputString">ASCII encoded string</param>
         /// <returns>tryte encoded string</returns>
         public static string ToTrytes(string inputString)
         {
-            StringBuilder trytes = new StringBuilder();
+            var trytes = new StringBuilder();
 
-            for (int i = 0; i < inputString.Length; i++)
+            foreach (var input in inputString)
             {
-                char asciiValue = inputString.ElementAt(i);
+                var asciiValue = input;
 
                 // If not recognizable ASCII character, replace with space
-                if (asciiValue > 255)
-                {
-                    asciiValue = (char) 32;
-                }
+                if (asciiValue > 255) asciiValue = ' ';
 
-                int firstValue = asciiValue%27;
-                int secondValue = (asciiValue - firstValue)/27;
-
-                string trytesValue = Constants.TryteAlphabet[firstValue].ToString() +
-                                     Constants.TryteAlphabet[secondValue];
-
-                trytes.Append(trytesValue);
+                trytes.Append(Constants.TryteAlphabet[asciiValue % 27]);
+                trytes.Append(Constants.TryteAlphabet[asciiValue / 27]);
             }
 
             return trytes.ToString();
         }
-
-
-
+        
         /// <summary>
-        /// Converts the specified tryte encoded String to ASCII
+        ///     Converts the specified tryte encoded String to ASCII
         /// </summary>
         /// <param name="inputTrytes">tryte encoded string</param>
         /// <returns>an ASCII encoded string</returns>
         public static string ToString(string inputTrytes)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
-            for (int i = 0; i < inputTrytes.Length; i += 2)
+            for (var i = 0; i < inputTrytes.Length; i += 2)
             {
                 // get a trytes pair
 
-                int firstValue = Constants.TryteAlphabet.IndexOf(inputTrytes[(i)]);
-                int secondValue = Constants.TryteAlphabet.IndexOf(inputTrytes[(i + 1)]);
+                var firstValue = TryteToDecimal(inputTrytes[i]);
+                var secondValue = TryteToDecimal(inputTrytes[i + 1]);
+                var decimalValue = firstValue + secondValue * 27;
 
-                int decimalValue = firstValue + secondValue*27;
-
-                string character = ((char) decimalValue).ToString();
-
-                builder.Append(character);
+                builder.Append((char) decimalValue);
             }
 
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Tryte To Decimal, '9' = 0
+        /// </summary>
+        /// <param name="tryte"></param>
+        /// <returns></returns>
+        public static int TryteToDecimal(char tryte)
+        {
+            if (tryte == '9')
+                return 0;
+
+            return tryte - 'A' + 1;
         }
     }
 }

@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Iota.Lib.CSharpTests</RootNamespace>
     <AssemblyName>IotaCSharpApiUnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,8 +35,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -53,10 +58,16 @@
   <ItemGroup>
     <Compile Include="Api\IotaApiTests.cs" />
     <Compile Include="Api\IotaCoreApiTest.cs" />
+    <Compile Include="Api\Pow\KerlTest.cs" />
+    <Compile Include="Api\Pow\PearlDiverTest.cs" />
+    <Compile Include="Api\Pow\LocalPoWTest.cs" />
     <Compile Include="Api\Utils\ChecksumTest.cs" />
     <Compile Include="Api\Utils\InputValidatorTests.cs" />
     <Compile Include="Api\Utils\IotaUnitConverterTests.cs" />
     <Compile Include="Api\Utils\TrytesConverterTest.cs" />
+    <Compile Include="Api\Utils\SigningTest.cs" />
+    <Compile Include="Api\Utils\BigIntConverterTest.cs" />
+    <Compile Include="Api\Utils\MultisigTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +75,9 @@
       <Project>{fc2c2f96-49ea-4046-95bd-3b570bdd1e13}</Project>
       <Name>IotaCSharpApi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

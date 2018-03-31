@@ -9,8 +9,8 @@ namespace Iota.Lib.CSharp.Api.Core
     /// <seealso cref="Iota.Lib.CSharp.Api.Core.IGenericIotaCoreApi" />
     public class GenericIotaCoreApi : IGenericIotaCoreApi
     {
-        private string host;
-        private int port;
+        private readonly string _host;
+        private readonly int _port;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericIotaCoreApi"/> class.
@@ -19,8 +19,8 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <param name="port">The port.</param>
         public GenericIotaCoreApi(string host, int port)
         {
-            this.host = host;
-            this.port = port;
+            _host = host;
+            _port = port;
         }
 
         /// <summary>
@@ -29,10 +29,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <value>
         /// The hostname.
         /// </value>
-        public string Hostname
-        {
-            get { return host; }
-        }
+        public string Hostname => _host;
 
         /// <summary>
         /// Gets the port.
@@ -40,10 +37,7 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <value>
         /// The port.
         /// </value>
-        public int Port
-        {
-            get { return port; }
-        }
+        public int Port => _port;
 
         /// <summary>
         /// Requests the specified request.
@@ -70,13 +64,13 @@ namespace Iota.Lib.CSharp.Api.Core
             where TResponse : new()
         {
             JsonWebClient jsonWebClient = new JsonWebClient();
-            jsonWebClient.GetPOSTResponseAsync<TResponse>(new Uri(CreateBaseUrl()),
+            jsonWebClient.GetPOSTResponseAsync(new Uri(CreateBaseUrl()),
                 new JsonSerializer().Serialize(request), responseAction);
         }
 
         private string CreateBaseUrl()
         {
-            return "http://" + host + ":" + port;
+            return "http://" + _host + ":" + _port;
         }
     }
 }

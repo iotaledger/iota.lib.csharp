@@ -161,3 +161,5 @@ $RECYCLE.BIN/
 
 # Sandcasle Output Folder
 Help/*
+/.vs/IotaApi
+/packages

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.props" Condition="Exists('..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Iota.Lib.CSharp</RootNamespace>
     <AssemblyName>IotaApi</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -27,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\IotaApi.xml</DocumentationFile>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,34 +38,36 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\IotaApi.xml</DocumentationFile>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.2.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.1\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Net.Http.dll</HintPath>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Core\Command.cs" />
     <Compile Include="Api\Core\ErrorResponse.cs" />
     <Compile Include="Api\Core\GetInclusionStatesRequest.cs" />
+    <Compile Include="Api\Core\ILocalPoW.cs" />
+    <Compile Include="Api\Model\AccountData.cs" />
     <Compile Include="Api\Model\Input.cs" />
     <Compile Include="Api\Model\Inputs.cs" />
     <Compile Include="Api\Model\Signature.cs" />
@@ -75,7 +77,13 @@
     <Compile Include="Api\Exception\InvisibleBundleTransactionException.cs" />
     <Compile Include="Api\Exception\IllegalAccessError.cs" />
     <Compile Include="Api\Exception\InvalidSignatureException.cs" />
+    <Compile Include="Api\Pow\CurlMode.cs" />
+    <Compile Include="Api\Pow\Kerl.cs" />
+    <Compile Include="Api\Pow\PearlDiver.cs" />
+    <Compile Include="Api\Pow\PearlDiverLocalPoW.cs" />
+    <Compile Include="Api\Pow\Sponge.cs" />
     <Compile Include="Api\Utils\ArrayUtils.cs" />
+    <Compile Include="Api\Utils\BigIntConverter.cs" />
     <Compile Include="Api\Utils\Constants.cs" />
     <Compile Include="Api\Core\StoreTransactionsResponse.cs" />
     <Compile Include="Api\Core\StoreTransactionsRequest.cs" />
@@ -114,22 +122,25 @@
     <Compile Include="Api\Core\IotaResponse.cs" />
     <Compile Include="Api\Core\GetNodeInfoRequest.cs" />
     <Compile Include="Api\Core\GetNodeInfoResponse.cs" />
-    <Compile Include="Api\Utils\ICurl.cs" />
+    <Compile Include="Api\Pow\ICurl.cs" />
     <Compile Include="Api\Exception\IllegalStateException.cs" />
     <Compile Include="Api\Exception\InvalidTryteException.cs" />
     <Compile Include="Api\Exception\IotaApiException.cs" />
-    <Compile Include="Api\Utils\IotaApiUtils.cs" />
     <Compile Include="Api\Utils\Converter.cs" />
+    <Compile Include="Api\Utils\FixedBigIntConverter.cs" />
+    <Compile Include="Api\Utils\IotaApiUtils.cs" />
     <Compile Include="Api\Core\IotaCoreApi.cs" />
+    <Compile Include="Api\Utils\Multisig.cs" />
     <Compile Include="Api\Utils\Rest\JsonSerializer.cs" />
     <Compile Include="Api\Utils\Checksum.cs" />
-    <Compile Include="Api\Utils\Curl.cs" />
+    <Compile Include="Api\Pow\Curl.cs" />
     <Compile Include="Api\Utils\InputValidator.cs" />
     <Compile Include="Api\Exception\InvalidAddressException.cs" />
     <Compile Include="Api\Utils\IotaUnitConverter.cs" />
     <Compile Include="Api\Utils\IotaUnits.cs" />
     <Compile Include="Api\Utils\Rest\JsonWebClient.cs" />
     <Compile Include="Api\Utils\Signing.cs" />
+    <Compile Include="Api\Utils\TritsConverter.cs" />
     <Compile Include="Api\Utils\TrytesConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -139,14 +150,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.props'))" />
-    <Error Condition="!Exists('..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.targets'))" />
-  </Target>
-  <Import Project="..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.targets" Condition="Exists('..\packages\NuGet.Packer.1.2.5\build\NuGet.Packer.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

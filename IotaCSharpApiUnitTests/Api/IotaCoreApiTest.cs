@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using Iota.Lib.CSharp.Api;
-using Iota.Lib.CSharp.Api.Core;
 using Iota.Lib.CSharp.Api.Exception;
-using Iota.Lib.CSharp.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iota.Lib.CSharpTests.Api
@@ -10,27 +8,27 @@ namespace Iota.Lib.CSharpTests.Api
     [TestClass]
     public class IotaCoreApiTest
     {
-        private static string TEST_BUNDLE =
+        private static readonly string TEST_BUNDLE =
             "XZKJUUMQOYUQFKMWQZNTFMSS9FKJLOEV9DXXXWPMQRTNCOUSUQNTBIJTVORLOQPLYZOTMLFRHYKMTGZZU";
 
-        private static string TEST_ADDRESS_WITH_CHECKSUM =
+        private static readonly string TEST_ADDRESS_WITH_CHECKSUM =
             "PNGMCSNRCTRHCHPXYTPKEJYPCOWKOMRXZFHH9N9VDIKMNVAZCMIYRHVJIAZARZTUETJVFDMBEBIQE9QTHBFWDAOEFA";
 
-        private static string TEST_HASH =
+        private static readonly string TEST_HASH =
             "OAATQS9VQLSXCLDJVJJVYUGONXAXOFMJOZNSYWRZSWECMXAQQURHQBJNLD9IOFEPGZEPEMPXCIVRX9999";
 
-        private static IotaApi iotaApi;
+        private static IotaApi _iotaApi;
 
         [TestInitialize]
-        public void createProxyInstance()
+        public void CreateProxyInstance()
         {
-            iotaApi = new IotaApi("node.iotawallet.info", 14265);
+            _iotaApi = new IotaApi("node.iotawallet.info", 14265);
         }
 
         [TestMethod]
-        public void shouldGetNodeInfo()
+        public void ShouldGetNodeInfo()
         {
-            GetNodeInfoResponse nodeInfo = iotaApi.GetNodeInfo();
+            var nodeInfo = _iotaApi.GetNodeInfo();
             Assert.IsNotNull(nodeInfo.AppVersion);
             Assert.IsNotNull(nodeInfo.AppName);
             Assert.IsNotNull(nodeInfo.JreVersion);
@@ -50,18 +48,18 @@ namespace Iota.Lib.CSharpTests.Api
         }
 
         [TestMethod]
-        public void shouldGetNeighbors()
+        public void ShouldGetNeighbors()
         {
-            GetNeighborsResponse neighbors = iotaApi.GetNeighbors();
+            var neighbors = _iotaApi.GetNeighbors();
             Assert.IsNotNull(neighbors.Neighbors);
         }
 
         [TestMethod]
-        public void shouldAddNeighbors()
+        public void ShouldAddNeighbors()
         {
             try
             {
-                AddNeighborsResponse res = iotaApi.AddNeighbors("udp://8.8.8.8:14265");
+                var res = _iotaApi.AddNeighbors("udp://8.8.8.8:14265");
                 Assert.IsNotNull(res);
             }
             catch (IotaApiException e)
@@ -71,11 +69,11 @@ namespace Iota.Lib.CSharpTests.Api
         }
 
         [TestMethod]
-        public void shouldRemoveNeighbors()
+        public void ShouldRemoveNeighbors()
         {
             try
             {
-                RemoveNeighborsResponse res = iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
+                var res = _iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
                 Assert.IsNotNull(res);
             }
             catch (IotaApiException e)
@@ -85,87 +83,90 @@ namespace Iota.Lib.CSharpTests.Api
         }
 
         [TestMethod]
-        public void shouldGetTips()
+        public void ShouldGetTips()
         {
-            GetTipsResponse tips = iotaApi.GetTips();
+            var tips = _iotaApi.GetTips();
             Assert.IsNotNull(tips);
         }
 
         [TestMethod]
-        public void shouldFindTransactionsByAddresses()
+        public void ShouldFindTransactionsByAddresses()
         {
-            FindTransactionsResponse trans = iotaApi.FindTransactionsByAddresses(TEST_ADDRESS_WITH_CHECKSUM);
+            var trans = _iotaApi.FindTransactionsByAddresses(TEST_ADDRESS_WITH_CHECKSUM);
+            Assert.IsNotNull(trans.Hashes);
+            Assert.IsTrue(trans.Hashes.Count > 0);
+        }
+
+        [TestMethod]
+        public void ShouldFindTransactionsByApprovees()
+        {
+            var trans = _iotaApi.FindTransactionsByApprovees(TEST_HASH);
             Assert.IsNotNull(trans.Hashes);
         }
 
         [TestMethod]
-        public void shouldFindTransactionsByApprovees()
+        public void ShouldFindTransactionsByBundles()
         {
-            FindTransactionsResponse trans = iotaApi.FindTransactionsByApprovees(TEST_HASH);
+            var trans = _iotaApi.FindTransactionsByBundles(TEST_HASH);
             Assert.IsNotNull(trans.Hashes);
         }
 
         [TestMethod]
-        public void shouldFindTransactionsByBundles()
+        public void ShouldFindTransactionsByDigests()
         {
-            FindTransactionsResponse trans = iotaApi.FindTransactionsByBundles(TEST_HASH);
+            var trans = _iotaApi.FindTransactionsByDigests(TEST_HASH);
             Assert.IsNotNull(trans.Hashes);
         }
 
         [TestMethod]
-        public void shouldFindTransactionsByDigests()
+        public void ShouldGetTrytes()
         {
-            FindTransactionsResponse trans = iotaApi.FindTransactionsByDigests(TEST_HASH);
-            Assert.IsNotNull(trans.Hashes);
-        }
-
-        [TestMethod]
-        public void shouldGetTrytes()
-        {
-            GetTrytesResponse res = iotaApi.GetTrytes(TEST_HASH);
+            var res = _iotaApi.GetTrytes(TEST_HASH);
             Assert.IsNotNull(res.Trytes);
         }
 
-        [TestMethod, ExpectedException(typeof(IotaApiException), "One of the tips absents")]
-        public void shouldNotGetInclusionStates()
+        [TestMethod]
+        [ExpectedException(typeof(IotaApiException), "One of the tips absents")]
+        public void ShouldNotGetInclusionStates()
         {
-            GetInclusionStatesResponse res = iotaApi.GetInclusionStates(new[] {TEST_ADDRESS_WITH_CHECKSUM},
+            var res = _iotaApi.GetInclusionStates(new[] {TEST_HASH},
                 new[] {"DNSBRJWNOVUCQPILOQIFDKBFJMVOTGHLIMLLRXOHFTJZGRHJUEDAOWXQRYGDI9KHYFGYDWQJZKX999999"});
             Assert.IsNotNull(res.States);
         }
 
         [TestMethod]
-        public void shouldGetInclusionStates()
+        public void ShouldGetInclusionStates()
         {
-            GetInclusionStatesResponse res =
-                iotaApi.GetInclusionStates(
-                    new[] {"DBPECSH9YLSSTQDGERUHJBBJTKVUDBMTJLG9WPHBINGHIFOSJMDJLARTVOXXWEFQJLLBINOHCZGYFSMUEXWPPMTOFW"},
-                    new[] {iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone});
+            var res =
+                _iotaApi.GetInclusionStates(
+                    new[] {TEST_HASH},
+                    new[] {_iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone});
             Assert.IsNotNull(res.States);
         }
 
         [TestMethod] // very long execution
-        public void shouldGetTransactionsToApprove()
+        public void ShouldGetTransactionsToApprove()
         {
-            GetTransactionsToApproveResponse res = iotaApi.GetTransactionsToApprove(27);
+            var res = _iotaApi.GetTransactionsToApprove(27);
             Assert.IsNotNull(res.TrunkTransaction);
             Assert.IsNotNull(res.BranchTransaction);
         }
 
         [TestMethod]
-        public void shouldFindTransactions()
+        public void ShouldFindTransactions()
         {
-            string test = TEST_BUNDLE;
-            FindTransactionsResponse resp = iotaApi.FindTransactions(new[] {test}.ToList(),
+            var test = TEST_BUNDLE;
+            // ReSharper disable once UnusedVariable
+            var resp = _iotaApi.FindTransactions(new[] {test}.ToList(),
                 new[] {test}.ToList(), new[] {test}.ToList(), new[] {test}.ToList());
         }
 
         [TestMethod]
-        public void shouldGetBalances()
+        public void ShouldGetBalances()
         {
-            GetBalancesResponse res = iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), 100);
+            var res = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), 100);
             Assert.IsNotNull(res.Balances);
-            Assert.IsNotNull(res.Milestone);
+            Assert.IsNotNull(res.References);
             Assert.IsNotNull(res.MilestoneIndex);
         }
     }

@@ -30,14 +30,26 @@ namespace Iota.Lib.CSharp.Api.Utils
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static bool IsHash(string hash)
+        {
+            return IsTrytes(hash, 81);
+        }
+
+        /// <summary>
         /// Checks whether the specified address is an address and throws and exception if the address is invalid
         /// </summary>
         /// <param name="address">address to check</param>
         /// <exception cref="InvalidAddressException">exception which is thrown when the address is invalid</exception>
-        public static void CheckAddress(string address)
+        public static bool CheckAddress(string address)
         {
             if (!IsAddress(address))
                 throw new InvalidAddressException(address);
+
+            return true;
         }
 
         /// <summary>
@@ -49,7 +61,10 @@ namespace Iota.Lib.CSharp.Api.Utils
         /// </returns>
         public static bool IsValue(string value)
         {
-            return Regex.IsMatch(value, @"^(-){0,1}\d+$");
+            // ReSharper disable once NotAccessedVariable
+            long tempValue;
+            return long.TryParse(value, out tempValue);
+            //return Regex.IsMatch(value, @"^(-){0,1}\d+$");
         }
 
         /// <summary>
@@ -224,6 +239,16 @@ namespace Iota.Lib.CSharp.Api.Utils
         public static bool IsNinesTrytes(string trytes, int length)
         {
             return trytes.Matches("^[9]{" + (length == 0 ? "0," : length.ToString()) + "}$");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="seed"></param>
+        /// <returns></returns>
+        public static bool IsValidSeed(string seed)
+        {
+            return IsTrytes(seed, seed.Length);
         }
     }
 }

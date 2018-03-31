@@ -1,56 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Iota.Lib.CSharp.Api.Model;
+using Iota.Lib.CSharp.Api.Pow;
 
 namespace Iota.Lib.CSharp.Api.Utils
 {
-    internal class IotaApiUtils
+    /// <summary>
+    /// 
+    /// </summary>
+    public class IotaApiUtils
     {
         /// <summary>
         ///  Generates a new address
         /// </summary>
-        /// <param name="seed"></param>
-        /// <param name="index"></param>
-        /// <param name="checksum"></param>
-        /// <param name="curl"></param>
-        /// <returns></returns>
-        internal static string NewAddress(string seed, int index, bool checksum, ICurl curl)
+        /// <param name="seed">The tryte-encoded seed. It should be noted that this seed is not transferred.</param>
+        /// <param name="security">The secuirty level of private key / seed.</param>
+        /// <param name="index">The index to start search from. If the index is provided, the generation of the address is not deterministic.</param>
+        /// <param name="checksum">The adds 9-tryte address checksum</param>
+        /// <param name="curl">The curl instance.</param>
+        /// <returns>An String with address.</returns>
+        public static string NewAddress(string seed, int security, int index, bool checksum, ICurl curl)
         {
+            if (security < 1)
+                throw new ArgumentException("invalid security level provided");
+
             Signing signing = new Signing(curl);
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
-            // Get the elapsed time as a TimeSpan value.
-            TimeSpan ts = stopWatch.Elapsed;
-
-            // Format and display the TimeSpan value.
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds/10);
-            Console.WriteLine(elapsedTime);
-
-            int[] key = signing.Key(Converter.ToTrits(seed), index, 2);
-
-            ts = stopWatch.Elapsed;
-            elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds/10);
-            Console.WriteLine(elapsedTime);
-
+            int[] key = signing.Key(Converter.ToTrits(seed), index, security);
             int[] digests = signing.Digests(key);
-
-            ts = stopWatch.Elapsed;
-            elapsedTime = String.Format("After Digest {0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds/10);
-            Console.WriteLine(elapsedTime);
-
             int[] addressTrits = signing.Address(digests);
-            ts = stopWatch.Elapsed;
-            elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds/10);
-            Console.WriteLine(elapsedTime);
+
             string address = Converter.ToTrytes(addressTrits);
 
             if (checksum)
@@ -74,7 +52,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             //  Get the corresponding private key and calculate the signatureFragment
             for (int i = 0; i < bundle.Transactions.Count; i++)
             {
-                if (Int64.Parse(bundle.Transactions[i].Value) < 0)
+                if (bundle.Transactions[i].Value < 0)
                 {
                     string thisAddress = bundle.Transactions[i].Address;
 
@@ -107,7 +85,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     int[] firstSignedFragment = new Signing(curl).SignatureFragment(firstBundleFragment, firstFragment);
 
                     //  Convert signature to trytes and assign the new signatureFragment
-                    bundle.Transactions[i].SignatureFragment = Converter.ToTrytes(firstSignedFragment);
+                    bundle.Transactions[i].SignatureMessageFragment = Converter.ToTrytes(firstSignedFragment);
 
                     //  Because the signature is > 2187 trytes, we need to
                     //  find the second transaction to add the remainder of the signature
@@ -115,7 +93,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                     {
                         //  Same address as well as value = 0 (as we already spent the input)
                         if (bundle.Transactions[j].Address.Equals(thisAddress) &&
-                            Int64.Parse(bundle.Transactions[j].Value) == 0)
+                            bundle.Transactions[j].Value == 0)
                         {
                             // Use the second 6562 trits
                             int[] secondFragment = ArrayUtils.SubArray2(key, 6561, 6561);
@@ -128,7 +106,7 @@ namespace Iota.Lib.CSharp.Api.Utils
                                 secondFragment);
 
                             //  Convert signature to trytes and assign it again to this bundle entry
-                            bundle.Transactions[j].SignatureFragment = (Converter.ToTrytes(secondSignedFragment));
+                            bundle.Transactions[j].SignatureMessageFragment = (Converter.ToTrytes(secondSignedFragment));
                         }
                     }
                 }
@@ -141,6 +119,7 @@ namespace Iota.Lib.CSharp.Api.Utils
             {
                 bundleTrytes.Add(tx.ToTransactionTrytes());
             }
+
             bundleTrytes.Reverse();
             return bundleTrytes;
         }
