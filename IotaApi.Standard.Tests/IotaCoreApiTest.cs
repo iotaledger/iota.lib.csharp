@@ -47,6 +47,31 @@ namespace Iota.Api.Standard.Tests
         }
 
         [TestMethod]
+        public void ShouldGetNodeInfoWithHttps()
+        {
+            var iotaApi = new IotaApi("nodes.iota.cafe", 443, "https");
+
+            var nodeInfo = iotaApi.GetNodeInfo();
+            Assert.IsNotNull(nodeInfo.AppVersion);
+            Assert.IsNotNull(nodeInfo.AppName);
+            Assert.IsNotNull(nodeInfo.JreVersion);
+            Assert.IsNotNull(nodeInfo.JreAvailableProcessors);
+            Assert.IsNotNull(nodeInfo.JreFreeMemory);
+            Assert.IsNotNull(nodeInfo.JreMaxMemory);
+            Assert.IsNotNull(nodeInfo.JreTotalMemory);
+            Assert.IsNotNull(nodeInfo.LatestMilestone);
+            Assert.IsNotNull(nodeInfo.LatestMilestoneIndex);
+            Assert.IsNotNull(nodeInfo.LatestSolidSubtangleMilestone);
+            Assert.IsNotNull(nodeInfo.LatestSolidSubtangleMilestoneIndex);
+            Assert.IsNotNull(nodeInfo.Neighbors);
+            Assert.IsNotNull(nodeInfo.PacketsQueueSize);
+            Assert.IsNotNull(nodeInfo.Time);
+            Assert.IsNotNull(nodeInfo.Tips);
+            Assert.IsNotNull(nodeInfo.TransactionsToRequest);
+        }
+
+
+        [TestMethod]
         public void ShouldGetNeighbors()
         {
             var neighbors = _iotaApi.GetNeighbors();

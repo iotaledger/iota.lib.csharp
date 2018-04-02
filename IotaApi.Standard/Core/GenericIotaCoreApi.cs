@@ -9,18 +9,17 @@ namespace Iota.Api.Standard.Core
     /// <seealso cref="IGenericIotaCoreApi" />
     public class GenericIotaCoreApi : IGenericIotaCoreApi
     {
-        private readonly string _host;
-        private readonly int _port;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericIotaCoreApi"/> class.
         /// </summary>
         /// <param name="host">The host.</param>
         /// <param name="port">The port.</param>
-        public GenericIotaCoreApi(string host, int port)
+        /// <param name="protocol"></param>
+        public GenericIotaCoreApi(string host, int port, string protocol)
         {
-            _host = host;
-            _port = port;
+            Hostname = host;
+            Port = port;
+            Protocol = protocol;
         }
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace Iota.Api.Standard.Core
         /// <value>
         /// The hostname.
         /// </value>
-        public string Hostname => _host;
+        public string Hostname { get; }
 
         /// <summary>
         /// Gets the port.
@@ -37,8 +36,13 @@ namespace Iota.Api.Standard.Core
         /// <value>
         /// The port.
         /// </value>
-        public int Port => _port;
+        public int Port { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Protocol { get; }
+        
         /// <summary>
         /// Requests the specified request.
         /// </summary>
@@ -70,7 +74,7 @@ namespace Iota.Api.Standard.Core
 
         private string CreateBaseUrl()
         {
-            return "http://" + _host + ":" + _port;
+            return $"{Protocol}://{Hostname}:{Port}";
         }
     }
 }

@@ -24,9 +24,10 @@ namespace Iota.Lib.CSharp.Api.Core
         /// </summary>
         /// <param name="host">hostname or API address of a node to interact with</param>
         /// <param name="port">tcp/udp port</param>
-        public IotaCoreApi(string host, int port)
+        /// <param name="protocol"></param>
+        public IotaCoreApi(string host, int port, string protocol)
         {
-            _genericIotaCoreApi = new GenericIotaCoreApi(host, port);
+            _genericIotaCoreApi = new GenericIotaCoreApi(host, port, protocol);
         }
 
         /// <summary>
@@ -192,7 +193,8 @@ namespace Iota.Lib.CSharp.Api.Core
         /// <returns> trunkTransaction and branchTransaction (result of the Tip selection)</returns>
         public GetTransactionsToApproveResponse GetTransactionsToApprove(int depth)
         {
-            GetTransactionsToApproveRequest getTransactionsToApproveRequest = new GetTransactionsToApproveRequest(depth);
+            GetTransactionsToApproveRequest getTransactionsToApproveRequest =
+                new GetTransactionsToApproveRequest(depth);
             return
                 _genericIotaCoreApi.Request<GetTransactionsToApproveRequest, GetTransactionsToApproveResponse>(
                     getTransactionsToApproveRequest);

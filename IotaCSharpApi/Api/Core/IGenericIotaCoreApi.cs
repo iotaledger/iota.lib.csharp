@@ -24,6 +24,11 @@ namespace Iota.Lib.CSharp.Api.Core
         int Port { get; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        string Protocol { get; }
+
+        /// <summary>
         /// Requests the specified request.
         /// </summary>
         /// <typeparam name="TRequest">The type of the request.</typeparam>

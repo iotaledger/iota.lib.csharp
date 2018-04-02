@@ -24,9 +24,9 @@ namespace Iota.Api.Standard.Core
         /// </summary>
         /// <param name="host">hostname or API address of a node to interact with</param>
         /// <param name="port">tcp/udp port</param>
-        public IotaCoreApi(string host, int port)
+        public IotaCoreApi(string host, int port, string protocol)
         {
-            _genericIotaCoreApi = new GenericIotaCoreApi(host, port);
+            _genericIotaCoreApi = new GenericIotaCoreApi(host, port,protocol);
         }
 
         /// <summary>

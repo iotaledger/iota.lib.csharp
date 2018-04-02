@@ -22,7 +22,8 @@ namespace Iota.Lib.CSharp.Api
         /// </summary>
         /// <param name="host">hostname or API address of a node to interact with</param>
         /// <param name="port">tcp/udp port</param>
-        public IotaApi(string host, int port) : this(host, port, new Kerl())
+        /// <param name="protocol"></param>
+        public IotaApi(string host, int port, string protocol = "http") : this(host, port, new Kerl(), protocol)
         {
         }
 
@@ -35,7 +36,8 @@ namespace Iota.Lib.CSharp.Api
         ///     a custom curl implementation to be used to perform the pow. Use the other constructor in order to
         ///     use the default curl implementation provided by the library
         /// </param>
-        public IotaApi(string host, int port, ICurl curl) : base(host, port)
+        /// <param name="protocol"></param>
+        public IotaApi(string host, int port, ICurl curl, string protocol) : base(host, port, protocol)
         {
             _curl = curl ?? throw new ArgumentNullException(nameof(curl));
         }
