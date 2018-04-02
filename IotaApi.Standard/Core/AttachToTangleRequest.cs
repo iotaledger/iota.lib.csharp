@@ -7,7 +7,7 @@ namespace Iota.Api.Standard.Core
     /// </summary>
     public class AttachToTangleRequest : IotaRequest
     {
-        private const int MinWeightMagnitudeMin = 18;
+        private const int MinWeightMagnitudeMin = 14;
         private int _minWeightMagnitude = MinWeightMagnitudeMin;
 
         /// <summary>
