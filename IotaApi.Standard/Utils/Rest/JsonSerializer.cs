@@ -28,7 +28,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp.Serializers;
 
-namespace Iota.Api.Standard.Utils.Rest
+namespace Iota.Api.Utils.Rest
 {
     /// <summary>
     /// Default JSON serializer for request bodies

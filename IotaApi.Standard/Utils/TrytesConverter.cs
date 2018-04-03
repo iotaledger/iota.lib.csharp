@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     ///     This class allows to convert between ASCII and tryte encoded strings

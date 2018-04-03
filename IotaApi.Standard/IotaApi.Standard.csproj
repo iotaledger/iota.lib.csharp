@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Iota.Api.Standard</RootNamespace>
+    <RootNamespace>Iota.Api</RootNamespace>
     <AssemblyName>Iota.Api.Standard</AssemblyName>
   </PropertyGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace Iota.Api.Standard.Pow
+﻿namespace Iota.Api.Pow
 {
     /// <summary>
     /// This interface abstracts the curl hashing algorithm

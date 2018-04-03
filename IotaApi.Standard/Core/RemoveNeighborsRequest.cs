@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     /// This class represents the core api request 'RemoveNeighbors'

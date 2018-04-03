@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     /// This enumeration defines the core API call commands

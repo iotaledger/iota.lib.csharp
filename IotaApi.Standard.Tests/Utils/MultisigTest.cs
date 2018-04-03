@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Iota.Api.Standard.Model;
-using Iota.Api.Standard.Pow;
-using Iota.Api.Standard.Utils;
+using Iota.Api.Model;
+using Iota.Api.Pow;
+using Iota.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Tests.Utils
 {
     [TestClass]
     public class MultisigTest

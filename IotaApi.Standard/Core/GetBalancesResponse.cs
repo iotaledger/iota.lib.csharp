@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     ///     Response of <see cref="GetBalancesRequest" />

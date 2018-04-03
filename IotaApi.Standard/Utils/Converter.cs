@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     /// This class provides a set of utility methods to are used to convert between different formats

@@ -1,7 +1,7 @@
 ﻿using System;
 using Org.BouncyCastle.Math;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     /// 

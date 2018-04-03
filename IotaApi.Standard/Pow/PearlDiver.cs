@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Iota.Api.Standard.Pow
+namespace Iota.Api.Pow
 {
     /// <summary>
     ///     (c) 2016 Come-from-Beyond

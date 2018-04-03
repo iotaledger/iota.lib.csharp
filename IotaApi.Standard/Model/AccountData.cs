@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Iota.Api.Standard.Model
+namespace Iota.Api.Model
 {
     /// <summary>
     /// 

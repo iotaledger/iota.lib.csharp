@@ -1,4 +1,4 @@
-﻿namespace Iota.Api.Standard.Model
+﻿namespace Iota.Api.Model
 {
     /// <summary>
     /// This class represents a neigbhor

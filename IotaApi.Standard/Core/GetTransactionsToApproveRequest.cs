@@ -1,4 +1,4 @@
-﻿namespace Iota.Api.Standard.Core
+﻿namespace Iota.Api.Core
 {
     /// <summary>
     /// This class represents the core API call 'GetTransactionsToApprove'

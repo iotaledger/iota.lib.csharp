@@ -1,9 +1,9 @@
 ﻿using System;
-using Iota.Api.Standard.Exception;
-using Iota.Api.Standard.Utils;
+using Iota.Api.Exception;
+using Iota.Api.Utils;
 using Org.BouncyCastle.Crypto.Digests;
 
-namespace Iota.Api.Standard.Pow
+namespace Iota.Api.Pow
 {
     /// <summary>
     /// </summary>

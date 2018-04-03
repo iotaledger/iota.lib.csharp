@@ -1,7 +1,7 @@
 ﻿using System;
-using Iota.Api.Standard.Utils.Rest;
+using Iota.Api.Utils.Rest;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     /// This class represents a generic version of the core API that is used internally 

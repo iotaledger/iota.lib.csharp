@@ -1,4 +1,4 @@
-﻿namespace Iota.Api.Standard.Core
+﻿namespace Iota.Api.Core
 {
     /// <summary>
     /// Returns information about your node

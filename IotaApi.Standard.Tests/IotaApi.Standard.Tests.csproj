@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Iota.Api.Standard.Tests</RootNamespace>
+    <RootNamespace>Iota.Api.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

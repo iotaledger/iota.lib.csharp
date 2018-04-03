@@ -1,15 +1,15 @@
-namespace Iota.Api.Standard.Exception
+namespace Iota.Api.Exception
 {
     /// <summary>
-    /// This exception occurs when an invalid signature is encountered
+    ///     This exception occurs when an invalid signature is encountered
     /// </summary>
     /// <seealso cref="System.Exception" />
     public class InvalidSignatureException : System.Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidSignatureException"/> class.
+        ///     Initializes a new instance of the <see cref="InvalidSignatureException" /> class.
         /// </summary>
-        public InvalidSignatureException() :base("Invalid signature found")
+        public InvalidSignatureException() : base("Invalid signature found")
         {
         }
     }

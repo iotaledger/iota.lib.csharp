@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     /// This interface abstracts a generic version of the core api that is used internally.

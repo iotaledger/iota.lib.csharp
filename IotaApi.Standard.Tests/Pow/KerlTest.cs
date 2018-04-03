@@ -1,8 +1,8 @@
-﻿using Iota.Api.Standard.Pow;
-using Iota.Api.Standard.Utils;
+﻿using Iota.Api.Pow;
+using Iota.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iota.Api.Standard.Tests.Pow
+namespace Iota.Api.Tests.Pow
 {
     [TestClass]
     public class KerlTest

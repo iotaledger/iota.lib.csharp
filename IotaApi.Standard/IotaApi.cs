@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Iota.Api.Standard.Core;
-using Iota.Api.Standard.Exception;
-using Iota.Api.Standard.Model;
-using Iota.Api.Standard.Pow;
-using Iota.Api.Standard.Utils;
+using Iota.Api.Core;
+using Iota.Api.Exception;
+using Iota.Api.Model;
+using Iota.Api.Pow;
+using Iota.Api.Utils;
 
-namespace Iota.Api.Standard
+namespace Iota.Api
 {
     /// <summary>
     ///     This class provides access to the core API methods and the proposed calls

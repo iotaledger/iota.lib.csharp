@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Iota.Api.Standard.Exception;
-using Iota.Api.Standard.Model;
+using Iota.Api.Exception;
+using Iota.Api.Model;
 using RestSharp.Extensions;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     /// This class provides methods to validate the parameters of different iota API methods

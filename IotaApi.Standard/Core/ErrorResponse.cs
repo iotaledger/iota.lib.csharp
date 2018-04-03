@@ -1,4 +1,4 @@
-﻿namespace Iota.Api.Standard.Core
+﻿namespace Iota.Api.Core
 {
     internal class ErrorResponse
     {

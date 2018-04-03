@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iota.Api.Standard.Model;
-using Iota.Api.Standard.Utils;
+using Iota.Api.Model;
+using Iota.Api.Utils;
 using RestSharp.Extensions;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     /// This class provides access to the Iota core API
@@ -24,6 +24,7 @@ namespace Iota.Api.Standard.Core
         /// </summary>
         /// <param name="host">hostname or API address of a node to interact with</param>
         /// <param name="port">tcp/udp port</param>
+        /// <param name="protocol"></param>
         public IotaCoreApi(string host, int port, string protocol)
         {
             _genericIotaCoreApi = new GenericIotaCoreApi(host, port,protocol);

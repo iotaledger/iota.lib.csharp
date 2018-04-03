@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FC2C2F96-49EA-4046-95BD-3B570BDD1E13}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Iota.Api</RootNamespace>
+    <AssemblyName>Iota.Api</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\Iota.Api.xml</DocumentationFile>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Iota.Api.xml</DocumentationFile>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.2.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.1\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\IotaApi.Standard\Core\AddNeighborsRequest.cs">
+      <Link>Core\AddNeighborsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\AddNeighborsResponse.cs">
+      <Link>Core\AddNeighborsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\AttachToTangleRequest.cs">
+      <Link>Core\AttachToTangleRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\AttachToTangleResponse.cs">
+      <Link>Core\AttachToTangleResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\BroadcastTransactionsRequest.cs">
+      <Link>Core\BroadcastTransactionsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\BroadcastTransactionsResponse.cs">
+      <Link>Core\BroadcastTransactionsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\Command.cs">
+      <Link>Core\Command.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\EnumHelper.cs">
+      <Link>Core\EnumHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\ErrorResponse.cs">
+      <Link>Core\ErrorResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\FindTransactionsRequest.cs">
+      <Link>Core\FindTransactionsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\FindTransactionsResponse.cs">
+      <Link>Core\FindTransactionsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GenericIotaCoreApi.cs">
+      <Link>Core\GenericIotaCoreApi.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetBalancesRequest.cs">
+      <Link>Core\GetBalancesRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetBalancesResponse.cs">
+      <Link>Core\GetBalancesResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetInclusionStatesRequest.cs">
+      <Link>Core\GetInclusionStatesRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetInclusionStatesResponse.cs">
+      <Link>Core\GetInclusionStatesResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetNeighborsRequest.cs">
+      <Link>Core\GetNeighborsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetNeighborsResponse.cs">
+      <Link>Core\GetNeighborsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetNodeInfoRequest.cs">
+      <Link>Core\GetNodeInfoRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetNodeInfoResponse.cs">
+      <Link>Core\GetNodeInfoResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetTipsRequest.cs">
+      <Link>Core\GetTipsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetTipsResponse.cs">
+      <Link>Core\GetTipsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetTransactionsToApproveRequest.cs">
+      <Link>Core\GetTransactionsToApproveRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetTransactionsToApproveResponse.cs">
+      <Link>Core\GetTransactionsToApproveResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetTrytesRequest.cs">
+      <Link>Core\GetTrytesRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\GetTrytesResponse.cs">
+      <Link>Core\GetTrytesResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\IGenericIotaCoreApi.cs">
+      <Link>Core\IGenericIotaCoreApi.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\ILocalPoW.cs">
+      <Link>Core\ILocalPoW.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\InterruptAttachingToTangleRequest.cs">
+      <Link>Core\InterruptAttachingToTangleRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\InterruptAttachingToTangleResponse.cs">
+      <Link>Core\InterruptAttachingToTangleResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\IotaCoreApi.cs">
+      <Link>Core\IotaCoreApi.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\IotaRequest.cs">
+      <Link>Core\IotaRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\IotaResponse.cs">
+      <Link>Core\IotaResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\RemoveNeighborsRequest.cs">
+      <Link>Core\RemoveNeighborsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\RemoveNeighborsResponse.cs">
+      <Link>Core\RemoveNeighborsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\StoreTransactionsRequest.cs">
+      <Link>Core\StoreTransactionsRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Core\StoreTransactionsResponse.cs">
+      <Link>Core\StoreTransactionsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\IllegalAccessError.cs">
+      <Link>Exception\IllegalAccessError.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\IllegalStateException.cs">
+      <Link>Exception\IllegalStateException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\InvalidAddressException.cs">
+      <Link>Exception\InvalidAddressException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\InvalidBundleException.cs">
+      <Link>Exception\InvalidBundleException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\InvalidSignatureException.cs">
+      <Link>Exception\InvalidSignatureException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\InvalidTailTransactionException.cs">
+      <Link>Exception\InvalidTailTransactionException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\InvalidTryteException.cs">
+      <Link>Exception\InvalidTryteException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\InvisibleBundleTransactionException.cs">
+      <Link>Exception\InvisibleBundleTransactionException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\IotaApiException.cs">
+      <Link>Exception\IotaApiException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Exception\NotEnoughBalanceException.cs">
+      <Link>Exception\NotEnoughBalanceException.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\IotaApi.cs">
+      <Link>IotaApi.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\AccountData.cs">
+      <Link>Model\AccountData.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\Bundle.cs">
+      <Link>Model\Bundle.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\Input.cs">
+      <Link>Model\Input.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\Inputs.cs">
+      <Link>Model\Inputs.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\Neighbor.cs">
+      <Link>Model\Neighbor.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\Signature.cs">
+      <Link>Model\Signature.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\Transaction.cs">
+      <Link>Model\Transaction.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Model\Transfer.cs">
+      <Link>Model\Transfer.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Pow\Curl.cs">
+      <Link>Pow\Curl.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Pow\CurlMode.cs">
+      <Link>Pow\CurlMode.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Pow\ICurl.cs">
+      <Link>Pow\ICurl.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Pow\Kerl.cs">
+      <Link>Pow\Kerl.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Pow\PearlDiver.cs">
+      <Link>Pow\PearlDiver.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Pow\PearlDiverLocalPoW.cs">
+      <Link>Pow\PearlDiverLocalPoW.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Pow\Sponge.cs">
+      <Link>Pow\Sponge.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\ArrayUtils.cs">
+      <Link>Utils\ArrayUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\BigIntConverter.cs">
+      <Link>Utils\BigIntConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\Checksum.cs">
+      <Link>Utils\Checksum.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\Constants.cs">
+      <Link>Utils\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\Converter.cs">
+      <Link>Utils\Converter.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\FixedBigIntConverter.cs">
+      <Link>Utils\FixedBigIntConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\InputValidator.cs">
+      <Link>Utils\InputValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\IotaApiUtils.cs">
+      <Link>Utils\IotaApiUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\IotaUnitConverter.cs">
+      <Link>Utils\IotaUnitConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\IotaUnits.cs">
+      <Link>Utils\IotaUnits.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\Multisig.cs">
+      <Link>Utils\Multisig.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\Rest\JsonSerializer.cs">
+      <Link>Utils\Rest\JsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\Rest\JsonWebClient.cs">
+      <Link>Utils\Rest\JsonWebClient.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\Signing.cs">
+      <Link>Utils\Signing.cs</Link>
+    </Compile>
+    <Compile Include="..\IotaApi.Standard\Utils\TrytesConverter.cs">
+      <Link>Utils\TrytesConverter.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Package.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

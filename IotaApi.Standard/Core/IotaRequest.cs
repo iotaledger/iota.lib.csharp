@@ -1,4 +1,4 @@
-﻿namespace Iota.Api.Standard.Core
+﻿namespace Iota.Api.Core
 {
     /// <summary>
     /// This class serves as base class for the different core API calls/requests

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Iota.Api.Standard.Model;
+using Iota.Api.Model;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     /// Response of <see cref="GetNeighborsRequest"/>

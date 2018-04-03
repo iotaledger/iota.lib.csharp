@@ -1,4 +1,4 @@
-﻿namespace Iota.Api.Standard.Utils
+﻿namespace Iota.Api.Utils
 {
     /// <summary>
     ///     This class defines different constants that are used accros the library

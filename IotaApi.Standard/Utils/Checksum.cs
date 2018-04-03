@@ -1,7 +1,7 @@
-﻿using Iota.Api.Standard.Exception;
-using Iota.Api.Standard.Pow;
+﻿using Iota.Api.Exception;
+using Iota.Api.Pow;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     ///     This class defines utility methods to add/remove the checksum to/from an address

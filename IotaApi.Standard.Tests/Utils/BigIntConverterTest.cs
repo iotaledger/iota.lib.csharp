@@ -1,9 +1,9 @@
 ﻿using System;
-using Iota.Api.Standard.Utils;
+using Iota.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Org.BouncyCastle.Math;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Tests.Utils
 {
     [TestClass]
     public class BigIntConverterTest

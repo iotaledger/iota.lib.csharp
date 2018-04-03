@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Iota.Api.Standard.Exception;
-using Iota.Api.Standard.Model;
+using Iota.Api.Exception;
+using Iota.Api.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iota.Api.Standard.Tests
+namespace Iota.Api.Tests
 {
     [TestClass]
     public class IotaApiTests

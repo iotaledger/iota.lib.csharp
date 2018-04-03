@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iota.Api.Standard.Model;
-using Iota.Api.Standard.Pow;
+using Iota.Api.Model;
+using Iota.Api.Pow;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     //TODO(gjc): add comments
 

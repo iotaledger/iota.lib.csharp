@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Iota.Api.Standard.Exception;
+using Iota.Api.Exception;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iota.Api.Standard.Tests
+namespace Iota.Api.Tests
 {
     [TestClass]
     public class IotaCoreApiTest

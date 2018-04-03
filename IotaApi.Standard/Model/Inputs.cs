@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Iota.Api.Standard.Model
+namespace Iota.Api.Model
 {
     /// <summary>
     /// This class represents the Inputs

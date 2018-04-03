@@ -1,8 +1,8 @@
-﻿using Iota.Api.Standard.Core;
-using Iota.Api.Standard.Exception;
-using Iota.Api.Standard.Utils;
+﻿using Iota.Api.Core;
+using Iota.Api.Exception;
+using Iota.Api.Utils;
 
-namespace Iota.Api.Standard.Pow
+namespace Iota.Api.Pow
 {
     /// <summary>
     /// </summary>

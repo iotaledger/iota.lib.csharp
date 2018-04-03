@@ -1,8 +1,8 @@
 ﻿using System;
 using Iesi.Collections.Generic;
-using Iota.Api.Standard.Exception;
+using Iota.Api.Exception;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     /// 

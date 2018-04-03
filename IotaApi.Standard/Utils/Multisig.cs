@@ -1,8 +1,8 @@
 ﻿using System;
-using Iota.Api.Standard.Model;
-using Iota.Api.Standard.Pow;
+using Iota.Api.Model;
+using Iota.Api.Pow;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     /// </summary>

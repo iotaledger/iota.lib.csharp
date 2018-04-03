@@ -1,7 +1,7 @@
-﻿using Iota.Api.Standard.Utils;
+﻿using Iota.Api.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Tests.Utils
 {
     [TestClass]
     public class IotaUnitConverterTest

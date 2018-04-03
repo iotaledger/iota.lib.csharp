@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     internal class ArrayUtils
     {

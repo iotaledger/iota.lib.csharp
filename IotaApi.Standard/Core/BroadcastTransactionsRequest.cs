@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Iota.Api.Standard.Core
+namespace Iota.Api.Core
 {
     /// <summary>
     /// Broadcast a list of transactions to all neighbors. The input trytes for this call are provided by attachToTangle

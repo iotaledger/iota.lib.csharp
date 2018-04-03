@@ -3,11 +3,11 @@ using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Text;
-using Iota.Api.Standard.Core;
-using Iota.Api.Standard.Exception;
+using Iota.Api.Core;
+using Iota.Api.Exception;
 using Newtonsoft.Json;
 
-namespace Iota.Api.Standard.Utils.Rest
+namespace Iota.Api.Utils.Rest
 {
     internal class JsonWebClient
     {

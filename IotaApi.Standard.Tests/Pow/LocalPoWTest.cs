@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Iota.Api.Standard.Model;
-using Iota.Api.Standard.Pow;
+using Iota.Api.Model;
+using Iota.Api.Pow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Iota.Api.Standard.Tests.Pow
+namespace Iota.Api.Tests.Pow
 {
     [TestClass]
     public class LocalPoWTest

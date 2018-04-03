@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Iota.Api.Standard.Pow;
-using Iota.Api.Standard.Utils;
+using Iota.Api.Pow;
+using Iota.Api.Utils;
 
-namespace Iota.Api.Standard.Model
+namespace Iota.Api.Model
 {
     /// <summary>
     ///     This class represents a Bundle, a set of transactions

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Iota.Api.Standard.Utils
+namespace Iota.Api.Utils
 {
     /// <summary>
     /// This class provides methods to convert Iota to different units
