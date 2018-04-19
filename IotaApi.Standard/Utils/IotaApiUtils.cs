@@ -58,11 +58,13 @@ namespace Iota.Api.Utils
 
                     // Get the corresponding keyIndex of the address
                     int keyIndex = 0;
+                    int keySecurity = 0;
                     foreach (Input input in inputs)
                     {
                         if (input.Address.Equals(thisAddress))
                         {
                             keyIndex = input.KeyIndex;
+                            keySecurity = input.Security;
                             break;
                         }
                     }
@@ -70,7 +72,7 @@ namespace Iota.Api.Utils
                     string bundleHash = bundle.Transactions[i].Bundle;
 
                     // Get corresponding private key of address
-                    int[] key = new Signing(curl).Key(Converter.ToTrits(seed), keyIndex, 2);
+                    int[] key = new Signing(curl).Key(Converter.ToTrits(seed), keyIndex, keySecurity);
 
                     //  First 6561 trits for the firstFragment
                     int[] firstFragment = ArrayUtils.SubArray2(key, 0, 6561);
@@ -87,28 +89,34 @@ namespace Iota.Api.Utils
                     //  Convert signature to trytes and assign the new signatureFragment
                     bundle.Transactions[i].SignatureMessageFragment = Converter.ToTrytes(firstSignedFragment);
 
-                    //  Because the signature is > 2187 trytes, we need to
-                    //  find the second transaction to add the remainder of the signature
-                    for (int j = 0; j < bundle.Transactions.Count; j++)
+
+                    // if user chooses higher than 27-tryte security
+                    // for each security level, add an additional signature
+                    for (int j = 1; j < keySecurity; j++)
                     {
+                        //  Because the signature is > 2187 trytes, we need to
+                        //  find the second transaction to add the remainder of the signature
                         //  Same address as well as value = 0 (as we already spent the input)
-                        if (bundle.Transactions[j].Address.Equals(thisAddress) &&
-                            bundle.Transactions[j].Value == 0)
+                        if (bundle.Transactions[i + j].Address.Equals(thisAddress) &&
+                            bundle.Transactions[i + j].Value == 0)
                         {
                             // Use the second 6562 trits
-                            int[] secondFragment = ArrayUtils.SubArray2(key, 6561, 6561);
+                            int[] secondFragment = ArrayUtils.SubArray2(key, 6561 * j, 6561 * (j + 1));
 
                             // The second 27 to 54 trytes of the bundle hash
-                            int[] secondBundleFragment = ArrayUtils.SubArray2(normalizedBundleHash, 27, 27);
+                            int[] secondBundleFragment =
+                                ArrayUtils.SubArray2(normalizedBundleHash, 27 * j, 27 * (j + 1));
 
                             //  Calculate the new signature
                             int[] secondSignedFragment = new Signing(curl).SignatureFragment(secondBundleFragment,
                                 secondFragment);
 
                             //  Convert signature to trytes and assign it again to this bundle entry
-                            bundle.Transactions[j].SignatureMessageFragment = (Converter.ToTrytes(secondSignedFragment));
+                            bundle.Transactions[i + j].SignatureMessageFragment =
+                                (Converter.ToTrytes(secondSignedFragment));
                         }
                     }
+
                 }
             }
 

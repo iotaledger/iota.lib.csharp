@@ -118,7 +118,7 @@ namespace Iota.Api
             if (security < 1)
                 throw new ArgumentException("invalid security level provided");
 
-            var getBalancesResponse = GetBalances(addresses.ToList(), 100);
+            var getBalancesResponse = GetBalances(addresses.ToList());
 
             var balances = getBalancesResponse.Balances;
 
@@ -266,7 +266,7 @@ namespace Iota.Api
                     var inputAddresses = new List<string>();
                     foreach (var input in inputs) inputAddresses.Add(input.Address);
 
-                    var balances = GetBalances(inputAddresses, 100);
+                    var balances = GetBalances(inputAddresses);
 
                     var confirmedInputs = new List<Input>();
 
@@ -335,7 +335,8 @@ namespace Iota.Api
                 var timestamp = IotaApiUtils.CreateTimeStampNow();
 
                 // Add input as bundle entry
-                bundle.AddEntry(security, input.Address, toSubtract, tag, timestamp);
+                // use input.Security
+                bundle.AddEntry(input.Security, input.Address, toSubtract, tag, timestamp);
                 // If there is a remainder value
                 // Add extra output to send remaining funds to
 
@@ -351,9 +352,10 @@ namespace Iota.Api
                         bundle.AddEntry(1, remainderAddress, remainder, tag, timestamp);
 
                         // function for signing inputs
-                        IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
+                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
                     }
-                    else if (remainder > 0)
+
+                    if (remainder > 0)
                     {
                         // Generate a new Address by calling getNewAddress
                         // ReSharper disable RedundantArgumentDefaultValue
@@ -366,19 +368,15 @@ namespace Iota.Api
                         // function for signing inputs
                         return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
                     }
-                    else
-                    {
-                        // If there is no remainder, do not add transaction to bundle
-                        // simply sign and return
-                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
-                    }
+
+                    // If there is no remainder, do not add transaction to bundle
+                    // simply sign and return
+                    return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
                 }
+
                 // If multiple inputs provided, subtract the totalTransferValue by
                 // the inputs balance
-                else
-                {
-                    totalTransferValue -= thisBalance;
-                }
+                totalTransferValue -= thisBalance;
             }
 
             throw new NotEnoughBalanceException(totalValue);
@@ -1021,7 +1019,7 @@ namespace Iota.Api
             // Get inputs if we are sending tokens
             if (totalValue != 0)
             {
-                GetBalancesResponse balancesResponse = GetBalances(new List<string> { inputAddress }, 100);
+                GetBalancesResponse balancesResponse = GetBalances(new List<string> { inputAddress });
                 var balances = balancesResponse.Balances;
 
                 long totalBalance = 0;

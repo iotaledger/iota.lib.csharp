@@ -123,12 +123,12 @@ namespace Iota.Api.Core
         /// <summary>
         /// Gets the balances.
         /// </summary>
-        /// <param name="addresses">The addresses.</param>
-        /// <param name="threshold">The threshold.</param>
+        /// <param name="addresses">List of addresses you want to get the confirmed balance from</param>
+        /// <param name="threshold">Confirmation threshold, should be set to 100.</param>
         /// <returns> It returns the confirmed balance which a list of addresses have at the latest confirmed milestone. 
         /// In addition to the balances, it also returns the milestone as well as the index with which the confirmed balance was determined. 
         /// The balances is returned as a list in the same order as the addresses were provided as input.</returns>
-        public GetBalancesResponse GetBalances(List<string> addresses, long threshold)
+        public GetBalancesResponse GetBalances(List<string> addresses, long threshold = 100)
         {
             List<string> addressesWithoutChecksum = new List<string>();
             foreach (var address in addresses)

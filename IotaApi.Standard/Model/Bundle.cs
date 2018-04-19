@@ -44,7 +44,7 @@ namespace Iota.Api.Model
         /// <value>
         ///     The transactions.
         /// </value>
-        public List<Transaction> Transactions { get; set; }
+        public List<Transaction> Transactions { get; private set; }
 
         /// <summary>
         ///     Gets or sets the length of the bundle
@@ -86,6 +86,9 @@ namespace Iota.Api.Model
         /// <param name="timestamp">The timestamp.</param>
         public void AddEntry(int signatureMessageLength, string address, long value, string tag, long timestamp)
         {
+            if (Transactions == null)
+                Transactions = new List<Transaction>();
+
             for (var i = 0; i < signatureMessageLength; i++)
             {
                 var trx = new Transaction(address, i == 0 ? value : 0, tag, timestamp);
@@ -178,33 +181,56 @@ namespace Iota.Api.Model
         /// <param name="customCurl">The custom curl.</param>
         public void FinalizeBundle(ICurl customCurl)
         {
-            customCurl.Reset();
+            string hashInTrytes = string.Empty;
 
-            for (var i = 0; i < Transactions.Count; i++)
+            bool validBundle = false;
+
+            while (!validBundle)
             {
-                var valueTrits = Converter.ToTrits(Transactions[i].Value, 81);
+                customCurl.Reset();
 
-                var timestampTrits = Converter.ToTrits(Transactions[i].Timestamp, 27);
+                for (var i = 0; i < Transactions.Count; i++)
+                {
+                    var valueTrits = Converter.ToTrits(Transactions[i].Value, 81);
 
-                var currentIndexTrits = Converter.ToTrits(Transactions[i].CurrentIndex = i, 27);
+                    var timestampTrits = Converter.ToTrits(Transactions[i].Timestamp, 27);
 
-                var lastIndexTrits = Converter.ToTrits(
-                    Transactions[i].LastIndex = Transactions.Count - 1, 27);
+                    var currentIndexTrits = Converter.ToTrits(Transactions[i].CurrentIndex = i, 27);
 
-                var stringToConvert = Transactions[i].Address
-                                      + Converter.ToTrytes(valueTrits)
-                                      + Transactions[i].Tag +
-                                      Converter.ToTrytes(timestampTrits)
-                                      + Converter.ToTrytes(currentIndexTrits) +
-                                      Converter.ToTrytes(lastIndexTrits);
+                    var lastIndexTrits = Converter.ToTrits(
+                        Transactions[i].LastIndex = Transactions.Count - 1, 27);
 
-                var t = Converter.ToTrits(stringToConvert);
-                customCurl.Absorb(t, 0, t.Length);
+                    var stringToConvert = Transactions[i].Address
+                                          + Converter.ToTrytes(valueTrits)
+                                          + Transactions[i].ObsoleteTag +
+                                          Converter.ToTrytes(timestampTrits)
+                                          + Converter.ToTrytes(currentIndexTrits) +
+                                          Converter.ToTrytes(lastIndexTrits);
+
+                    var t = Converter.ToTrits(stringToConvert);
+                    customCurl.Absorb(t, 0, t.Length);
+                }
+
+                var hash = new int[243];
+                customCurl.Squeeze(hash, 0, hash.Length);
+                hashInTrytes = Converter.ToTrytes(hash);
+
+                bool foundValue = false;
+                var normalizedHash = NormalizedBundle(hashInTrytes);
+                foreach (var normalizedHashValue in normalizedHash)
+                {
+                    if (normalizedHashValue == 13 /* = M */)
+                    {
+                        foundValue = true;
+                        // Insecure bundle. Increment Tag and recompute bundle hash.
+                        var obsoleteTagTrits = Converter.ToTrits(Transactions[0].ObsoleteTag);
+                        Converter.Increment(obsoleteTagTrits, 81);
+                        Transactions[0].ObsoleteTag = Converter.ToTrytes(obsoleteTagTrits);
+                    }
+                }
+
+                validBundle = !foundValue;
             }
-
-            var hash = new int[243];
-            customCurl.Squeeze(hash, 0, hash.Length);
-            var hashInTrytes = Converter.ToTrytes(hash);
 
             foreach (var transaction in Transactions) transaction.Bundle = hashInTrytes;
         }

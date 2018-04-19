@@ -194,9 +194,9 @@ namespace Iota.Api.Utils
         /// <returns></returns>
         public bool ValidateSignatures(Bundle signedBundle, string inputAddress)
         {
-            string bundleHash = "";
+            var bundleHash = "";
 
-            List<String> signatureFragments = new List<string>();
+            var signatureFragments = new List<string>();
 
             foreach (var trx in signedBundle.Transactions)
             {
@@ -205,7 +205,7 @@ namespace Iota.Api.Utils
                     bundleHash = trx.Bundle;
 
                     // if we reached remainder bundle
-                    String signatureFragment = trx.SignatureMessageFragment;
+                    var signatureFragment = trx.SignatureMessageFragment;
                     if (InputValidator.IsNinesTrytes(signatureFragment, signatureFragment.Length))
                     {
                         break;
