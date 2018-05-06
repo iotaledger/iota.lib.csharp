@@ -34,7 +34,7 @@ namespace Iota.Lib.CSharp.Api.Utils.Rest
 
             request.ContentLength = bytes.Length;
 
-            Stream requestStream = request.GetRequestStream();
+            using (Stream requestStream = request.GetRequestStream())
             {
                 // Send the data.
                 requestStream.Write(bytes, 0, bytes.Length);
