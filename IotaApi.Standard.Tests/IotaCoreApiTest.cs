@@ -188,6 +188,7 @@ namespace Iota.Api.Tests
         [TestMethod]
         public void ShouldGetBalances()
         {
+            // ReSharper disable once RedundantArgumentDefaultValue
             var res = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), 100);
             Assert.IsNotNull(res.Balances);
             Assert.IsNotNull(res.References);

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Iota.Api.Exception;
 using Iota.Api.Model;
-using RestSharp.Extensions;
 
 namespace Iota.Api.Utils
 {
@@ -238,7 +237,7 @@ namespace Iota.Api.Utils
         /// </returns>
         public static bool IsNinesTrytes(string trytes, int length)
         {
-            return trytes.Matches("^[9]{" + (length == 0 ? "0," : length.ToString()) + "}$");
+            return Regex.IsMatch(trytes, "^[9]{" + (length == 0 ? "0," : length.ToString()) + "}$");
         }
 
         /// <summary>

@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IotaApi.Standard", "IotaApi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IotaApi.Standard.Tests", "IotaApi.Standard.Tests\IotaApi.Standard.Tests.csproj", "{1797EB77-756A-4B7C-94FD-FC86B7EB7930}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iota.MAM.Standard", "Iota.MAM.Standard\Iota.MAM.Standard.csproj", "{3F0F2967-FD36-4EB0-87AA-403FEDE76D21}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iota.MAM.Standard.Tests", "Iota.MAM.Standard.Tests\Iota.MAM.Standard.Tests.csproj", "{B1658D14-6178-4133-BF68-FD54F7551C4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MAM", "MAM", "{8F392E70-1344-4C96-9733-CB4574DFA620}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +39,21 @@ Global
 		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F0F2967-FD36-4EB0-87AA-403FEDE76D21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F0F2967-FD36-4EB0-87AA-403FEDE76D21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F0F2967-FD36-4EB0-87AA-403FEDE76D21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F0F2967-FD36-4EB0-87AA-403FEDE76D21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1658D14-6178-4133-BF68-FD54F7551C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1658D14-6178-4133-BF68-FD54F7551C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1658D14-6178-4133-BF68-FD54F7551C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1658D14-6178-4133-BF68-FD54F7551C4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3F0F2967-FD36-4EB0-87AA-403FEDE76D21} = {8F392E70-1344-4C96-9733-CB4574DFA620}
+		{B1658D14-6178-4133-BF68-FD54F7551C4A} = {8F392E70-1344-4C96-9733-CB4574DFA620}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {953B5A71-F598-4C42-A718-80390ACB8FF8}

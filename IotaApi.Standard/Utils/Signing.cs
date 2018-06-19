@@ -177,9 +177,9 @@ namespace Iota.Api.Utils
                     _curl.Absorb(hash, 0, hash.Length);
                     _curl.Squeeze(hash, 0, hash.Length);
                 }
-                    
-
-                for (var j = 0; j < 243; j++) Array.Copy(hash, j, keyFragment, i * 243 + j, 1);
+                
+                //for (var j = 0; j < 243; j++) Array.Copy(hash, j, keyFragment, i * 243 + j, 1);
+                Array.Copy(hash, 0, keyFragment, i * 243, 243);
             }
 
             return keyFragment;

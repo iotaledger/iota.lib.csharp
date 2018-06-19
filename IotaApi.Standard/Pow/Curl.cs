@@ -79,14 +79,6 @@ namespace Iota.Api.Pow
         }
 
         /// <summary>
-        ///     Gets or sets the state.
-        /// </summary>
-        /// <value>
-        ///     The state.
-        /// </value>
-        public int[] State { get; set; }
-
-        /// <summary>
         ///     Absorbs the specified trits.
         /// </summary>
         /// <param name="trits">The trits.</param>
@@ -175,7 +167,27 @@ namespace Iota.Api.Pow
         /// <returns>a new instance</returns>
         public override ICurl Clone()
         {
-            return new Curl(CurlMode.CurlP81);
+            bool pair = (State == null);
+
+            CurlMode mode = CurlMode.CurlP81;
+            if (_numberOfRounds == NumberOfRoundsP27)
+                mode = CurlMode.CurlP27;
+            else if (_numberOfRounds == NumberOfRoundsP81)
+                mode = CurlMode.CurlP81;
+
+            Curl cloneCurl = new Curl(pair, mode);
+
+            if (pair)
+            {
+                Array.Copy(_stateHigh, cloneCurl._stateHigh, StateLength);
+                Array.Copy(_stateLow, cloneCurl._stateLow, StateLength);
+            }
+            else
+            {
+                Array.Copy(State, cloneCurl.State, StateLength);
+            }
+
+            return cloneCurl;
         }
 
         /// <summary>

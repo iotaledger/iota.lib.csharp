@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Iota.Api.Model;
 using Iota.Api.Utils;
-using RestSharp.Extensions;
 
 namespace Iota.Api.Core
 {
@@ -71,7 +71,7 @@ namespace Iota.Api.Core
                         BranchTransaction = previousTransaction == null ? branchTransaction : trunkTransaction
                     };
 
-                    if (string.IsNullOrEmpty(txn.Tag) || txn.Tag.Matches("9*"))
+                    if (string.IsNullOrEmpty(txn.Tag) || Regex.IsMatch(txn.Tag, "9*"))
                         txn.Tag = txn.ObsoleteTag;
                     txn.AttachmentTimestamp = IotaApiUtils.CreateTimeStampNow();
                     txn.AttachmentTimestampLowerBound = 0;

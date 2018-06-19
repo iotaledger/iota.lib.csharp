@@ -226,6 +226,7 @@ namespace Iota.Api.Model
                         var obsoleteTagTrits = Converter.ToTrits(Transactions[0].ObsoleteTag);
                         Converter.Increment(obsoleteTagTrits, 81);
                         Transactions[0].ObsoleteTag = Converter.ToTrytes(obsoleteTagTrits);
+                        break;
                     }
                 }
 

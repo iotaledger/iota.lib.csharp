@@ -217,7 +217,7 @@ namespace Iota.Api
                     while (!string.IsNullOrEmpty(msgCopy))
                     {
                         var fragment = msgCopy.Substring(0, 2187 > msgCopy.Length ? msgCopy.Length : 2187);
-                        msgCopy = msgCopy.Substring(2187, msgCopy.Length - 2187);
+                        msgCopy = msgCopy.Substring(fragment.Length, msgCopy.Length - fragment.Length);
 
                         // Pad remainder of fragment
                         while (fragment.Length < 2187) fragment += '9';
