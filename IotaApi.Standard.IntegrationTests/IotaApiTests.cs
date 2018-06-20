@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using Iota.Api.Standard.Exception;
 using Iota.Api.Standard.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests
+namespace Iota.Api.Standard.IntegrationTests
 {
-    [TestClass]
     public class IotaApiTests
     {
         private static readonly string TEST_SEED1 =
@@ -76,63 +75,61 @@ namespace Iota.Api.Standard.Tests
 
         private IotaApi _iotaClient;
 
-        [TestInitialize]
-        public void CreateApiClientInstance()
+        public IotaApiTests()
         {
             _iotaClient = new IotaApi("node.iotawallet.info", 14265);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetInputs()
         {
             var res = _iotaClient.GetInputs(TEST_SEED1, 2, 0, 0, 0);
             Console.WriteLine(res);
-            Assert.IsNotNull(res);
-            Assert.IsNotNull(res.TotalBalance);
-            Assert.IsNotNull(res.InputsList);
+            Assert.NotNull(res);
+            Assert.NotEqual(0, res.TotalBalance);
+            Assert.NotNull(res.InputsList);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreateANewAddressWithChecksum()
         {
             // ReSharper disable RedundantArgumentDefaultValue
             var res1 = _iotaClient.GetNewAddress(TEST_SEED1, 1, 0, true, 5, false);
-            Assert.AreEqual(res1[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_1);
+            Assert.Equal(res1[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_1);
 
             var res2 = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, true, 5, false);
-            Assert.AreEqual(res2[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2);
+            Assert.Equal(res2[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2);
 
             var res3 = _iotaClient.GetNewAddress(TEST_SEED1, 3, 0, true, 5, false);
-            Assert.AreEqual(res3[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_3);
+            Assert.Equal(res3[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_3);
             // ReSharper restore RedundantArgumentDefaultValue
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreateANewAddressWithoutChecksum()
         {
             // ReSharper disable RedundantArgumentDefaultValue
             var res1 = _iotaClient.GetNewAddress(TEST_SEED1, 1, 0, false, 5, false);
-            Assert.AreEqual(res1[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_1);
+            Assert.Equal(res1[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_1);
 
             var res2 = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, false, 5, false);
-            Assert.AreEqual(res2[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2);
+            Assert.Equal(res2[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2);
 
             var res3 = _iotaClient.GetNewAddress(TEST_SEED1, 3, 0, false, 5, false);
-            Assert.AreEqual(res3[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_3);
+            Assert.Equal(res3[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_3);
             // ReSharper restore RedundantArgumentDefaultValue
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreate100Addresses()
         {
             // ReSharper disable RedundantArgumentDefaultValue
             var res = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, false, 100, false);
-            Assert.AreEqual(res.Length, 100);
+            Assert.Equal(100, res.Length);
             // ReSharper restore RedundantArgumentDefaultValue
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NotEnoughBalanceException))]
+        [Fact]
         public void ShouldPrepareTransfer()
         {
             var transfers = new List<Transfer>
@@ -142,14 +139,12 @@ namespace Iota.Api.Standard.Tests
 
             var trytes = _iotaClient.PrepareTransfers(TEST_SEED1, 2, transfers.ToArray(), null, null, false);
 
-            Assert.IsNotNull(trytes);
-            Assert.IsFalse(trytes.Count == 0);
+            Assert.NotNull(trytes);
+            Assert.False(trytes.Count == 0);
 
         }
 
-        //seed contains 0 balance
-        [TestMethod]
-        [ExpectedException(typeof(NotEnoughBalanceException))]
+        [Fact]
         public void ShouldPrepareTransferWithInputs()
         {
             List<Input> inputlist = new List<Input>();
@@ -163,95 +158,88 @@ namespace Iota.Api.Standard.Tests
             List<string> trytes =
                 _iotaClient.PrepareTransfers(TEST_SEED1, 2, transfers.ToArray(), null, inputlist, true);
 
-            Assert.IsNotNull(trytes);
-            Assert.IsFalse(trytes.Count == 0);
+            Assert.NotNull(trytes);
+            Assert.False(trytes.Count == 0);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetLastInclusionState()
         {
             var res = _iotaClient.GetLatestInclusion(new[] {TEST_HASH});
-            Assert.IsNotNull(res.States);
+            Assert.NotNull(res.States);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldFindTransactionObjects()
         {
             var ftr = _iotaClient.FindTransactionObjects(TEST_ADDRESSES);
-            Assert.IsNotNull(ftr);
+            Assert.NotNull(ftr);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetAccountData()
         {
             var accountData = _iotaClient.GetAccountData(TEST_SEED1, 2, 0, true, 0, true, 0, 0, true, 0);
-            Assert.IsNotNull(accountData);
+            Assert.NotNull(accountData);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ShouldNotGetBundle()
         {
             var bundle = _iotaClient.GetBundle("SADASD");
-            Assert.IsNotNull(bundle);
+            Assert.NotNull(bundle);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetBundle()
         {
             var bundle = _iotaClient.GetBundle(TEST_HASH);
-            Assert.IsNotNull(bundle);
+            Assert.NotNull(bundle);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetTransfers()
         {
             // ReSharper disable RedundantArgumentDefaultValue
             var gtr = _iotaClient.GetTransfers(TEST_SEED1, 2, 0, 0, false);
             // ReSharper restore RedundantArgumentDefaultValue
 
-            foreach (var b in gtr) Assert.IsTrue(b.Transactions.TrueForAll(t => t != null));
+            foreach (var b in gtr) Assert.True(b.Transactions.TrueForAll(t => t != null));
         }
 
-        [Ignore]
-        [TestMethod]
+        [Fact]
         public void ShouldReplayBundle()
         {
             var replayedList = _iotaClient.ReplayBundle(TEST_HASH, DEPTH, MIN_WEIGHT_MAGNITUDE);
-            Assert.IsNotNull(replayedList);
+            Assert.NotNull(replayedList);
         }
 
-        [Ignore]
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void ShouldNotSendTrytes()
         {
             _iotaClient.SendTrytes(new[] {TEST_TRYTES}, 9);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetTrytes()
         {
             _iotaClient.GetTrytes(TEST_HASH);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldBroadcastAndStore()
         {
             _iotaClient.BroadcastAndStore(new List<string> {TEST_TRYTES});
         }
 
-        [Ignore]
-        [TestMethod]
+        [Fact]
         public void ShouldSendTrytes()
         {
             _iotaClient.SendTrytes(new[] {TestTrytesValid}, 9);
         }
 
-        [Ignore]
-        [TestMethod]
-        [ExpectedException(typeof(IllegalStateException))]
+        [Fact]
         public void ShouldNotSendTransfer()
         {
             Transfer[] transfers =
@@ -261,11 +249,10 @@ namespace Iota.Api.Standard.Tests
 
             var result = _iotaClient.SendTransfer(TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers, null, null,
                 false, true);
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
 
-        [Ignore]
-        [TestMethod]
+        [Fact]
         public void ShouldSendTransferWithoutInputs()
         {
             var transfers = new List<Transfer>
@@ -275,11 +262,10 @@ namespace Iota.Api.Standard.Tests
 
             var str = _iotaClient.SendTransfer(TEST_SEED2, 2, 9, 14, transfers.ToArray(), null, null, false, true);
 
-            Assert.IsNotNull(str);
+            Assert.NotNull(str);
         }
 
-        [Ignore]
-        [TestMethod]
+        [Fact]
         public void ShouldSendTransferWithInputs()
         {
             List<Input> inputlist = new List<Input>();
@@ -295,7 +281,7 @@ namespace Iota.Api.Standard.Tests
                 inputlist.ToArray(), null,
                 true, true);
 
-            Assert.IsNotNull(str);
+            Assert.NotNull(str);
         }
     }
 }

@@ -2,11 +2,10 @@
 using Iota.Api.Standard.Model;
 using Iota.Api.Standard.Pow;
 using Iota.Api.Standard.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Standard.UnitTests
 {
-    [TestClass]
     public class SigningTest
     {
         private static readonly string TEST_SEED =
@@ -45,23 +44,23 @@ namespace Iota.Api.Standard.Tests.Utils
         private static readonly string ADDR_LS_I0_S3 =
             "AGSAAETPMSBCDOSNXFXIOBAE9MVEJCSWVP9PAULQ9VABOTWLDMXID9MXCCWQIWRTJBASWPIJDFUC9ISWD";
 
-        [TestMethod]
-        public void TestAddressGeneration()
+        [Fact]
+        public void ShouldGenerateValidAddress()
         {
-            Assert.AreEqual(FIRST_ADDR, IotaApiUtils.NewAddress(TEST_SEED, 2, 0, true, null));
-            Assert.AreEqual(SIXTH_ADDR, IotaApiUtils.NewAddress(TEST_SEED, 2, 5, true, null));
+            Assert.Equal(FIRST_ADDR, IotaApiUtils.NewAddress(TEST_SEED, 2, 0, true, null));
+            Assert.Equal(SIXTH_ADDR, IotaApiUtils.NewAddress(TEST_SEED, 2, 5, true, null));
 
-            Assert.AreEqual(ADDR_I0_S1, IotaApiUtils.NewAddress(ADDR_SEED, 1, 0, false, null));
-            Assert.AreEqual(ADDR_I0_S2, IotaApiUtils.NewAddress(ADDR_SEED, 2, 0, false, null));
-            Assert.AreEqual(ADDR_I0_S3, IotaApiUtils.NewAddress(ADDR_SEED, 3, 0, false, null));
+            Assert.Equal(ADDR_I0_S1, IotaApiUtils.NewAddress(ADDR_SEED, 1, 0, false, null));
+            Assert.Equal(ADDR_I0_S2, IotaApiUtils.NewAddress(ADDR_SEED, 2, 0, false, null));
+            Assert.Equal(ADDR_I0_S3, IotaApiUtils.NewAddress(ADDR_SEED, 3, 0, false, null));
 
-            Assert.AreEqual(ADDR_LS_I0_S1, IotaApiUtils.NewAddress(ADDR_SEED + ADDR_SEED, 1, 0, false, null));
-            Assert.AreEqual(ADDR_LS_I0_S2, IotaApiUtils.NewAddress(ADDR_SEED + ADDR_SEED, 2, 0, false, null));
-            Assert.AreEqual(ADDR_LS_I0_S3, IotaApiUtils.NewAddress(ADDR_SEED + ADDR_SEED, 3, 0, false, null));
+            Assert.Equal(ADDR_LS_I0_S1, IotaApiUtils.NewAddress(ADDR_SEED + ADDR_SEED, 1, 0, false, null));
+            Assert.Equal(ADDR_LS_I0_S2, IotaApiUtils.NewAddress(ADDR_SEED + ADDR_SEED, 2, 0, false, null));
+            Assert.Equal(ADDR_LS_I0_S3, IotaApiUtils.NewAddress(ADDR_SEED + ADDR_SEED, 3, 0, false, null));
         }
 
-        [TestMethod]
-        public void TestLongSeedKeyGeneration()
+        [Fact]
+        public void ShouldGenerateLongKey()
         {
             ICurl curl = new Kerl();
             var signing = new Signing(curl);
@@ -70,16 +69,16 @@ namespace Iota.Api.Standard.Tests.Utils
             for (var i = 1; i < 5; i++)
             {
                 var key1 = signing.Key(Converter.ToTrits(seed), 0, i);
-                Assert.AreEqual(Signing.KeyLength * i, key1.Length);
+                Assert.Equal(Signing.KeyLength * i, key1.Length);
                 var key2 = signing.Key(Converter.ToTrits(seed + seed), 0, i);
-                Assert.AreEqual(Signing.KeyLength * i, key2.Length);
+                Assert.Equal(Signing.KeyLength * i, key2.Length);
                 var key3 = signing.Key(Converter.ToTrits(seed + seed + seed), 0, i);
-                Assert.AreEqual(Signing.KeyLength * i, key3.Length);
+                Assert.Equal(Signing.KeyLength * i, key3.Length);
             }
         }
 
-        [TestMethod]
-        public void TestSigning()
+        [Fact]
+        public void ShouldCreateCorrectSignatures()
         {
             // we can sign any hash, so for convenience we will sign the first
             // address of our test seed
@@ -97,33 +96,33 @@ namespace Iota.Api.Standard.Tests.Utils
             var signature = signing.SignatureFragment(
                 subNormalizedHash,
                 subKey);
-            Assert.AreEqual(SIGNATURE1, Converter.ToTrytes(signature));
+            Assert.Equal(SIGNATURE1, Converter.ToTrytes(signature));
 
             Array.Copy(key, 6561, subKey, 0, 6561);
             Array.Copy(normalizedHash, 27, subNormalizedHash, 0, 27);
             var signature2 = signing.SignatureFragment(
                 subNormalizedHash,
                 subKey);
-            Assert.AreEqual(SIGNATURE2, Converter.ToTrytes(signature2));
+            Assert.Equal(SIGNATURE2, Converter.ToTrytes(signature2));
         }
 
-        [TestMethod]
-        public void TestKeyLength()
+        [Fact]
+        public void ShouldCreateKeyWithCorrectSize()
         {
             var signing = new Signing(null);
             var key = signing.Key(Converter.ToTrits(TEST_SEED), 5, 1);
-            Assert.AreEqual(Signing.KeyLength, key.Length);
+            Assert.Equal(Signing.KeyLength, key.Length);
             key = signing.Key(Converter.ToTrits(TEST_SEED), 5, 2);
-            Assert.AreEqual(2 * Signing.KeyLength, key.Length);
+            Assert.Equal(2 * Signing.KeyLength, key.Length);
             key = signing.Key(Converter.ToTrits(TEST_SEED), 5, 3);
-            Assert.AreEqual(3 * Signing.KeyLength, key.Length);
+            Assert.Equal(3 * Signing.KeyLength, key.Length);
         }
 
-        [TestMethod]
-        public void TestVerifying()
+        [Fact]
+        public void ShouldValidateSignatures()
         {
             var signing = new Signing(null);
-            Assert.IsTrue(signing.ValidateSignatures(
+            Assert.True(signing.ValidateSignatures(
                 RemoveChecksum(SIXTH_ADDR),
                 new[] {SIGNATURE1, SIGNATURE2},
                 RemoveChecksum(FIRST_ADDR)));
@@ -131,7 +130,7 @@ namespace Iota.Api.Standard.Tests.Utils
 
         private string RemoveChecksum(string address)
         {
-            Assert.IsTrue(address.IsValidChecksum());
+            Assert.True(address.IsValidChecksum());
             return address.Substring(0, 81);
         }
     }

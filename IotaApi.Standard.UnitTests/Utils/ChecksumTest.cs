@@ -1,9 +1,8 @@
 ﻿using Iota.Api.Standard.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Standard.UnitTests
 {
-    [TestClass]
     public class ChecksumTest
     {
         private static readonly string TEST_ADDRESS_WITHOUT_CHECKSUM =
@@ -12,22 +11,22 @@ namespace Iota.Api.Standard.Tests.Utils
         private static readonly string TEST_ADDRESS_WITH_CHECKSUM =
             "LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZCCOZVXMTXC";
 
-        [TestMethod]
+        [Fact]
         public void ShouldAddChecksum()
         {
-            Assert.AreEqual(Checksum.AddChecksum(TEST_ADDRESS_WITHOUT_CHECKSUM), TEST_ADDRESS_WITH_CHECKSUM);
+            Assert.Equal(Checksum.AddChecksum(TEST_ADDRESS_WITHOUT_CHECKSUM), TEST_ADDRESS_WITH_CHECKSUM);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldRemoveChecksum()
         {
-            Assert.AreEqual(TEST_ADDRESS_WITH_CHECKSUM.RemoveChecksum(), TEST_ADDRESS_WITHOUT_CHECKSUM);
+            Assert.Equal(TEST_ADDRESS_WITH_CHECKSUM.RemoveChecksum(), TEST_ADDRESS_WITHOUT_CHECKSUM);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldIsValidChecksum()
         {
-            Assert.AreEqual(TEST_ADDRESS_WITH_CHECKSUM.IsValidChecksum(), true);
+            Assert.True(TEST_ADDRESS_WITH_CHECKSUM.IsValidChecksum());
         }
     }
 }

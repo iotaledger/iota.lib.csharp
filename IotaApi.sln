@@ -7,9 +7,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaCSharpApi", "IotaCSharp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaCSharpApiUnitTests", "IotaCSharpApiUnitTests\IotaCSharpApiUnitTests.csproj", "{FAE71C0D-C373-4401-B9DE-BC3DC1D4E435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaApi.Standard", "IotaApi.Standard\IotaApi.Standard.csproj", "{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IotaApi.Standard", "IotaApi.Standard\IotaApi.Standard.csproj", "{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaApi.Standard.Tests", "IotaApi.Standard.Tests\IotaApi.Standard.Tests.csproj", "{1797EB77-756A-4B7C-94FD-FC86B7EB7930}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaApi.Standard.IntegrationTests", "IotaApi.Standard.IntegrationTests\IotaApi.Standard.IntegrationTests.csproj", "{473C394B-B8D2-4758-9FDC-139B13388FB9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900} = {8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotaApi.Standard.UnitTests", "IotaApi.Standard.UnitTests\IotaApi.Standard.UnitTests.csproj", "{A3E3E598-F973-4FB3-803A-5DB121BA1141}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900} = {8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +37,14 @@ Global
 		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E8D67DF-1A0E-45AA-8DE7-CBAD2EF4B900}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1797EB77-756A-4B7C-94FD-FC86B7EB7930}.Release|Any CPU.Build.0 = Release|Any CPU
+		{473C394B-B8D2-4758-9FDC-139B13388FB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{473C394B-B8D2-4758-9FDC-139B13388FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{473C394B-B8D2-4758-9FDC-139B13388FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{473C394B-B8D2-4758-9FDC-139B13388FB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3E3E598-F973-4FB3-803A-5DB121BA1141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3E3E598-F973-4FB3-803A-5DB121BA1141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3E3E598-F973-4FB3-803A-5DB121BA1141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3E3E598-F973-4FB3-803A-5DB121BA1141}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

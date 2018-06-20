@@ -2,32 +2,20 @@
 using System.Text;
 using Iota.Api.Standard.Pow;
 using Iota.Api.Standard.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Pow
+namespace Iota.Api.Standard.UnitTests
 {
-    [TestClass]
     public class PearlDiverTest
     {
-
         private const  int TryteLength = 2673;
         private const int MinWeightMagnitude = 9;
-        private const int NumCores = -1; // use n-1 cores
+        private const int NumCores = -1;
 
         private static readonly Random Random = new Random();
-        private PearlDiver _pearlDiver;
-        private int[] _hashTrits;
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _pearlDiver = new PearlDiver();
-            _hashTrits = new int[Sponge.HashLength];
-        }
-
-
-        [TestMethod]
-        public void TestRandomTryteHash()
+        [Fact]
+        public void ShouldGenerateHashWithTrytesAtEnd()
         {
             string testTrytes = GetRandomTrytes();
             
@@ -41,12 +29,11 @@ namespace Iota.Api.Standard.Tests.Pow
                 Console.WriteLine(testTrytes);
             }
 
-            Assert.IsTrue(success, "The hash should have n nines");
+            Assert.True(success, "The hash should have n nines");
         }
 
-        [TestMethod]
-        [Ignore]
-        public void TestRandomTryteHash100()
+        [Fact]
+        public void ShouldGenerateHashWithTrytesAtEnd100()
         {
             for (int i = 0; i < 100; i++)
             {
@@ -62,7 +49,7 @@ namespace Iota.Api.Standard.Tests.Pow
                     Console.WriteLine(testTrytes);
                 }
 
-                Assert.IsTrue(success, "The hash should have n nines");
+                Assert.True(success, "The hash should have n nines");
             }
         }
 
@@ -81,17 +68,17 @@ namespace Iota.Api.Standard.Tests.Pow
         private string GetHashFor(string trytes)
         {
             Sponge curl = new Curl(CurlMode.CurlP81);
+            PearlDiver pearlDiver = new PearlDiver();
+            int[] hashTrits = new int[Sponge.HashLength];
             int[] myTrits = Converter.ToTrits(trytes);
             
-            bool result  = _pearlDiver.Search(myTrits, MinWeightMagnitude, NumCores);
+            bool result  = pearlDiver.Search(myTrits, MinWeightMagnitude, NumCores);
             
-            Assert.IsTrue(result,"Search Failed");
-           
             curl.Absorb(myTrits, 0, myTrits.Length);
-            curl.Squeeze(_hashTrits, 0, Sponge.HashLength);
+            curl.Squeeze(hashTrits, 0, Sponge.HashLength);
             curl.Reset();
 
-            return Converter.ToTrytes(_hashTrits);
+            return Converter.ToTrytes(hashTrits);
         }
     }
 }

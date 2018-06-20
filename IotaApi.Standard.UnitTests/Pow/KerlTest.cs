@@ -1,13 +1,12 @@
 ﻿using Iota.Api.Standard.Pow;
 using Iota.Api.Standard.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Pow
-{
-    [TestClass]
+namespace Iota.Api.Standard.UnitTests
+{ 
     public class KerlTest
     {
-        [TestMethod]
+        [Fact]
         public void ShouldCreateValidHash1()
         {
             var trits = Converter.ToTrits(
@@ -18,10 +17,10 @@ namespace Iota.Api.Standard.Tests.Pow
             var hashTrits = new int[trits.Length];
             kerl.Squeeze(hashTrits, 0, 243);
             var hash = Converter.ToTrytes(hashTrits);
-            Assert.AreEqual(hash, "OXJCNFHUNAHWDLKKPELTBFUCVW9KLXKOGWERKTJXQMXTKFKNWNNXYD9DMJJABSEIONOSJTTEVKVDQEWTW");
+            Assert.Equal("OXJCNFHUNAHWDLKKPELTBFUCVW9KLXKOGWERKTJXQMXTKFKNWNNXYD9DMJJABSEIONOSJTTEVKVDQEWTW", hash);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreateValidHash2()
         {
             var trits = Converter.ToTrits(
@@ -32,11 +31,11 @@ namespace Iota.Api.Standard.Tests.Pow
             var hashTrits = new int[trits.Length * 2];
             kerl.Squeeze(hashTrits, 0, 243 * 2);
             var hash = Converter.ToTrytes(hashTrits);
-            Assert.AreEqual(hash,
-                "G9JYBOMPUXHYHKSNRNMMSSZCSHOFYOYNZRSZMAAYWDYEIMVVOGKPJBVBM9TDPULSFUNMTVXRKFIDOHUXXVYDLFSZYZTWQYTE9SPYYWYTXJYQ9IFGYOLZXWZBKWZN9QOOTBQMWMUBLEWUEEASRHRTNIQWJQNDWRYLCA");
+            Assert.Equal(
+                "G9JYBOMPUXHYHKSNRNMMSSZCSHOFYOYNZRSZMAAYWDYEIMVVOGKPJBVBM9TDPULSFUNMTVXRKFIDOHUXXVYDLFSZYZTWQYTE9SPYYWYTXJYQ9IFGYOLZXWZBKWZN9QOOTBQMWMUBLEWUEEASRHRTNIQWJQNDWRYLCA", hash);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreateValidHash3()
         {
             var trits = Converter.ToTrits(
@@ -47,8 +46,8 @@ namespace Iota.Api.Standard.Tests.Pow
             var hashTrits = new int[trits.Length];
             kerl.Squeeze(hashTrits, 0, 243 * 2);
             var hash = Converter.ToTrytes(hashTrits);
-            Assert.AreEqual(hash,
-                "LUCKQVACOGBFYSPPVSSOXJEKNSQQRQKPZC9NXFSMQNRQCGGUL9OHVVKBDSKEQEBKXRNUJSRXYVHJTXBPDWQGNSCDCBAIRHAQCOWZEBSNHIJIGPZQITIBJQ9LNTDIBTCQ9EUWKHFLGFUVGGUWJONK9GBCDUIMAYMMQX");
+            Assert.Equal(
+                "LUCKQVACOGBFYSPPVSSOXJEKNSQQRQKPZC9NXFSMQNRQCGGUL9OHVVKBDSKEQEBKXRNUJSRXYVHJTXBPDWQGNSCDCBAIRHAQCOWZEBSNHIJIGPZQITIBJQ9LNTDIBTCQ9EUWKHFLGFUVGGUWJONK9GBCDUIMAYMMQX", hash);
         }
     }
 }

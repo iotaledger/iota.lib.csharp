@@ -1,35 +1,34 @@
 ﻿using System;
 using System.Linq;
 using Iota.Api.Standard.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Standard.UnitTests
 {
-    [TestClass]
     public class TrytesConverterTest
     {
         private static readonly Random Random = new Random();
 
-        [TestMethod]
+        [Fact]
         public void ShouldConvertStringToTrytes()
         {
-            Assert.AreEqual("IC", TrytesConverter.ToTrytes("Z"));
-            Assert.AreEqual(TrytesConverter.ToTrytes("JOTA JOTA"), "TBYBCCKBEATBYBCCKB");
+            Assert.Equal("IC", TrytesConverter.ToTrytes("Z"));
+            Assert.Equal("TBYBCCKBEATBYBCCKB", TrytesConverter.ToTrytes("JOTA JOTA"));
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldConvertTrytesToString()
         {
-            Assert.AreEqual("Z", TrytesConverter.ToString("IC"));
-            Assert.AreEqual(TrytesConverter.ToString("TBYBCCKBEATBYBCCKB"), "JOTA JOTA");
+            Assert.Equal("Z", TrytesConverter.ToString("IC"));
+            Assert.Equal("JOTA JOTA", TrytesConverter.ToString("TBYBCCKBEATBYBCCKB"));
         }
 
-        [TestMethod]
-        public void ShouldConvertBackAndForth()
+        [Fact]
+        public void ShouldConvertTryteString()
         {
             var str = RandomString(1000);
             var back = TrytesConverter.ToString(TrytesConverter.ToTrytes(str));
-            Assert.AreEqual(str, back);
+            Assert.Equal(str, back);
         }
 
         public static string RandomString(int length)

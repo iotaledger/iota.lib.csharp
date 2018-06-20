@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using Iota.Api.Standard.Model;
 using Iota.Api.Standard.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Standard.UnitTests
 {
-    [TestClass]
     public class InputValidatorTests
     {
         private static readonly string TEST_ADDRESS_WITHOUT_CHECKSUM =
@@ -23,70 +22,64 @@ namespace Iota.Api.Standard.Tests.Utils
         private static readonly string TEST_MESSAGE = "JOTA";
         private static readonly string TEST_TAG = "JOTASPAM9999999999999999999";
 
-        [TestMethod]
-        public void ShouldIsAddress()
+        [Fact]
+        public void ShouldValidateAddress()
         {
-            Assert.AreEqual(InputValidator.IsAddress(TEST_ADDRESS_WITHOUT_CHECKSUM), true);
+            Assert.True(InputValidator.IsAddress(TEST_ADDRESS_WITHOUT_CHECKSUM));
         }
 
-        [TestMethod]
-        public void ShouldCheckAddress()
+        [Fact]
+        public void ShouldValidateTryteString()
         {
-            Assert.AreEqual(InputValidator.IsAddress(TEST_ADDRESS_WITHOUT_CHECKSUM), true);
+            Assert.True(InputValidator.IsTrytes(TEST_TRYTES, TEST_TRYTES.Length));
         }
 
-        [TestMethod]
-        public void ShouldIsTrytes()
+        [Fact]
+        public void ShouldValidatePositiveValue()
         {
-            Assert.AreEqual(InputValidator.IsTrytes(TEST_TRYTES, TEST_TRYTES.Length), true);
+            Assert.True(InputValidator.IsValue("1234"));
         }
 
-        [TestMethod]
-        public void ShouldIsValue()
+        [Fact]
+        public void ShouldValidateNegativeValue()
         {
-            Assert.AreEqual(InputValidator.IsValue("1234"), true);
+            Assert.True(InputValidator.IsValue("-1234"));
         }
 
-        [TestMethod]
-        public void IsValueNeg()
+        [Fact]
+        public void ShouldFailToValidateNegativeValue()
         {
-            Assert.AreEqual(InputValidator.IsValue("-1234"), true);
+            Assert.False(InputValidator.IsValue("-"));
         }
 
-        [TestMethod]
-        public void IsValueNeg2()
+        [Fact]
+        public void ShouldValidateArrayOfHashes()
         {
-            Assert.AreEqual(InputValidator.IsValue("-"), false);
+            Assert.True(InputValidator.IsArrayOfHashes(new[] {TEST_HASH, TEST_HASH}));
         }
 
-        [TestMethod]
-        public void ShouldIsArrayOfHashes()
+        [Fact]
+        public void ShouldValidateArrayOfTrytes()
         {
-            Assert.AreEqual(InputValidator.IsArrayOfHashes(new[] {TEST_HASH, TEST_HASH}), true);
+            Assert.True(InputValidator.IsArrayOfTrytes(new[] {TEST_TRYTES, TEST_TRYTES}, 2673));
         }
 
-        [TestMethod]
-        public void ShouldIsArrayOfTrytes()
+        [Fact]
+        public void ShouldValidateNineTryteString()
         {
-            Assert.AreEqual(InputValidator.IsArrayOfTrytes(new[] {TEST_TRYTES, TEST_TRYTES}, 2673), true);
-        }
-
-        [TestMethod]
-        public void ShouldIsNinesTrytes()
-        {
-            Assert.AreEqual(InputValidator.IsNinesTrytes("999999999", 9), true);
+            Assert.True(InputValidator.IsNinesTrytes("999999999", 9));
         }
 
 
-        [TestMethod]
-        public void ShouldIsTransfersCollectionCorrect()
+        [Fact]
+        public void ShouldValidateTransfersCollection()
         {
             var transfers = new List<Transfer>
             {
                 new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG),
                 new Transfer(TEST_ADDRESS_WITH_CHECKSUM, 0, TEST_MESSAGE, TEST_TAG)
             };
-            Assert.AreEqual(InputValidator.IsTransfersCollectionValid(transfers), true);
+            Assert.True(InputValidator.IsTransfersCollectionValid(transfers));
         }
     }
 }

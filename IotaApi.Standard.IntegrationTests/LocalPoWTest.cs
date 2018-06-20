@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using Iota.Api.Standard.Model;
 using Iota.Api.Standard.Pow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Pow
+namespace Iota.Api.Standard.IntegrationTests
 {
-    [TestClass]
     public class LocalPoWTest
     {
         private static readonly string TEST_SEED1 =
@@ -21,8 +20,7 @@ namespace Iota.Api.Standard.Tests.Pow
 
         private IotaApi _iotaClient;
 
-        [TestInitialize]
-        public void Setup()
+        private LocalPoWTest()
         {
             _iotaClient = new IotaApi("node.iotawallet.info", 14265)
             {
@@ -30,7 +28,7 @@ namespace Iota.Api.Standard.Tests.Pow
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldSendTransfer()
         {
             var transfers = new List<Transfer>
@@ -40,7 +38,7 @@ namespace Iota.Api.Standard.Tests.Pow
             var result = _iotaClient.SendTransfer(
                 TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers.ToArray(),
                 null, null, false, false);
-            Assert.IsNotNull(result);
+            Assert.NotNull(result);
         }
     }
 }
