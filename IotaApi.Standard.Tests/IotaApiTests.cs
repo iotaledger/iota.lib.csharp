@@ -81,8 +81,7 @@ namespace Iota.Api.Tests
         [TestInitialize]
         public void CreateApiClientInstance()
         {
-            //_iotaClient = new IotaApi("node.iotawallet.info", 14265);
-            _iotaClient = new IotaApi("nodes.thetangle.org", 443, "https");
+            _iotaClient = new IotaApi("node.iotawallet.info", 14265);
         }
 
         [TestMethod]
