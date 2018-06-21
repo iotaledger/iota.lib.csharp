@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{02B5B045-945F-4D60-A083-4BEFED703B3C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Iota.MAM</RootNamespace>
+    <AssemblyName>Iota.MAM</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Iota.MAM.Standard\Core\Mam.cs">
+      <Link>Core\Mam.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Core\MamChannel.cs">
+      <Link>Core\MamChannel.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Core\MamMessage.cs">
+      <Link>Core\MamMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Core\MamMode.cs">
+      <Link>Core\MamMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Core\MamState.cs">
+      <Link>Core\MamState.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Core\MaskHelper.cs">
+      <Link>Core\MaskHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Merkle\MerkleNode.cs">
+      <Link>Merkle\MerkleNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Merkle\MerkleSibling.cs">
+      <Link>Merkle\MerkleSibling.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Merkle\MerkleTree.cs">
+      <Link>Merkle\MerkleTree.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Utils\BitwiseOperators.cs">
+      <Link>Utils\BitwiseOperators.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Utils\Constants.cs">
+      <Link>Utils\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Utils\HammingNonce.cs">
+      <Link>Utils\HammingNonce.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Utils\HashHelper.cs">
+      <Link>Utils\HashHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Utils\Pascal.cs">
+      <Link>Utils\Pascal.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Utils\TritsHelper.cs">
+      <Link>Utils\TritsHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Iota.MAM.Standard\Utils\TrytesHelper.cs">
+      <Link>Utils\TrytesHelper.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IotaCSharpApi\IotaApi.csproj">
+      <Project>{fc2c2f96-49ea-4046-95bd-3b570bdd1e13}</Project>
+      <Name>IotaApi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

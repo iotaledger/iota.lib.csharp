@@ -20,7 +20,7 @@ namespace Iota.MAM.Core
 
         public IotaApi Iota { get; set; }
 
-        public MamState InitMamState(string seed, int security)
+        public MamState InitMamState(string seed = null, int security = 2)
         {
             var channel = new MamChannel
             {
@@ -33,6 +33,9 @@ namespace Iota.MAM.Core
                 NextCount = 1,
                 Index = 0
             };
+
+            if (string.IsNullOrEmpty(seed))
+                seed = TrytesHelper.KeyGen(81);
 
             return new MamState
             {
@@ -212,12 +215,12 @@ namespace Iota.MAM.Core
                 Pascal.EncodedLength(siblingsTritsLength / Constants.HashLength) + siblingsTritsLength;
         }
 
-        public void Attach(string trytes, string root, int depth = 6, int mwm = 14)
+        public void Attach(string trytes, string address, int depth = 6, int mwm = 14)
         {
             var tag = "999999999999999999999999999";
             var transfers = new List<Transfer>
             {
-                new Transfer(root, 0, trytes, tag)
+                new Transfer(address, 0, trytes, tag)
             };
 
             // ReSharper disable once UnusedVariable

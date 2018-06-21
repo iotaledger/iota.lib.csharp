@@ -15,13 +15,16 @@ namespace Iota.MAM.Tests.Core
             var mam = new Mam(iota);
             string seed = "CNHIRWBWVPDBGHKYZDJEZVIRDBSEDTCRBESFXOGRSWWDQVRNQATQUKIVDUDINJKKNCULQFCWWIG9LAEHQ";
 
+            // ReSharper disable once RedundantArgumentDefaultValue
             var mamState = mam.InitMamState(seed, 2);
+
             // Create MAM Payload
             var mamMessage = mam.CreateMamMessage(mamState, "POTATO");
 
             Console.WriteLine($"Root: {mamMessage.Root}");
             Console.WriteLine($"Address: {mamMessage.Address}");
 
+            // Attach the payload
             mam.Attach(mamMessage.Payload, mamMessage.Address);
 
             // Fetch Stream Async to Test
@@ -35,6 +38,69 @@ namespace Iota.MAM.Tests.Core
 
             Console.WriteLine($"NextRoot:{result.Item2}");
 
+        }
+
+        [TestMethod]
+        public void PublishPrivateTest()
+        {
+            var iota = new IotaApi("testnet140.tangle.works", 443, "https");
+            var mam = new Mam(iota);
+
+            // Initialise MAM State
+            var mamState = mam.InitMamState();
+            mamState.ChangeMode(MamMode.Private);
+
+            // Create MAM Payload
+            var mamMessage = mam.CreateMamMessage(mamState, "POTATO");
+
+            Console.WriteLine($"Root: {mamMessage.Root}");
+            Console.WriteLine($"Address: {mamMessage.Address}");
+
+            // Attach the payload
+            mam.Attach(mamMessage.Payload, mamMessage.Address);
+
+            // Fetch Stream Async to Test
+            var result = mam.Fetch(mamMessage.Root, MamMode.Private);
+
+            Console.WriteLine("Fetch result:");
+            foreach (var message in result.Item1)
+            {
+                Console.WriteLine(message);
+            }
+
+            Console.WriteLine($"NextRoot:{result.Item2}");
+        }
+
+        [TestMethod]
+        public void PublishRestrictedTest()
+        {
+            var iota = new IotaApi("testnet140.tangle.works", 443, "https");
+            var mam = new Mam(iota);
+            string sideKey = "IREALLYENJOYPOTATORELATEDPRODUCTS";
+
+            // Initialise MAM State
+            var mamState = mam.InitMamState();
+            mamState.ChangeMode(MamMode.Restricted, sideKey);
+
+            // Create MAM Payload
+            var mamMessage = mam.CreateMamMessage(mamState, "POTATO");
+
+            Console.WriteLine($"Root: {mamMessage.Root}");
+            Console.WriteLine($"Address: {mamMessage.Address}");
+
+            // Attach the payload
+            mam.Attach(mamMessage.Payload, mamMessage.Address);
+
+            // Fetch Stream Async to Test
+            var result = mam.Fetch(mamMessage.Root, MamMode.Restricted, sideKey);
+
+            Console.WriteLine("Fetch result:");
+            foreach (var message in result.Item1)
+            {
+                Console.WriteLine(message);
+            }
+
+            Console.WriteLine($"NextRoot:{result.Item2}");
         }
 
         [TestMethod]
