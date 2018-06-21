@@ -5,10 +5,10 @@ namespace Iota.Api.Standard.UnitTests
 {
     public class ChecksumTest
     {
-        private static readonly string TEST_ADDRESS_WITHOUT_CHECKSUM =
+        private const string TEST_ADDRESS_WITHOUT_CHECKSUM =
             "LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZC";
 
-        private static readonly string TEST_ADDRESS_WITH_CHECKSUM =
+        private const string TEST_ADDRESS_WITH_CHECKSUM =
             "LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZCCOZVXMTXC";
 
         [Fact]

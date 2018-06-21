@@ -43,8 +43,8 @@ namespace Iota.Api.Standard.IntegrationTests
         {
             try
             {
-                var res = _iotaApi.AddNeighbors("udp://8.8.8.8:14265");
-                Assert.NotNull(res);
+                var response = _iotaApi.AddNeighbors("udp://8.8.8.8:14265");
+                Assert.NotNull(response);
             }
             catch (IotaApiException e)
             {
@@ -57,8 +57,8 @@ namespace Iota.Api.Standard.IntegrationTests
         {
             try
             {
-                var res = _iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
-                Assert.NotNull(res);
+                var response = _iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
+                Assert.NotNull(response);
             }
             catch (IotaApiException e)
             {
@@ -105,52 +105,50 @@ namespace Iota.Api.Standard.IntegrationTests
         [Fact]
         public void ShouldGetTrytes()
         {
-            var res = _iotaApi.GetTrytes(TEST_HASH);
-            Assert.NotNull(res.Trytes);
+            var response = _iotaApi.GetTrytes(TEST_HASH);
+            Assert.NotNull(response.Trytes);
         }
 
         [Fact]
-        public void ShouldNotGetInclusionStates()
+        public void ShouldThrowOnInvalidMileStone()
         {
-            var res = _iotaApi.GetInclusionStates(new[] {TEST_HASH},
-                new[] {"DNSBRJWNOVUCQPILOQIFDKBFJMVOTGHLIMLLRXOHFTJZGRHJUEDAOWXQRYGDI9KHYFGYDWQJZKX999999"});
-            Assert.NotNull(res.States);
+            Assert.Throws<IotaApiException>(
+                () => _iotaApi.GetInclusionStates(new[] { TEST_HASH }, new[] { "DNSBRJWNOVUCQPILOQIFDKBFJMVOTGHLIMLLRXOHFTJZGRHJUEDAOWXQRYGDI9KHYFGYDWQJZKX999999" })
+            );
         }
 
         [Fact]
         public void ShouldGetInclusionStates()
         {
-            var res =
-                _iotaApi.GetInclusionStates(
-                    new[] {TEST_HASH},
-                    new[] {_iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone});
-            Assert.NotNull(res.States);
+            var response = _iotaApi.GetInclusionStates( new[] {TEST_HASH}, new[] {_iotaApi.GetNodeInfo().LatestSolidSubtangleMilestone});
+            Assert.NotNull(response.States);
         }
 
-        [Fact] // very long execution
+        [Fact]
         public void ShouldGetTransactionsToApprove()
         {
-            var res = _iotaApi.GetTransactionsToApprove(27);
-            Assert.NotNull(res.TrunkTransaction);
-            Assert.NotNull(res.BranchTransaction);
+            var response = _iotaApi.GetTransactionsToApprove(7);
+
+            Assert.NotNull(response.TrunkTransaction);
+            Assert.NotNull(response.BranchTransaction);
         }
 
         [Fact]
         public void ShouldFindTransactions()
         {
             var test = TEST_BUNDLE;
-            // ReSharper disable once UnusedVariable
-            var resp = _iotaApi.FindTransactions(new[] {test}.ToList(),
+            // responseharper disable once UnusedVariable
+            var responsep = _iotaApi.FindTransactions(new[] {test}.ToList(),
                 new[] {test}.ToList(), new[] {test}.ToList(), new[] {test}.ToList());
         }
 
         [Fact]
         public void ShouldGetBalances()
         {
-            var res = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), 100);
-            Assert.NotNull(res.Balances);
-            Assert.NotNull(res.References);
-            Assert.False(res.MilestoneIndex == 0);
+            var response = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), 100);
+            Assert.NotNull(response.Balances);
+            Assert.NotNull(response.References);
+            Assert.False(response.MilestoneIndex == 0);
         }
     }
 }

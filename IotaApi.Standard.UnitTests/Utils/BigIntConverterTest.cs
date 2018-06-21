@@ -7,20 +7,19 @@ namespace Iota.Api.Standard.UnitTests
 {
     public class BigIntConverterTest
     {
-        private static readonly Random Random = new Random();
+        private readonly Random Random = new Random();
 
         [Fact]
         public void ShouldConvertTritsAndBigInt()
         {
-            var inputTrits = new int[243];
+            int[] inputTrits = new int[243];
+            int[] outputTrits = new int[243];
             for (var i = 0; i < inputTrits.Length; i++) inputTrits[i] = Random.Next(3) - 1;
 
             var bigInt = BigIntConverter.BigIntFromTrits(inputTrits, 0, inputTrits.Length);
-
-            var outputTrits = new int[inputTrits.Length];
             BigIntConverter.TritsFromBigInt(bigInt, outputTrits, 0, outputTrits.Length);
 
-            for (var i = 0; i < inputTrits.Length; i++) Assert.Equal(inputTrits[i], outputTrits[i]);
+            Assert.Equal(inputTrits, outputTrits);
         }
 
         [Fact]
@@ -49,7 +48,7 @@ namespace Iota.Api.Standard.UnitTests
             FixedBigIntConverter.FromBytesToTrits(bytes, outputTrits);
             outputTrits[outputTrits.Length - 1] = 0;
 
-            for (var i = 0; i < inputTrits.Length; i++) Assert.Equal(inputTrits[i], outputTrits[i]);
+            Assert.Equal(inputTrits, outputTrits);
         }
     }
 }

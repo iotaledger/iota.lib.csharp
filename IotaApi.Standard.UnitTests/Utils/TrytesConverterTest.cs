@@ -7,7 +7,7 @@ namespace Iota.Api.Standard.UnitTests
 {
     public class TrytesConverterTest
     {
-        private static readonly Random Random = new Random();
+        private readonly Random Random = new Random();
 
         [Fact]
         public void ShouldConvertStringToTrytes()
@@ -26,12 +26,14 @@ namespace Iota.Api.Standard.UnitTests
         [Fact]
         public void ShouldConvertTryteString()
         {
-            var str = RandomString(1000);
-            var back = TrytesConverter.ToString(TrytesConverter.ToTrytes(str));
-            Assert.Equal(str, back);
+            string tryteString = RandomString(1000);
+
+            string back = TrytesConverter.ToString(TrytesConverter.ToTrytes(tryteString));
+
+            Assert.Equal(tryteString, back);
         }
 
-        public static string RandomString(int length)
+        private string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)

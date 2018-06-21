@@ -76,7 +76,7 @@ namespace Iota.Api.Standard.IntegrationTests
             Signing sgn = new Signing(new Kerl());
 
             bool isValidSignature = sgn.ValidateSignatures(bundle, multiSigAddress);
-            Console.WriteLine("Result of multi-signature validation is " + isValidSignature);
+
             Assert.True(isValidSignature, "MultiSignature not valid");
             
         }

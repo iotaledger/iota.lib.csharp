@@ -7,20 +7,20 @@ namespace Iota.Api.Standard.IntegrationTests
 {
     public class LocalPoWTest
     {
-        private static readonly string TEST_SEED1 =
+        private const string TEST_SEED1 =
             "IHDEENZYITYVYSPKAURUZAQKGVJEREFDJMYTANNXXGPZ9GJWTEOJJ9IPMXOGZNQLSNMFDSQOTZAEETUEA";
 
-        private static readonly string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2 =
+        private const string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2 =
             "LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZC";
 
-        private static readonly string TEST_MESSAGE = "JUSTANOTHERJOTATEST";
-        private static readonly string TEST_TAG = "JOTASPAM9999999999999999999";
-        private static readonly int MIN_WEIGHT_MAGNITUDE = 14;
-        private static readonly int DEPTH = 9;
+        private const string TEST_MESSAGE = "JUSTANOTHERJOTATEST";
+        private const string TEST_TAG = "JOTASPAM9999999999999999999";
+        private const int MIN_WEIGHT_MAGNITUDE = 14;
+        private const int DEPTH = 9;
 
         private IotaApi _iotaClient;
 
-        private LocalPoWTest()
+        public LocalPoWTest()
         {
             _iotaClient = new IotaApi("node.iotawallet.info", 14265)
             {
@@ -35,9 +35,7 @@ namespace Iota.Api.Standard.IntegrationTests
             {
                 new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2, 0, TEST_MESSAGE, TEST_TAG)
             };
-            var result = _iotaClient.SendTransfer(
-                TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers.ToArray(),
-                null, null, false, false);
+            var result = _iotaClient.SendTransfer( TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers.ToArray(), null, null, false, false);
             Assert.NotNull(result);
         }
     }
