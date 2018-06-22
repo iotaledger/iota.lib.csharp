@@ -41,7 +41,7 @@ namespace Iota.Api.Standard.Utils
 
         internal static string GetAddress(string addressWithChecksum)
         {
-            return addressWithChecksum.Substring(0, Constants.AddressLengthWithoutChecksum);
+            return addressWithChecksum.Substring(0, Constants.ADDRESS_LENGTH_WITHOUT_CHECKSUM);
         }
 
         /// <summary>
@@ -63,12 +63,12 @@ namespace Iota.Api.Standard.Utils
         private static bool IsAddressWithChecksum(string addressWithChecksum)
         {
             return InputValidator.IsAddress(addressWithChecksum) &&
-                   addressWithChecksum.Length == Constants.AddressLengthWithChecksum;
+                   addressWithChecksum.Length == Constants.ADDRESS_LENGTH_WITH_CHECKSUM;
         }
 
         private static bool IsAddressWithoutChecksum(string address)
         {
-            return InputValidator.CheckAddress(address) && address.Length == Constants.AddressLengthWithoutChecksum;
+            return InputValidator.CheckAddress(address) && address.Length == Constants.ADDRESS_LENGTH_WITHOUT_CHECKSUM;
         }
 
         private static string CalculateChecksum(string address)

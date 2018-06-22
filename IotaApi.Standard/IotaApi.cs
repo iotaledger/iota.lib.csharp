@@ -204,10 +204,10 @@ namespace Iota.Api.Standard
                 var signatureMessageLength = 1;
 
                 // If message longer than 2187 trytes, increase signatureMessageLength (add 2nd transaction)
-                if (transfer.Message.Length > Constants.MessageLength)
+                if (transfer.Message.Length > Constants.MESSAGE_LENGTH)
                 {
                     // Get total length, message / maxLength (2187 trytes)
-                    signatureMessageLength += (int) Math.Floor((double) transfer.Message.Length / Constants.MessageLength);
+                    signatureMessageLength += (int) Math.Floor((double) transfer.Message.Length / Constants.MESSAGE_LENGTH);
 
                     var msgCopy = transfer.Message;
 
@@ -960,11 +960,11 @@ namespace Iota.Api.Standard
                 int signatureMessageLength = 1;
 
                 // If message longer than 2187 trytes, increase signatureMessageLength (add next transaction)
-                if (transfer.Message.Length > Constants.MessageLength)
+                if (transfer.Message.Length > Constants.MESSAGE_LENGTH)
                 {
 
                     // Get total length, message / maxLength (2187 trytes)
-                    signatureMessageLength += (int)Math.Floor((double)transfer.Message.Length / Constants.MessageLength);
+                    signatureMessageLength += (int)Math.Floor((double)transfer.Message.Length / Constants.MESSAGE_LENGTH);
 
                     String msgCopy = transfer.Message;
 
@@ -973,11 +973,11 @@ namespace Iota.Api.Standard
                     while (!string.IsNullOrEmpty(msgCopy))
                     {
 
-                        string fragment = msgCopy.Substring(0, Constants.MessageLength);
-                        msgCopy = msgCopy.Substring(Constants.MessageLength, msgCopy.Length - Constants.MessageLength);
+                        string fragment = msgCopy.Substring(0, Constants.MESSAGE_LENGTH);
+                        msgCopy = msgCopy.Substring(Constants.MESSAGE_LENGTH, msgCopy.Length - Constants.MESSAGE_LENGTH);
 
                         // Pad remainder of fragment
-                        fragment = fragment.PadRight(Constants.MessageLength, '9');
+                        fragment = fragment.PadRight(Constants.MESSAGE_LENGTH, '9');
                         
 
                         signatureFragments.Add(fragment);
@@ -990,9 +990,9 @@ namespace Iota.Api.Standard
                     // Else, get single fragment with 2187 of 9's trytes
                     String fragment = transfer.Message;
 
-                    if (transfer.Message.Length < Constants.MessageLength)
+                    if (transfer.Message.Length < Constants.MESSAGE_LENGTH)
                     {
-                        fragment = fragment.PadRight(Constants.MessageLength, '9');
+                        fragment = fragment.PadRight(Constants.MESSAGE_LENGTH, '9');
                     }
 
                     signatureFragments.Add(fragment);
@@ -1002,9 +1002,9 @@ namespace Iota.Api.Standard
                 tag = transfer.Tag;
 
                 // pad for required 27 tryte length
-                if (transfer.Tag.Length < Constants.TagLength)
+                if (transfer.Tag.Length < Constants.TAG_LENGTH)
                 {
-                    tag = tag.PadRight(Constants.TagLength, '9');
+                    tag = tag.PadRight(Constants.TAG_LENGTH, '9');
                 }
 
                 // get current timestamp in seconds

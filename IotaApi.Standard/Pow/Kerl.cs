@@ -102,7 +102,7 @@ namespace Iota.Api.Standard.Pow
                 Array.Copy(_tritState, 0, trits, offset, HashLength);
 
                 //calculate hash again
-                for (var i = _byteState.Length; i-- > 0;) _byteState[i] = (byte) (_byteState[i] ^ 0xFF);
+                for (var i = _byteState.Length; i-- > 0;) _byteState[i] = (byte)(_byteState[i] ^ 0xFF);
 
                 _keccak.BlockUpdate(_byteState, 0, _byteState.Length);
                 offset += HashLength;

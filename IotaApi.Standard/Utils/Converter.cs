@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using System.Text;
+using static Iota.Api.Standard.Utils.Constants;
 
 namespace Iota.Api.Standard.Utils
 {
@@ -46,7 +49,7 @@ namespace Iota.Api.Standard.Utils
         /// </summary>
         public static readonly int NumberOfTritsInATryte = 3;
 
-        static readonly int[][] ByteToTritsMappings = new int[243][]; //why 243? max 121
+        static readonly int[][] ByteToTritsMappings = new int[243][];
         static readonly int[][] TryteToTritsMappings = new int[27][];
 
         static Converter()
@@ -166,7 +169,7 @@ namespace Iota.Api.Standard.Utils
             int[] d = new int[3 * trytes.Length];
             for (int i = 0; i < trytes.Length; i++)
             {
-                Array.Copy(TryteToTritsMappings[Constants.TryteAlphabet.IndexOf(trytes[i])], 0, d,
+                Array.Copy(TryteToTritsMappings[Constants.TRYTE_ALPHABET.IndexOf(trytes[i])], 0, d,
                     i * NumberOfTritsInATryte, NumberOfTritsInATryte);
             }
 
@@ -235,7 +238,7 @@ namespace Iota.Api.Standard.Utils
         {
             for (int i = 0; i < input.Length; i++)
             {
-                int index = Constants.TryteAlphabet.IndexOf(input[i]);
+                int index = Constants.TRYTE_ALPHABET.IndexOf(input[i]);
                 destination[i * 3] = TryteToTritsMappings[index][0];
                 destination[i * 3 + 1] = TryteToTritsMappings[index][1];
                 destination[i * 3 + 2] = TryteToTritsMappings[index][2];
@@ -291,10 +294,10 @@ namespace Iota.Api.Standard.Utils
                 int j = trits[offset + i * 3] + trits[offset + i * 3 + 1] * 3 + trits[offset + i * 3 + 2] * 9;
                 if (j < 0)
                 {
-                    j += Constants.TryteAlphabet.Length;
+                    j += Constants.TRYTE_ALPHABET.Length;
                 }
 
-                trytes.Append(Constants.TryteAlphabet[j]);
+                trytes.Append(Constants.TRYTE_ALPHABET[j]);
             }
 
             return trytes.ToString();
@@ -353,6 +356,95 @@ namespace Iota.Api.Standard.Utils
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Converts a trit-array to a BigInteger
+        /// </summary>
+        /// <param name="trits">The trit-array</param>
+        /// <returns>A BigInteger</returns>
+        public static BigInteger ConvertTritsToBigInt(int[] trits)
+        {
+            BigInteger value = BigInteger.Zero;
+
+            for (var i = trits.Length; i-- > 0;)
+            {
+                value = BigInteger.Add(BigInteger.Multiply(Constants.RADIX, value), new BigInteger(trits[i]));
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Converts a BigInteger into a byte-array
+        /// </summary>
+        /// <param name="value">The BigInteger</param>
+        /// <param name="outputLength">The length of the returning byte-array</param>
+        /// <returns>A byte-array</returns>
+        public static byte[] ConvertBigIntToBytes(BigInteger value, int outputLength)
+        {
+            byte[] result = new byte[outputLength];
+            byte[] bytes = value.ToByteArray();
+            bytes = bytes.Reverse().ToArray();
+
+
+            var i = 0;
+            while (i + bytes.Length < outputLength)
+            {
+                if (value < 0)
+                {
+                    result[i++] = 255;
+                }
+                else
+                {
+                    result[i++] = 0;
+                }
+            }
+
+            for (int j = bytes.Length; j-- > 0;)
+            {
+                result[i++] = bytes[bytes.Length - 1 - j];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts a BigInteger into a trit-array
+        /// </summary>
+        /// <param name="value">The BigInteger</param>
+        /// <returns>A trit-array</returns>
+        public static int[] ConvertBigIntToTrits(BigInteger value)
+        {
+            List<int> trits = new List<int>();
+            BigInteger absoluteValue = BigInteger.Abs(value);
+            int counter = 0;
+            while (absoluteValue > 0)
+            {
+                BigInteger quotient = BigInteger.DivRem(absoluteValue, new BigInteger(RADIX), out BigInteger remainder_as_bi);
+
+                int remainder = (int)remainder_as_bi;
+                absoluteValue = quotient;
+
+                if (remainder > MAX_TRIT_VALUE)
+                {
+                    remainder = MIN_TRIT_VALUE;
+                    absoluteValue = BigInteger.Add(absoluteValue, BigInteger.One);
+                }
+                trits.Add(remainder);
+                counter++;
+            }
+
+            if (value < 0)
+            {
+                for (int i = 0; i < trits.Count; i++)
+                {
+                    trits[i] = -trits[i];
+                }
+            }
+
+            int[] paddedArray = trits.ToArray();
+            return ArrayUtils.PadTritArrayWithZeroes(paddedArray);
         }
 
         /// <summary>

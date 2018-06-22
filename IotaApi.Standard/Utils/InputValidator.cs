@@ -21,8 +21,8 @@ namespace Iota.Api.Standard.Utils
         /// </returns>
         public static bool IsAddress(string address)
         {
-            if (address.Length == Constants.AddressLengthWithoutChecksum ||
-                address.Length == Constants.AddressLengthWithChecksum)
+            if (address.Length == Constants.ADDRESS_LENGTH_WITHOUT_CHECKSUM ||
+                address.Length == Constants.ADDRESS_LENGTH_WITH_CHECKSUM)
             {
                 return IsTrytes(address, address.Length);
             }
@@ -101,7 +101,7 @@ namespace Iota.Api.Standard.Utils
         }
 
         /// <summary>
-        /// Determines whether the specified string contains only characters from the trytes alphabet (see <see cref="Constants.TryteAlphabet"/>)
+        /// Determines whether the specified string contains only characters from the trytes alphabet (see <see cref="Constants.TRYTE_ALPHABET"/>)
         /// </summary>
         /// <param name="trytes">The trytes.</param>
         /// <param name="length">The length.</param>
@@ -213,7 +213,7 @@ namespace Iota.Api.Standard.Utils
         /// <returns></returns>
         public static string PadSeedIfNecessary(string seed)
         {
-            while (seed.Length < Constants.AddressLengthWithoutChecksum) seed += 9;
+            while (seed.Length < Constants.ADDRESS_LENGTH_WITHOUT_CHECKSUM) seed += 9;
             return seed;
         }
 

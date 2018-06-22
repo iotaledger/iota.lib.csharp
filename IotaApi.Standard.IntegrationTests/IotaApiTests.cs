@@ -2,48 +2,46 @@
 using System.Collections.Generic;
 using Iota.Api.Standard.Exception;
 using Iota.Api.Standard.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests
+namespace Iota.Api.Standard.IntegrationTests
 {
-    [TestClass]
     public class IotaApiTests
     {
-        private static readonly string TEST_SEED1 =
+        private const string TEST_SEED1 =
             "IHDEENZYITYVYSPKAURUZAQKGVJEREFDJMYTANNXXGPZ9GJWTEOJJ9IPMXOGZNQLSNMFDSQOTZAEETUEA";
 
-        private static readonly string TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_1 =
+        private const string TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_1 =
             "MALAZGDVZIAQQRTNYJDSZMY9VE9LAHQKTVCUOAGZUCX9IBUMODFFTMGUIUAXGLWZQ9CYRSLYBM9QBIBYAEIAOPKXEA";
 
-        private static readonly string TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2 =
+        private const string TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2 =
             "LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZCCOZVXMTXC";
 
-        private static readonly string TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_3 =
+        private const string TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_3 =
             "ASCZZOBQDMNHLELQKWJBMRETMHBTF9V9TNKYDIFW9PDXPUHPVVGHMSWPVMNJHSJF99QFCMNTPCPGS9DT9XAFKJVO9X";
 
-        private static readonly string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_1 =
+        private const string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_1 =
             "MALAZGDVZIAQQRTNYJDSZMY9VE9LAHQKTVCUOAGZUCX9IBUMODFFTMGUIUAXGLWZQ9CYRSLYBM9QBIBYA";
 
-        private static readonly string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2 =
+        private const string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2 =
             "LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZC";
 
-        private static readonly string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_3 =
+        private const string TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_3 =
             "ASCZZOBQDMNHLELQKWJBMRETMHBTF9V9TNKYDIFW9PDXPUHPVVGHMSWPVMNJHSJF99QFCMNTPCPGS9DT9";
 
-        private static readonly string TEST_SEED2 =
+        private const string TEST_SEED2 =
             "IHDEENZYITYVYSPKAURUZAQKGVJEREFDJMYTANNXXGPZ9GJWTEOJJ9IPMXOGZNQLSNMFDSQOTZAEETUEA";
 
-        private static readonly string TEST_HASH =
-            "9XWWWXVQYPKLVMAMFPXFSE9UCAGVY9RZO9NHGAZEXIRIJRZULGMFOJNDKUNFUCSURWRDDPVMYG9X99999"; //06/02/2018,04:36
+        private const string TEST_HASH =
+            "9XWWWXVQYPKLVMAMFPXFSE9UCAGVY9RZO9NHGAZEXIRIJRZULGMFOJNDKUNFUCSURWRDDPVMYG9X99999";
 
-        private static readonly string TEST_TRYTES =
+        private const string TEST_TRYTES =
             "999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZCQ9CA9TA99999999999999999999XC9999999999999999999999999TPLCUYD99999999999B99999999WFVTNIRLVFIVKAQEEDFRWWLXIPHRQNG9EAY9QEWRFDLECXDGJLIKBAKBYPTAZPISWVXJLBJISGGLWTBVDNBEBXBG9PZHPK9SVNH99LZVXYZSVODZZIIXNJJQAYXCNKISVFVXGVQMURVEMSDGLRLZADQCOHRHW99999K9SYJTSNRZVYWGSV9AXVTPKMTLHPCTIJGNNAMALVPQUCGCZXZFFUQSXCHPSJLXBADVOIZO9PSZYTA9999XC9999999999999999999999999WWF9MWCJE999999999MMMMMMMMMPRQAGSHN9ZHEWVAANNPXSDRRROY";
 
-        private static readonly string TEST_MESSAGE = "COTA";
-        private static readonly string TEST_TAG = "COTASPAM9999999999999999999";
+        private const string TEST_MESSAGE = "COTA";
+        private const string TEST_TAG = "COTASPAM9999999999999999999";
 
-        // ReSharper disable once InconsistentNaming
-        private static readonly string[] TEST_ADDRESSES =
+        private readonly string[] TEST_ADDRESSES =
         {
             "LXQHWNY9CQOHPNMKFJFIJHGEPAENAOVFRDIBF99PPHDTWJDCGHLYETXT9NPUVSNKT9XDTDYNJKJCPQMZCCOZVXMTXC",
             "P9UDUZMN9DEXCRQEKLJYSBSBZFCHOBPJSDKMLCCVJDOVOFDWMNBZRIRRZJGINOUMPJBMYYZEGRTIDUABD",
@@ -68,190 +66,154 @@ namespace Iota.Api.Standard.Tests
             "KVEBCGMEOPDPRCQBPIEMZTTXYBURGZVNH9PLHKPMM9D9FUKWIGLKZROGNSYIFHULLWQWXCNAW9HKKVIDC"
         };
 
-        private static readonly string TestTrytesValid =
+        private const string TESTTRYTESVALID =
             "JUSTANOTHERTEST999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999PNGMCSNRCTRHCHPXYTPKEJYPCOWKOMRXZFHH9N9VDIKMNVAZCMIYRHVJIAZARZTUETJVFDMBEBIQE9QTH999999999999999999999999999COTASPAM9999999999999999999VISYF9DGE999999999999999999FB9CRHGOHK9EIDHDUWSGDDONYQAABTRXXMFUKRZHMVJAPCAADTRDCWZJRHAPL9LRIVZFVKQV9GAWSSJZDPWGPQTPWCPNYONYGGSJLJAQYXLZ9FMOTUJT9RIXAOXFDQZSTZYBCHSNLSM9JAXTMNQBUHAAZIIR999999PWGPQTPWCPNYONYGGSJLJAQYXLZ9FMOTUJT9RIXAOXFDQZSTZYBCHSNLSM9JAXTMNQBUHAAZIIR999999KXOQZNGXOCACOVYKPWWJFQQMEWDQVUZRI99WFQEJANSOPVLZGQHLUEYKPYPMSTLDRDVEBMCQMKQLL9JFS";
 
-        private static int MIN_WEIGHT_MAGNITUDE = 14;
-        private static int DEPTH = 9;
+        private const int MIN_WEIGHT_MAGNITUDE = 14;
+        private const int DEPTH = 9;
 
         private IotaApi _iotaClient;
 
-        [TestInitialize]
-        public void CreateApiClientInstance()
+        public IotaApiTests()
         {
             _iotaClient = new IotaApi("node.iotawallet.info", 14265);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetInputs()
         {
-            var res = _iotaClient.GetInputs(TEST_SEED1, 2, 0, 0, 0);
-            Console.WriteLine(res);
-            Assert.IsNotNull(res);
-            Assert.IsNotNull(res.TotalBalance);
-            Assert.IsNotNull(res.InputsList);
+            Inputs response = _iotaClient.GetInputs(TEST_SEED1, 2, 0, 0, 0);
+
+            Assert.NotNull(response);
+            Assert.True(response.TotalBalance >= 0);
+            Assert.NotNull(response.InputsList);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreateANewAddressWithChecksum()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
-            var res1 = _iotaClient.GetNewAddress(TEST_SEED1, 1, 0, true, 5, false);
-            Assert.AreEqual(res1[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_1);
+            string[] addressesFromSeed_01 = _iotaClient.GetNewAddress(TEST_SEED1, 1, 0, true, 5, false);
+            string[] addressesFromSeed_02 = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, true, 5, false);
+            string[] addressesFromSeed_03 = _iotaClient.GetNewAddress(TEST_SEED1, 3, 0, true, 5, false);
 
-            var res2 = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, true, 5, false);
-            Assert.AreEqual(res2[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2);
-
-            var res3 = _iotaClient.GetNewAddress(TEST_SEED1, 3, 0, true, 5, false);
-            Assert.AreEqual(res3[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_3);
-            // ReSharper restore RedundantArgumentDefaultValue
+            Assert.NotEmpty(addressesFromSeed_01);
+            Assert.NotEmpty(addressesFromSeed_02);
+            Assert.NotEmpty(addressesFromSeed_03);
+            Assert.Equal(addressesFromSeed_01[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_1);
+            Assert.Equal(addressesFromSeed_02[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2);
+            Assert.Equal(addressesFromSeed_03[0], TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_3);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreateANewAddressWithoutChecksum()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
-            var res1 = _iotaClient.GetNewAddress(TEST_SEED1, 1, 0, false, 5, false);
-            Assert.AreEqual(res1[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_1);
+            string[] addressesFromSeed_01 = _iotaClient.GetNewAddress(TEST_SEED1, 1, 0, false, 5, false);
+            string[] addressesFromSeed_02 = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, false, 5, false);
+            string[] addressesFromSeed_03 = _iotaClient.GetNewAddress(TEST_SEED1, 3, 0, false, 5, false);
 
-            var res2 = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, false, 5, false);
-            Assert.AreEqual(res2[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2);
-
-            var res3 = _iotaClient.GetNewAddress(TEST_SEED1, 3, 0, false, 5, false);
-            Assert.AreEqual(res3[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_3);
-            // ReSharper restore RedundantArgumentDefaultValue
+            Assert.NotEmpty(addressesFromSeed_01);
+            Assert.NotEmpty(addressesFromSeed_02);
+            Assert.NotEmpty(addressesFromSeed_03);
+            Assert.Equal(addressesFromSeed_01[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_1);
+            Assert.Equal(addressesFromSeed_02[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2);
+            Assert.Equal(addressesFromSeed_03[0], TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_3);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldCreate100Addresses()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
             var res = _iotaClient.GetNewAddress(TEST_SEED1, 2, 0, false, 100, false);
-            Assert.AreEqual(res.Length, 100);
-            // ReSharper restore RedundantArgumentDefaultValue
+
+            Assert.Equal(100, res.Length);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NotEnoughBalanceException))]
-        public void ShouldPrepareTransfer()
+        [Fact]
+        public void ShouldPrepareTransferWithoutInputs()
         {
-            var transfers = new List<Transfer>
+            List<Transfer> transfers = new List<Transfer>
             {
-                new Transfer(TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2, 100, TEST_MESSAGE, TEST_TAG),
+                new Transfer(TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2, 0, TEST_MESSAGE, TEST_TAG),
             };
 
-            var trytes = _iotaClient.PrepareTransfers(TEST_SEED1, 2, transfers.ToArray(), null, null, false);
+            List<string> trytes = _iotaClient.PrepareTransfers(TEST_SEED1, 2, transfers.ToArray(), null, null, false);
 
-            Assert.IsNotNull(trytes);
-            Assert.IsFalse(trytes.Count == 0);
+            Assert.NotNull(trytes);
+            Assert.False(trytes.Count == 0);
 
         }
 
-        //seed contains 0 balance
-        [TestMethod]
-        [ExpectedException(typeof(NotEnoughBalanceException))]
-        public void ShouldPrepareTransferWithInputs()
+        [Fact]
+        public void ShouldFailToPrepareTransferWithoutEnoughBalance()
         {
             List<Input> inputlist = new List<Input>();
             List<Transfer> transfers = new List<Transfer>();
 
-            var inputs = _iotaClient.GetInputs(TEST_SEED1, 2, 0, 0, 0);
-
+            Inputs inputs = _iotaClient.GetInputs(TEST_SEED1, 2, 0, 0, 0);
             inputlist.AddRange(inputs.InputsList);
 
             transfers.Add(new Transfer(TEST_ADDRESS_WITH_CHECKSUM_SECURITY_LEVEL_2, 100, TEST_MESSAGE, TEST_TAG));
-            List<string> trytes =
-                _iotaClient.PrepareTransfers(TEST_SEED1, 2, transfers.ToArray(), null, inputlist, true);
 
-            Assert.IsNotNull(trytes);
-            Assert.IsFalse(trytes.Count == 0);
+            Assert.Throws<NotEnoughBalanceException>(
+                () => _iotaClient.PrepareTransfers(TEST_SEED1, 2, transfers.ToArray(), null, inputlist, true)
+                );
         }
 
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetLastInclusionState()
         {
-            var res = _iotaClient.GetLatestInclusion(new[] {TEST_HASH});
-            Assert.IsNotNull(res.States);
+            Core.GetInclusionStatesResponse response = _iotaClient.GetLatestInclusion(new[] {TEST_HASH});
+
+            Assert.NotNull(response.States);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldFindTransactionObjects()
         {
-            var ftr = _iotaClient.FindTransactionObjects(TEST_ADDRESSES);
-            Assert.IsNotNull(ftr);
+            List<Transaction> foundTransactions = _iotaClient.FindTransactionObjects(TEST_ADDRESSES);
+
+            Assert.NotNull(foundTransactions);
         }
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetAccountData()
         {
-            var accountData = _iotaClient.GetAccountData(TEST_SEED1, 2, 0, true, 0, true, 0, 0, true, 0);
-            Assert.IsNotNull(accountData);
+            AccountData accountData = _iotaClient.GetAccountData(TEST_SEED1, 2, 0, true, 0, true, 0, 0, true, 0);
+
+            Assert.NotNull(accountData);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ShouldNotGetBundle()
-        {
-            var bundle = _iotaClient.GetBundle("SADASD");
-            Assert.IsNotNull(bundle);
-        }
+        //[Fact]
+        //public void ShouldNotGetBundle()
+        //{
+        //    Bundle bundle = _iotaClient.GetBundle("SADASD");
+        //    Assert.NotNull(bundle);
+        //}
 
-        [TestMethod]
-        public void ShouldGetBundle()
-        {
-            var bundle = _iotaClient.GetBundle(TEST_HASH);
-            Assert.IsNotNull(bundle);
-        }
+        //[Fact]
+        //public void ShouldGetBundle()
+        //{
+        //    var bundle = _iotaClient.GetBundle(TEST_HASH);
+        //    Assert.NotNull(bundle);
+        //}
 
-        [TestMethod]
+        [Fact]
         public void ShouldGetTransfers()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
             var gtr = _iotaClient.GetTransfers(TEST_SEED1, 2, 0, 0, false);
-            // ReSharper restore RedundantArgumentDefaultValue
 
-            foreach (var b in gtr) Assert.IsTrue(b.Transactions.TrueForAll(t => t != null));
+            foreach (var b in gtr) Assert.True(b.Transactions.TrueForAll(t => t != null));
         }
 
-        [Ignore]
-        [TestMethod]
-        public void ShouldReplayBundle()
-        {
-            var replayedList = _iotaClient.ReplayBundle(TEST_HASH, DEPTH, MIN_WEIGHT_MAGNITUDE);
-            Assert.IsNotNull(replayedList);
-        }
+        //[Fact]
+        //public void ShouldReplayBundle()
+        //{
+        //    var replayedList = _iotaClient.ReplayBundle(TEST_HASH, DEPTH, MIN_WEIGHT_MAGNITUDE);
 
-        [Ignore]
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ShouldNotSendTrytes()
-        {
-            _iotaClient.SendTrytes(new[] {TEST_TRYTES}, 9);
-        }
+        //    Assert.NotNull(replayedList);
+        //}
 
-        [TestMethod]
-        public void ShouldGetTrytes()
-        {
-            _iotaClient.GetTrytes(TEST_HASH);
-        }
-
-        [TestMethod]
-        public void ShouldBroadcastAndStore()
-        {
-            _iotaClient.BroadcastAndStore(new List<string> {TEST_TRYTES});
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void ShouldSendTrytes()
-        {
-            _iotaClient.SendTrytes(new[] {TestTrytesValid}, 9);
-        }
-
-        [Ignore]
-        [TestMethod]
-        [ExpectedException(typeof(IllegalStateException))]
+        [Fact]
         public void ShouldNotSendTransfer()
         {
             Transfer[] transfers =
@@ -259,43 +221,39 @@ namespace Iota.Api.Standard.Tests
                 new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2, 2, TEST_MESSAGE, TEST_TAG)
             };
 
-            var result = _iotaClient.SendTransfer(TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers, null, null,
-                false, true);
-            Assert.IsNotNull(result);
+            Assert.Throws<NotEnoughBalanceException>(
+                () => _iotaClient.SendTransfer(TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers, null, null,false, true)
+                );
         }
 
-        [Ignore]
-        [TestMethod]
-        public void ShouldSendTransferWithoutInputs()
-        {
-            var transfers = new List<Transfer>
-            {
-                new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2, 1, "JUSTANOTHERTEST", TEST_TAG)
-            };
+        //[Fact]
+        //public void ShouldSendTransferWithoutInputs()
+        //{
+        //    var transfers = new List<Transfer>
+        //    {
+        //        new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2, 1, "JUSTANOTHERTEST", TEST_TAG)
+        //    };
 
-            var str = _iotaClient.SendTransfer(TEST_SEED2, 2, 9, 14, transfers.ToArray(), null, null, false, true);
+        //    var str = _iotaClient.SendTransfer(TEST_SEED2, 2, 9, 14, transfers.ToArray(), null, null, false, true);
 
-            Assert.IsNotNull(str);
-        }
+        //    Assert.NotNull(str);
+        //}
 
-        [Ignore]
-        [TestMethod]
-        public void ShouldSendTransferWithInputs()
-        {
-            List<Input> inputlist = new List<Input>();
-            List<Transfer> transfers = new List<Transfer>();
+        //[Fact]
+        //public void ShouldSendTransferWithInputs()
+        //{
+        //    List<Input> inputlist = new List<Input>();
+        //    List<Transfer> transfers = new List<Transfer>();
 
-            var inputs = _iotaClient.GetInputs(TEST_SEED1, 2, 0, 0, 1);
+        //    Inputs inputs = _iotaClient.GetInputs(TEST_SEED1, 2, 0, 0, 1);
 
-            inputlist.AddRange(inputs.InputsList);
+        //    inputlist.AddRange(inputs.InputsList);
 
-            transfers.Add(new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2, 1, TEST_MESSAGE, TEST_TAG));
+        //    transfers.Add(new Transfer(TEST_ADDRESS_WITHOUT_CHECKSUM_SECURITY_LEVEL_2, 1, TEST_MESSAGE, TEST_TAG));
 
-            var str = _iotaClient.SendTransfer(TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers.ToArray(),
-                inputlist.ToArray(), null,
-                true, true);
+        //    var str = _iotaClient.SendTransfer(TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers.ToArray(), inputlist.ToArray(), null, true, true);
 
-            Assert.IsNotNull(str);
-        }
+        //    Assert.NotNull(str);
+        //}
     }
 }

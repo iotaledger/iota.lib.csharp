@@ -5,39 +5,24 @@
     /// </summary>
     public static class Constants
     {
-        /// <summary>
-        ///     This String contains all possible characters of the tryte alphabet
-        /// </summary>
-        public static readonly string TryteAlphabet = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public const string TRYTE_ALPHABET = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        /// <summary>
-        ///     The maximum seed length
-        /// </summary>
-        public static readonly int SeedLengthMax = 81;
+        public const int SEED_LENGTH_MAX = 81;
 
-        /// <summary>
-        ///     This String represents the empty hash consisting of '9'
-        /// </summary>
-        public static readonly string EmptyHash =
-            "999999999999999999999999999999999999999999999999999999999999999999999999999999999";
+        public const string EMPTY_HASH = "999999999999999999999999999999999999999999999999999999999999999999999999999999999";
 
-        /// <summary>
-        ///     The length of an address without checksum
-        /// </summary>
-        public static readonly int AddressLengthWithoutChecksum = 81;
+        public const int ADDRESS_LENGTH_WITHOUT_CHECKSUM = 81;
 
-        /// <summary>
-        ///     The address length with checksum
-        /// </summary>
-        public static readonly int AddressLengthWithChecksum = 90;
+        public const int ADDRESS_LENGTH_WITH_CHECKSUM = 90;
 
-        /// <summary>
-        ///     The length of an message
-        /// </summary>
-        public static int MessageLength = 2187;
-        /// <summary>
-        /// 
-        /// </summary>
-        public static int TagLength = 27;
+        public const int MESSAGE_LENGTH = 2187;
+
+        public const int TAG_LENGTH = 27;
+
+        public const int RADIX = 3;
+
+        public const int MAX_TRIT_VALUE = 1;
+
+        public const int MIN_TRIT_VALUE = -1;
     }
 }

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using Iota.Api.Standard.Model;
 using Iota.Api.Standard.Pow;
 using Iota.Api.Standard.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace Iota.Api.Standard.Tests.Utils
+namespace Iota.Api.Standard.IntegrationTests
 {
-    [TestClass]
     public class MultisigTest
     {
         private const string TestSeed1 = "ABCDFG";
@@ -24,13 +23,12 @@ namespace Iota.Api.Standard.Tests.Utils
 
         private IotaApi _iotaClient;
 
-        [TestInitialize]
-        public void CreateApiClientInstance()
+        public MultisigTest()
         {
             _iotaClient = new IotaApi("node.iotawallet.info", 14265);
         }
 
-        [TestMethod]
+        [Fact]
         public void BasicMultiSigTest()
         {
             Multisig ms = new Multisig();
@@ -58,7 +56,7 @@ namespace Iota.Api.Standard.Tests.Utils
 
             Console.WriteLine("Is a valid multisig address " + isValidMultisigAddress);
 
-            Assert.IsTrue(isValidMultisigAddress, "Address is not a valid multisigAddress");
+            Assert.True(isValidMultisigAddress, "Address is not a valid multisigAddress");
 
             List<Transfer> transfers = new List<Transfer>
             {
@@ -78,8 +76,8 @@ namespace Iota.Api.Standard.Tests.Utils
             Signing sgn = new Signing(new Kerl());
 
             bool isValidSignature = sgn.ValidateSignatures(bundle, multiSigAddress);
-            Console.WriteLine("Result of multi-signature validation is " + isValidSignature);
-            Assert.IsTrue(isValidSignature, "MultiSignature not valid");
+
+            Assert.True(isValidSignature, "MultiSignature not valid");
             
         }
     }

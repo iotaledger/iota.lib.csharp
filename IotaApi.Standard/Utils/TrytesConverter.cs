@@ -23,8 +23,8 @@ namespace Iota.Api.Standard.Utils
                 // If not recognizable ASCII character, replace with space
                 if (asciiValue > 255) asciiValue = ' ';
 
-                trytes.Append(Constants.TryteAlphabet[asciiValue % 27]);
-                trytes.Append(Constants.TryteAlphabet[asciiValue / 27]);
+                trytes.Append(Constants.TRYTE_ALPHABET[asciiValue % 27]);
+                trytes.Append(Constants.TRYTE_ALPHABET[asciiValue / 27]);
             }
 
             return trytes.ToString();
