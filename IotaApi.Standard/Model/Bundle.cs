@@ -100,7 +100,7 @@ namespace Iota.Api.Standard.Model
         public void AddTrytes(List<string> signatureFragments)
         {
             var emptySignatureFragment = "";
-            var emptyHash = Constants.EmptyHash;
+            var emptyHash = Constants.EMPTY_HASH;
             long emptyTimestamp = 999999999L;
 
             while (emptySignatureFragment.Length < 2187) emptySignatureFragment += '9';

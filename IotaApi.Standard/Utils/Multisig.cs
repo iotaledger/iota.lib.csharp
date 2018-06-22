@@ -116,7 +116,7 @@ namespace Iota.Api.Standard.Utils
         {
             // Get the security used for the private key
             // 1 security level = 2187 trytes
-            var security = keyTrytes.Length / Constants.MessageLength;
+            var security = keyTrytes.Length / Constants.MESSAGE_LENGTH;
 
             // convert private key trytes into trits
             var key = Converter.ToTrits(keyTrytes);

@@ -38,7 +38,7 @@ namespace Iota.Api.Standard.UnitTests
 
             for (int i = 0; i < TryteLength; i++)
             {
-                trytes.Append(Constants.TryteAlphabet[random.Next(27)]);
+                trytes.Append(Constants.TRYTE_ALPHABET[random.Next(27)]);
             }
 
             return trytes.ToString();
