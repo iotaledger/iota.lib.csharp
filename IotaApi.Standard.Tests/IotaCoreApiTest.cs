@@ -171,7 +171,7 @@ namespace Iota.Api.Tests
         [TestMethod] // very long execution
         public void ShouldGetTransactionsToApprove()
         {
-            var res = _iotaApi.GetTransactionsToApprove(27);
+            var res = _iotaApi.GetTransactionsToApprove(15);
             Assert.IsNotNull(res.TrunkTransaction);
             Assert.IsNotNull(res.BranchTransaction);
         }

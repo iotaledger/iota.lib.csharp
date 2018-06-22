@@ -43,7 +43,7 @@ namespace Iota.MAM.Tests.Core
         [TestMethod]
         public void PublishPrivateTest()
         {
-            var iota = new IotaApi("testnet140.tangle.works", 443, "https");
+            var iota = new IotaApi("node.iotawallet.info", 14265);
             var mam = new Mam(iota);
 
             // Initialise MAM State
@@ -74,7 +74,7 @@ namespace Iota.MAM.Tests.Core
         [TestMethod]
         public void PublishRestrictedTest()
         {
-            var iota = new IotaApi("testnet140.tangle.works", 443, "https");
+            var iota = new IotaApi("node.iotawallet.info", 14265);
             var mam = new Mam(iota);
             string sideKey = "IREALLYENJOYPOTATORELATEDPRODUCTS";
 
