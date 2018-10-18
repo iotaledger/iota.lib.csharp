@@ -9,64 +9,40 @@ namespace Iota.Api.Model
     /// </summary>
     public class Transaction
     {
+        // ReSharper disable once NotAccessedField.Local
+        private ICurl _customCurl;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Transaction" /> class.
         /// </summary>
         public Transaction()
         {
+            _customCurl = null;
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Transaction" /> class.
         /// </summary>
         /// <param name="trytes">The trytes representing the transaction</param>
-        /// <param name="curl">The curl implementation.</param>
+        /// <param name="customCurl">The curl implementation.</param>
         /// <exception cref="System.ArgumentException">
         ///     trytes must non-null
         ///     or
         ///     position " + i + "must not be '9'
         /// </exception>
-        public Transaction(string trytes, ICurl curl)
+        public Transaction(string trytes, ICurl customCurl)
         {
-            if (string.IsNullOrEmpty(trytes)) throw new ArgumentException("trytes must non-null");
-
-            // validity check
-            for (var i = 2279; i < 2295; i++)
-                if (trytes[i] != '9')
-                    throw new ArgumentException("position " + i + "must not be '9'");
-
-            var transactionTrits = Converter.ToTrits(trytes);
-            var hash = new int[243];
-
-            // generate the correct transaction hash
-            curl.Reset();
-            curl.Absorb(transactionTrits, 0, transactionTrits.Length);
-            curl.Squeeze(hash, 0, hash.Length);
-
-            Hash = Converter.ToTrytes(hash);
-            SignatureMessageFragment = trytes.Substring(0, 2187);
-            Address = trytes.Substring(2187, 2268 - 2187);
-            Value = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6804, 6837));
-            ObsoleteTag = trytes.Substring(2295, 2322 - 2295);
-            Timestamp = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6966, 6993));
-            CurrentIndex = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6993, 7020));
-            LastIndex = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7020, 7047));
-            Bundle = trytes.Substring(2349, 2430 - 2349);
-            TrunkTransaction = trytes.Substring(2430, 2511 - 2430);
-            BranchTransaction = trytes.Substring(2511, 2592 - 2511);
-            Tag = trytes.Substring(2592, 2619 - 2592);
-            AttachmentTimestamp = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7857, 7884));
-            AttachmentTimestampLowerBound = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7884, 7911));
-            AttachmentTimestampUpperBound = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7911, 7938));
-            Nonce = trytes.Substring(2646, 2673 - 2646);
+            TransactionObject(trytes);
+            _customCurl = customCurl;
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Transaction" /> class.
         /// </summary>
         /// <param name="trytes">The trytes representing the transaction</param>
-        public Transaction(string trytes) : this(trytes, new Curl(CurlMode.CurlP81))
+        public Transaction(string trytes)
         {
+            TransactionObject(trytes);
         }
 
         /// <summary>
@@ -238,6 +214,42 @@ namespace Iota.Api.Model
                    + Converter.ToTrytes(attachmentTimestampLowerBoundTrits)
                    + Converter.ToTrytes(attachmentTimestampUpperBoundTrits)
                    + Nonce;
+        }
+
+        private void TransactionObject(string trytes)
+        {
+            if (string.IsNullOrEmpty(trytes)) throw new ArgumentException("trytes must non-null");
+
+            // validity check
+            for (var i = 2279; i < 2295; i++)
+                if (trytes[i] != '9')
+                    throw new ArgumentException("position " + i + "must not be '9'");
+
+            var transactionTrits = Converter.ToTrits(trytes);
+            var hash = new int[243];
+
+            ICurl curl = new Curl(CurlMode.CurlP81);
+            // generate the correct transaction hash
+            curl.Reset();
+            curl.Absorb(transactionTrits, 0, transactionTrits.Length);
+            curl.Squeeze(hash, 0, hash.Length);
+
+            Hash = Converter.ToTrytes(hash);
+            SignatureMessageFragment = trytes.Substring(0, 2187);
+            Address = trytes.Substring(2187, 2268 - 2187);
+            Value = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6804, 6837));
+            ObsoleteTag = trytes.Substring(2295, 2322 - 2295);
+            Timestamp = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6966, 6993));
+            CurrentIndex = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 6993, 7020));
+            LastIndex = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7020, 7047));
+            Bundle = trytes.Substring(2349, 2430 - 2349);
+            TrunkTransaction = trytes.Substring(2430, 2511 - 2430);
+            BranchTransaction = trytes.Substring(2511, 2592 - 2511);
+            Tag = trytes.Substring(2592, 2619 - 2592);
+            AttachmentTimestamp = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7857, 7884));
+            AttachmentTimestampLowerBound = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7884, 7911));
+            AttachmentTimestampUpperBound = Converter.ToLongValue(ArrayUtils.SubArray(transactionTrits, 7911, 7938));
+            Nonce = trytes.Substring(2646, 2673 - 2646);
         }
 
         /// <summary>

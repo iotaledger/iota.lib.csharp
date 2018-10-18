@@ -27,7 +27,7 @@ namespace Iota.Api.Tests.Utils
         [TestInitialize]
         public void CreateApiClientInstance()
         {
-            _iotaClient = new IotaApi("node.iotawallet.info", 14265);
+            _iotaClient = new IotaApi("node03.iotatoken.nl", 15265);
         }
 
         [TestMethod]

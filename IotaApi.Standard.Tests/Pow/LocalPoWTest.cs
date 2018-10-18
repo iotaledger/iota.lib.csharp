@@ -24,7 +24,7 @@ namespace Iota.Api.Tests.Pow
         [TestInitialize]
         public void Setup()
         {
-            _iotaClient = new IotaApi("node.iotawallet.info", 14265)
+            _iotaClient = new IotaApi("node03.iotatoken.nl", 15265)
             {
                 LocalPow = new PearlDiverLocalPoW()
             };
