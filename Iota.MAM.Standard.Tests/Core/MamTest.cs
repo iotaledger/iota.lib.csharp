@@ -11,7 +11,7 @@ namespace Iota.MAM.Tests.Core
         [TestMethod]
         public void PublishPublicTest()
         {
-            var iota = new IotaApi("node.iotawallet.info", 14265);
+            var iota = new IotaApi("nodes.testnet.iota.org", 80);
             var mam = new Mam(iota);
             string seed = "CNHIRWBWVPDBGHKYZDJEZVIRDBSEDTCRBESFXOGRSWWDQVRNQATQUKIVDUDINJKKNCULQFCWWIG9LAEHQ";
 
@@ -43,7 +43,7 @@ namespace Iota.MAM.Tests.Core
         [TestMethod]
         public void PublishPrivateTest()
         {
-            var iota = new IotaApi("node.iotawallet.info", 14265);
+            var iota = new IotaApi("nodes.testnet.iota.org", 80);
             var mam = new Mam(iota);
 
             // Initialise MAM State
@@ -74,7 +74,7 @@ namespace Iota.MAM.Tests.Core
         [TestMethod]
         public void PublishRestrictedTest()
         {
-            var iota = new IotaApi("node.iotawallet.info", 14265);
+            var iota = new IotaApi("nodes.testnet.iota.org", 80);
             var mam = new Mam(iota);
             string sideKey = "IREALLYENJOYPOTATORELATEDPRODUCTS";
 
