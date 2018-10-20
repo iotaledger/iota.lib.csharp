@@ -27,7 +27,7 @@ namespace Iota.Api.Core
         /// <param name="protocol"></param>
         public IotaCoreApi(string host, int port, string protocol)
         {
-            _genericIotaCoreApi = new GenericIotaCoreApi(host, port,protocol);
+            _genericIotaCoreApi = new GenericIotaCoreApi(host, port, protocol);
         }
 
         /// <summary>
@@ -39,12 +39,12 @@ namespace Iota.Api.Core
         /// <param name="trunkTransaction">Trunk transaction to approve.</param>
         /// <param name="branchTransaction">Branch transaction to approve.</param>
         /// <param name="trytes">List of trytes (raw transaction data) to attach to the tangle.</param>
-        /// <param name="minWeightMagnitude">Proof of Work intensity. Minimum value is 18</param>
+        /// <param name="minWeightMagnitude">Proof of Work intensity.</param>
         /// <returns>The returned value contains a different set of tryte values which you can input into broadcastTransactions and storeTransactions. 
         /// The returned tryte value, the last 243 trytes basically consist of the: trunkTransaction + branchTransaction + nonce. 
         /// These are valid trytes which are then accepted by the network.</returns>
         public AttachToTangleResponse AttachToTangle(string trunkTransaction, string branchTransaction,
-            string[] trytes, int minWeightMagnitude = 18)
+            int minWeightMagnitude, string[] trytes)
         {
             if (!InputValidator.IsHash(trunkTransaction))
                 throw new ArgumentException("Invalid hashes provided.");
@@ -125,10 +125,11 @@ namespace Iota.Api.Core
         /// </summary>
         /// <param name="addresses">List of addresses you want to get the confirmed balance from</param>
         /// <param name="threshold">Confirmation threshold, should be set to 100.</param>
+        /// <param name="tips"></param>
         /// <returns> It returns the confirmed balance which a list of addresses have at the latest confirmed milestone. 
         /// In addition to the balances, it also returns the milestone as well as the index with which the confirmed balance was determined. 
         /// The balances is returned as a list in the same order as the addresses were provided as input.</returns>
-        public GetBalancesResponse GetBalances(List<string> addresses, long threshold = 100)
+        public GetBalancesResponse GetBalances(long threshold, List<string> addresses, List<string> tips)
         {
             List<string> addressesWithoutChecksum = new List<string>();
             foreach (var address in addresses)
@@ -137,7 +138,7 @@ namespace Iota.Api.Core
                 addressesWithoutChecksum.Add(address0);
             }
 
-            GetBalancesRequest getBalancesRequest = new GetBalancesRequest(addressesWithoutChecksum, threshold);
+            GetBalancesRequest getBalancesRequest = new GetBalancesRequest(threshold, addressesWithoutChecksum, tips);
             return _genericIotaCoreApi.Request<GetBalancesRequest, GetBalancesResponse>(getBalancesRequest);
         }
 
@@ -190,10 +191,12 @@ namespace Iota.Api.Core
         /// </summary>
         /// <param name="depth">The depth is the number of bundles to go back to determine the transactions for approval. 
         /// The higher your depth value, the more "babysitting" you do for the network (as you have to confirm more transactions).</param>
+        /// <param name="reference"></param>
         /// <returns> trunkTransaction and branchTransaction (result of the Tip selection)</returns>
-        public GetTransactionsToApproveResponse GetTransactionsToApprove(int depth)
+        public GetTransactionsToApproveResponse GetTransactionsToApprove(int depth, string reference = null)
         {
-            GetTransactionsToApproveRequest getTransactionsToApproveRequest = new GetTransactionsToApproveRequest(depth);
+            GetTransactionsToApproveRequest getTransactionsToApproveRequest =
+                new GetTransactionsToApproveRequest(depth, reference);
             return
                 _genericIotaCoreApi.Request<GetTransactionsToApproveRequest, GetTransactionsToApproveResponse>(
                     getTransactionsToApproveRequest);
@@ -255,5 +258,36 @@ namespace Iota.Api.Core
             RemoveNeighborsRequest removeNeighborsRequest = new RemoveNeighborsRequest(uris.ToList());
             return _genericIotaCoreApi.Request<RemoveNeighborsRequest, RemoveNeighborsResponse>(removeNeighborsRequest);
         }
+
+        /// <summary>
+        /// Check if a list of addresses was ever spent from, in the current epoch, or in previous epochs.
+        /// </summary>
+        /// <param name="addresses">List of addresses to check if they were ever spent from.</param>
+        /// <returns></returns>
+        public WereAddressesSpentFromResponse WereAddressesSpentFrom(params string[] addresses)
+        {
+            if (!InputValidator.IsArrayOfHashes(addresses))
+                throw new ArgumentException("Invalid hashes provided.");
+
+            WereAddressesSpentFromRequest wereAddressesSpentFromRequest = new WereAddressesSpentFromRequest(addresses);
+            return _genericIotaCoreApi.Request<WereAddressesSpentFromRequest, WereAddressesSpentFromResponse>(
+                wereAddressesSpentFromRequest);
+        }
+
+        /// <summary>
+        /// Checks the consistency of the subtangle formed by the provided tails.
+        /// </summary>
+        /// <param name="tails">The tails describing the subtangle.</param>
+        /// <returns><see cref="CheckConsistencyResponse"/>The raw transaction data (trytes) of a specific transaction.</returns>
+        public CheckConsistencyResponse CheckConsistency(params string[] tails)
+        {
+            if (!InputValidator.IsArrayOfHashes(tails))
+                throw new ArgumentException("Invalid hashes provided.");
+
+            CheckConsistencyRequest checkConsistencyRequest = new CheckConsistencyRequest(tails);
+            return _genericIotaCoreApi.Request<CheckConsistencyRequest, CheckConsistencyResponse>(
+                checkConsistencyRequest);
+        }
+
     }
 }

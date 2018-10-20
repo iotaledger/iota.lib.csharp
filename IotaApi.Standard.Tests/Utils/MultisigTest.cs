@@ -66,7 +66,7 @@ namespace Iota.Api.Tests.Utils
             };
 
             List<Transaction> trxs =
-                _iotaClient.InitiateTransfer(6, multiSigAddress, RemainderAddress, transfers, true);
+                _iotaClient.InitiateTransfer(6, multiSigAddress, RemainderAddress, transfers, null, true);
 
             Bundle bundle = new Bundle(trxs, trxs.Count);
 
@@ -80,7 +80,7 @@ namespace Iota.Api.Tests.Utils
             bool isValidSignature = sgn.ValidateSignatures(bundle, multiSigAddress);
             Console.WriteLine("Result of multi-signature validation is " + isValidSignature);
             Assert.IsTrue(isValidSignature, "MultiSignature not valid");
-            
+
         }
     }
 }

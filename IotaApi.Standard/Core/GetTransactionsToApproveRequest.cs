@@ -9,10 +9,12 @@
         /// Initializes a new instance of the <see cref="GetTransactionsToApproveRequest"/> class.
         /// </summary>
         /// <param name="depth">The depth.</param>
-        public GetTransactionsToApproveRequest(int depth)
+        /// <param name="reference"></param>
+        public GetTransactionsToApproveRequest(int depth, string reference)
             : base(Core.Command.GetTransactionsToApprove.GetCommandString())
         {
             Depth = depth;
+            Reference = reference;
         }
 
         /// <summary>
@@ -23,6 +25,8 @@
         /// </value>
         public int Depth { get; }
 
+        public string Reference { get; }
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
@@ -31,7 +35,7 @@
         /// </returns>
         public override string ToString()
         {
-            return $"{nameof(Depth)}: {Depth}";
+            return $"{nameof(Depth)}: {Depth},{nameof(Reference)}: {Reference}";
         }
     }
 }

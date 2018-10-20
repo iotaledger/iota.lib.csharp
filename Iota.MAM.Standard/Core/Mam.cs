@@ -225,7 +225,7 @@ namespace Iota.MAM.Core
 
             // ReSharper disable once UnusedVariable
             var result = Iota.SendTransfer(TrytesHelper.KeyGen(81), 2, depth, mwm, transfers.ToArray(), null, null,
-                false, true);
+                false, true, null);
         }
 
         public Tuple<List<string>, string> Fetch(string root, MamMode mode, string sideKey = null,
@@ -382,7 +382,7 @@ namespace Iota.MAM.Core
         {
             var messages = new List<string>();
 
-            var transactions = Iota.GetTransactionsObjects(hashes.ToArray());
+            var transactions = Iota.FindTransactionObjectsByHashes(hashes.ToArray());
 
             var bundles
                 = new Dictionary<string, List<Transaction>>();

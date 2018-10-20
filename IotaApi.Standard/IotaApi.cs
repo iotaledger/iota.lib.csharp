@@ -7,6 +7,7 @@ using Iota.Api.Exception;
 using Iota.Api.Model;
 using Iota.Api.Pow;
 using Iota.Api.Utils;
+using NLog;
 
 namespace Iota.Api
 {
@@ -15,7 +16,8 @@ namespace Iota.Api
     /// </summary>
     public class IotaApi : IotaCoreApi
     {
-        private readonly ICurl _curl;
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly ICurl _customCurl;
 
         /// <summary>
         ///     Creates an api object that uses the specified connection settings to connect to a node
@@ -23,7 +25,7 @@ namespace Iota.Api
         /// <param name="host">hostname or API address of a node to interact with</param>
         /// <param name="port">tcp/udp port</param>
         /// <param name="protocol">http or https</param>
-        public IotaApi(string host, int port, string protocol = "http") : this(host, port, new Kerl(),protocol)
+        public IotaApi(string host, int port, string protocol = "http") : this(host, port, new Kerl(), protocol)
         {
         }
 
@@ -37,9 +39,9 @@ namespace Iota.Api
         ///     use the default curl implementation provided by the library
         /// </param>
         /// <param name="protocol"></param>
-        public IotaApi(string host, int port, ICurl curl,string protocol) : base(host, port,protocol)
+        public IotaApi(string host, int port, ICurl curl, string protocol) : base(host, port, protocol)
         {
-            _curl = curl ?? throw new ArgumentNullException(nameof(curl));
+            _customCurl = curl ?? throw new ArgumentNullException(nameof(curl));
         }
 
         /// <summary>
@@ -53,8 +55,9 @@ namespace Iota.Api
         /// <param name="start">Starting key index</param>
         /// <param name="end">Ending key index</param>
         /// <param name="threshold">The minimum threshold of accumulated balances from the inputs that is required</param>
+        /// <param name="tips"></param>
         /// <returns>The inputs (see <see cref="Input" />) </returns>
-        public Inputs GetInputs(string seed, int security, int start, int end, long threshold)
+        public Inputs GetInputs(string seed, int security, int start, int end, long threshold, params string[] tips)
         {
             InputValidator.CheckIfValidSeed(seed);
 
@@ -81,11 +84,11 @@ namespace Iota.Api
 
                 for (var i = start; i < end; i++)
                 {
-                    var address = IotaApiUtils.NewAddress(seed, security, i, false, _curl);
+                    var address = IotaApiUtils.NewAddress(seed, security, i, false, _customCurl.Clone());
                     allAddresses[i] = address;
                 }
 
-                return GetBalanceAndFormat(allAddresses, threshold, start, security);
+                return GetBalanceAndFormat(allAddresses, tips, threshold, start, security);
             }
 
             //  Case 2: iterate till threshold || end
@@ -95,13 +98,14 @@ namespace Iota.Api
             //  We then do getBalance, format the output and return it
 
             var addresses = GetNewAddress(seed, security, start, false, 0, true);
-            return GetBalanceAndFormat(addresses, threshold, start, security);
+            return GetBalanceAndFormat(addresses, tips, threshold, start, security);
         }
 
         /// <summary>
         ///     Gets the balances of the specified addresses and calculates the total balance till the threshold is reached.
         /// </summary>
         /// <param name="addresses">addresses</param>
+        /// <param name="tips"></param>
         /// <param name="threshold">the threshold </param>
         /// <param name="start">start index</param>
         /// <param name="security"></param>
@@ -112,19 +116,20 @@ namespace Iota.Api
         /// </exception>
         private Inputs GetBalanceAndFormat(
             string[] addresses,
+            string[] tips,
             long threshold, int start,
             int security)
         {
             if (security < 1)
                 throw new ArgumentException("invalid security level provided");
 
-            var getBalancesResponse = GetBalances(addresses.ToList());
+            var getBalancesResponse = GetBalances(100, addresses.ToList(), tips.ToList());
 
             var balances = getBalancesResponse.Balances;
 
             var inputs = new Inputs {InputsList = new List<Input>(), TotalBalance = 0};
 
-            var threshholdReached = threshold == 0;
+            var thresholdReached = threshold == 0;
 
             for (var i = 0; i < addresses.Length; i++)
                 if (balances[i] > 0)
@@ -141,12 +146,12 @@ namespace Iota.Api
 
                     if (inputs.TotalBalance >= threshold)
                     {
-                        threshholdReached = true;
+                        thresholdReached = true;
                         break;
                     }
                 }
 
-            if (threshholdReached)
+            if (thresholdReached)
                 return inputs;
 
 
@@ -159,29 +164,31 @@ namespace Iota.Api
         ///     as well as choosing and signing the inputs if necessary (if it's a value transfer). The output of this function is
         ///     an array of the raw transaction data (trytes)
         /// </summary>
-        /// <param name="seed">81-tryte encoded address of recipient</param>
-        /// <param name="security"></param>
-        /// <param name="transfers">the transfers to prepare</param>
-        /// <param name="inputs">Optional (default null). The inputs</param>
-        /// <param name="remainderAddress">
-        ///     Optional (default null). if defined, this address will be used for sending the remainder
+        /// <param name="seed">Tryte-encoded private key / seed.</param>
+        /// <param name="security">The security level of private key / seed.</param>
+        /// <param name="transfers">Array of transfer objects.</param>
+        /// <param name="remainder">
+        ///     if defined, this address will be used for sending the remainder
         ///     value (of the inputs) to.
         /// </param>
-        /// <param name="validateInputs"></param>
-        /// <returns>a list containing the trytes of the new bundle</returns>
+        /// <param name="inputs">The inputs.</param>
+        /// <param name="tips">The starting points we walk back from to find the balance of the addresses</param>
+        /// <param name="validateInputs">whether or not to validate the balances of the provided inputs</param>
+        /// <returns>bundle trytes</returns>
         public List<string> PrepareTransfers(
             string seed, int security,
             Transfer[] transfers,
-            string remainderAddress,
-            List<Input> inputs,
+            string remainder,
+            Input[] inputs,
+            Transaction[] tips,
             bool validateInputs)
         {
             // validate seed
             if (!InputValidator.IsValidSeed(seed))
                 throw new IllegalStateException("Invalid seed provided.");
-            
 
-            if(security<1)
+
+            if (security < 1)
                 throw new ArgumentException("Invalid security level provided.");
 
             // Input validation of transfers object
@@ -202,14 +209,15 @@ namespace Iota.Api
             {
                 // remove the checksum of the address if provided
                 transfer.Address = transfer.Address.RemoveChecksum();
-                
+
                 var signatureMessageLength = 1;
 
                 // If message longer than 2187 trytes, increase signatureMessageLength (add 2nd transaction)
                 if (transfer.Message.Length > Constants.MessageLength)
                 {
                     // Get total length, message / maxLength (2187 trytes)
-                    signatureMessageLength += (int) Math.Floor((double) transfer.Message.Length / Constants.MessageLength);
+                    signatureMessageLength +=
+                        (int) Math.Floor((double) transfer.Message.Length / Constants.MessageLength);
 
                     var msgCopy = transfer.Message;
 
@@ -221,7 +229,7 @@ namespace Iota.Api
 
                         // Pad remainder of fragment
                         while (fragment.Length < 2187) fragment += '9';
-                        
+
                         signatureFragments.Add(fragment);
                     }
                 }
@@ -240,12 +248,12 @@ namespace Iota.Api
                 }
 
                 // get current timestamp in seconds
-                var timestamp = (long)Math.Floor((double)IotaApiUtils.CreateTimeStampNow()/1000);
+                var timestamp = (long) Math.Floor((double) IotaApiUtils.CreateTimeStampNow() / 1000);
 
                 // If no tag defined, get 27 tryte tag.
-                
+
                 tag = string.IsNullOrEmpty(transfer.Tag) ? "999999999999999999999999999" : transfer.Tag;
-                
+
 
                 // Pad for required 27 tryte length
                 while (tag.Length < 27) tag += '9';
@@ -260,13 +268,32 @@ namespace Iota.Api
 
             // Get inputs if we are sending tokens
             if (totalValue != 0)
-                if (inputs != null && inputs.Count > 0)
+            {
+                //  Case 1: user provided inputs
+                //  Validate the inputs by calling getBalances
+                if (inputs != null && inputs.Length > 0)
                 {
+                    if (!validateInputs)
+                    {
+                        return AddRemainder(seed, security, inputs.ToList(), bundle, tag, totalValue, remainder,
+                            signatureFragments);
+                    }
+
                     // Get list if addresses of the provided inputs
                     var inputAddresses = new List<string>();
                     foreach (var input in inputs) inputAddresses.Add(input.Address);
 
-                    var balances = GetBalances(inputAddresses);
+                    List<string> tipHashes = null;
+                    if (tips != null)
+                    {
+                        tipHashes = new List<string>();
+                        foreach (var tx in tips)
+                        {
+                            tipHashes.Add(tx.Hash);
+                        }
+                    }
+
+                    var balances = GetBalances(100, inputAddresses, tipHashes);
 
                     var confirmedInputs = new List<Input>();
 
@@ -283,13 +310,20 @@ namespace Iota.Api
                             inputEl.Balance = thisBalance;
 
                             confirmedInputs.Add(inputEl);
+
+                            // if we've already reached the intended input value, break out of loop
+                            if (totalBalance >= totalValue)
+                            {
+                                Log.Info("Total balance already reached ");
+                                break;
+                            }
                         }
                     }
 
                     // Return not enough balance error
                     if (totalValue > totalBalance) throw new NotEnoughBalanceException(totalValue);
 
-                    return AddRemainder(seed, security, confirmedInputs, bundle, tag, totalValue, remainderAddress,
+                    return AddRemainder(seed, security, confirmedInputs, bundle, tag, totalValue, remainder,
                         signatureFragments);
                 }
 
@@ -297,15 +331,13 @@ namespace Iota.Api
                 //
                 //  If no inputs provided, derive the addresses from the seed and
                 //  confirm that the inputs exceed the threshold
-                else
-                {
-                    var inputList = GetInputs(seed, security, 0, 0, (int) totalValue).InputsList;
-                    return AddRemainder(seed, security, inputList, bundle, tag, totalValue, remainderAddress,
-                        signatureFragments);
-                }
+                var inputList = GetInputs(seed, security, 0, 0, (int) totalValue).InputsList;
+                return AddRemainder(seed, security, inputList, bundle, tag, totalValue, remainder,
+                    signatureFragments);
+            }
 
             // If no input required, don't sign and simply finalize the bundle
-            bundle.FinalizeBundle(_curl.Clone());
+            bundle.FinalizeBundle(_customCurl.Clone());
             bundle.AddTrytes(signatureFragments);
 
             var bundleTrytes = new List<string>();
@@ -352,7 +384,8 @@ namespace Iota.Api
                         bundle.AddEntry(1, remainderAddress, remainder, tag, timestamp);
 
                         // function for signing inputs
-                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
+                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments,
+                            _customCurl.Clone());
                     }
 
                     if (remainder > 0)
@@ -366,12 +399,14 @@ namespace Iota.Api
                         bundle.AddEntry(1, address, remainder, tag, timestamp);
 
                         // function for signing inputs
-                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
+                        return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments,
+                            _customCurl.Clone());
                     }
 
                     // If there is no remainder, do not add transaction to bundle
                     // simply sign and return
-                    return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments, _curl);
+                    return IotaApiUtils.SignInputsAndReturn(seed, inputs, bundle, signatureFragments,
+                        _customCurl.Clone());
                 }
 
                 // If multiple inputs provided, subtract the totalTransferValue by
@@ -482,7 +517,7 @@ namespace Iota.Api
 
         private Bundle[] BundlesFromAddresses(string[] addresses, bool inclusionStates)
         {
-            var trxs = FindTransactionObjects(addresses);
+            var trxs = FindTransactionObjectsByAddresses(addresses);
             // set of tail transactions
             var tailTransactions = new List<string>();
             var nonTailBundleHashes = new List<string>();
@@ -522,7 +557,7 @@ namespace Iota.Api
                     // suppress exception (the check is done below)
                 }
 
-                if (gisr == null || gisr.States == null || gisr.States.Count == 0)
+                if (gisr?.States == null || gisr.States.Count == 0)
                     throw new ArgumentException("Inclusion states not found");
             }
 
@@ -562,7 +597,7 @@ namespace Iota.Api
         /// </summary>
         /// <param name="addresses">The addresses.</param>
         /// <returns>a list of transactions</returns>
-        public List<Transaction> FindTransactionObjects(string[] addresses)
+        public List<Transaction> FindTransactionObjectsByAddresses(string[] addresses)
         {
             var addressesWithoutChecksum =
                 addresses.Select(address => address.RemoveChecksum()).ToList();
@@ -572,15 +607,15 @@ namespace Iota.Api
                 return null;
 
             // get the transaction objects of the transactions
-            return GetTransactionsObjects(ftr.Hashes.ToArray());
+            return FindTransactionObjectsByHashes(ftr.Hashes.ToArray());
         }
 
         /// <summary>
-        ///     Gets the transactions objects.
+        ///     
         /// </summary>
         /// <param name="hashes">The hashes in trytes</param>
         /// <returns>a list of transactions</returns>
-        public List<Transaction> GetTransactionsObjects(string[] hashes)
+        public List<Transaction> FindTransactionObjectsByHashes(string[] hashes)
         {
             if (!InputValidator.IsArrayOfHashes(hashes))
                 throw new IllegalStateException("Not an Array of Hashes: " + hashes);
@@ -589,7 +624,7 @@ namespace Iota.Api
 
             var trxs = new List<Transaction>();
 
-            foreach (var tryte in trytesResponse.Trytes) trxs.Add(new Transaction(tryte, _curl));
+            foreach (var tryte in trytesResponse.Trytes) trxs.Add(new Transaction(tryte, _customCurl.Clone()));
             return trxs;
         }
 
@@ -601,11 +636,11 @@ namespace Iota.Api
         public List<Transaction> FindTransactionObjectsByBundle(string[] bundles)
         {
             var ftr = FindTransactions(null, null, null, bundles.ToList());
-            if (ftr == null || ftr.Hashes == null)
+            if (ftr?.Hashes == null)
                 return null;
 
             // get the transaction objects of the transactions
-            return GetTransactionsObjects(ftr.Hashes.ToArray());
+            return FindTransactionObjectsByHashes(ftr.Hashes.ToArray());
         }
 
 
@@ -615,8 +650,9 @@ namespace Iota.Api
         /// <param name="transaction">The transaction.</param>
         /// <param name="depth">The depth.</param>
         /// <param name="minWeightMagnitude">The minimum weight magnitude.</param>
+        /// <param name="reference"></param>
         /// <returns>an array of boolean that indicate which transactions have been replayed successfully</returns>
-        public bool[] ReplayBundle(string transaction, int depth, int minWeightMagnitude)
+        public bool[] ReplayBundle(string transaction, int depth, int minWeightMagnitude, string reference)
         {
             //StopWatch stopWatch = new StopWatch();
 
@@ -626,7 +662,7 @@ namespace Iota.Api
 
             bundle.Transactions.ForEach(t => bundleTrytes.Add(t.ToTransactionTrytes()));
 
-            var trxs = SendTrytes(bundleTrytes.ToArray(), depth, minWeightMagnitude).ToList();
+            var trxs = SendTrytes(bundleTrytes.ToArray(), depth, minWeightMagnitude, reference).ToList();
 
             var successful = new bool[trxs.Count];
 
@@ -715,16 +751,24 @@ namespace Iota.Api
         /// </param>
         /// <param name="validateInputs"></param>
         /// <param name="validateInputAddresses"></param>
+        /// <param name="tips"></param>
         /// <returns> an array of the boolean that indicates which Transactions where sent successully</returns>
         public bool[] SendTransfer(
             string seed, int security, int depth,
             int minWeightMagnitude, Transfer[] transfers,
             Input[] inputs, string remainderAddress,
-            bool validateInputs, bool validateInputAddresses)
+            bool validateInputs, bool validateInputAddresses,
+            Transaction[] tips)
         {
             var trytes = PrepareTransfers(seed, security, transfers,
-                remainderAddress, inputs?.ToList(), validateInputs);
-            var trxs = SendTrytes(trytes.ToArray(), depth, minWeightMagnitude);
+                remainderAddress, inputs, tips, validateInputs);
+
+            if (validateInputAddresses)
+                ValidateTransfersAddresses(seed, security, trytes);
+
+            string reference = tips != null && tips.Length > 0 ? tips[0].Hash : null;
+
+            var trxs = SendTrytes(trytes.ToArray(), depth, minWeightMagnitude, reference);
 
             var successful = new bool[trxs.Length];
 
@@ -740,18 +784,21 @@ namespace Iota.Api
 
         /// <summary>
         ///     Sends the trytes.
+        /// Facade method: Gets transactions to approve, attaches to Tangle, broadcasts and stores.
         /// </summary>
         /// <param name="trytes">The trytes.</param>
         /// <param name="depth">The depth.</param>
-        /// <param name="minWeightMagnitude">Optional (default 14). The minimum weight magnitude.</param>
-        /// <returns>an Array of Transactions</returns>
-        public Transaction[] SendTrytes(string[] trytes, int depth, int minWeightMagnitude = 14)
+        /// <param name="minWeightMagnitude">The minimum weight magnitude.</param>
+        /// <param name="reference">Hash of transaction to start random-walk from, used to make sure the tips returned reference a given transaction in their past.</param>
+        /// <returns>Transactions objects.</returns>
+        public Transaction[] SendTrytes(string[] trytes, int depth, int minWeightMagnitude, string reference)
         {
-            var transactionsToApproveResponse = GetTransactionsToApprove(depth);
+            var transactionsToApproveResponse = GetTransactionsToApprove(depth, reference);
 
+            // attach to tangle - do pow
             var attachToTangleResponse =
                 AttachToTangle(transactionsToApproveResponse.TrunkTransaction,
-                    transactionsToApproveResponse.BranchTransaction, trytes, minWeightMagnitude);
+                    transactionsToApproveResponse.BranchTransaction, minWeightMagnitude, trytes);
             try
             {
                 BroadcastAndStore(attachToTangleResponse.Trytes);
@@ -763,7 +810,7 @@ namespace Iota.Api
 
             var trx = new List<Transaction>();
 
-            foreach (var tx in attachToTangleResponse.Trytes) trx.Add(new Transaction(tx, _curl));
+            foreach (var tx in attachToTangleResponse.Trytes) trx.Add(new Transaction(tx, _customCurl.Clone()));
             return trx.ToArray();
         }
 
@@ -898,7 +945,7 @@ namespace Iota.Api
 
             return new AccountData(new List<string>(addresses), bundle, inputs.InputsList, inputs.TotalBalance);
         }
-        
+
         /// <summary>
         ///     Wrapper function that broadcasts and stores the specified trytes
         /// </summary>
@@ -916,11 +963,12 @@ namespace Iota.Api
         /// <param name="inputAddress"></param>
         /// <param name="remainderAddress"></param>
         /// <param name="transfers"></param>
+        /// <param name="tips"></param>
         /// <param name="testMode"></param>
         /// <returns></returns>
         public List<Transaction> InitiateTransfer(
             int securitySum, string inputAddress, string remainderAddress,
-            List<Transfer> transfers, bool testMode)
+            List<Transfer> transfers, List<Transaction> tips, bool testMode)
         {
             // validate input address
             if (!InputValidator.IsAddress(inputAddress))
@@ -964,12 +1012,13 @@ namespace Iota.Api
                 {
 
                     // Get total length, message / maxLength (2187 trytes)
-                    signatureMessageLength += (int)Math.Floor((double)transfer.Message.Length / Constants.MessageLength);
+                    signatureMessageLength +=
+                        (int) Math.Floor((double) transfer.Message.Length / Constants.MessageLength);
 
                     String msgCopy = transfer.Message;
 
                     // While there is still a message, copy it
-                    
+
                     while (!string.IsNullOrEmpty(msgCopy))
                     {
 
@@ -978,7 +1027,7 @@ namespace Iota.Api
 
                         // Pad remainder of fragment
                         fragment = fragment.PadRight(Constants.MessageLength, '9');
-                        
+
 
                         signatureFragments.Add(fragment);
                     }
@@ -1008,7 +1057,7 @@ namespace Iota.Api
                 }
 
                 // get current timestamp in seconds
-                long timestamp = (long)Math.Floor(GetCurrentTimestampInSeconds());
+                long timestamp = (long) Math.Floor(GetCurrentTimestampInSeconds());
 
                 // Add first entry to the bundle
                 bundle.AddEntry(signatureMessageLength, transfer.Address, transfer.Value, tag, timestamp);
@@ -1019,20 +1068,32 @@ namespace Iota.Api
             // Get inputs if we are sending tokens
             if (totalValue != 0)
             {
-                GetBalancesResponse balancesResponse = GetBalances(new List<string> { inputAddress });
+                List<string> tipHashes = null;
+                if (tips != null)
+                {
+                    tipHashes = new List<string>();
+                    foreach (var tx in tips)
+                    {
+                        tipHashes.Add(tx.Hash);
+                    }
+                }
+
+
+                GetBalancesResponse balancesResponse = GetBalances(100, new List<string> {inputAddress}, tipHashes);
                 var balances = balancesResponse.Balances;
 
                 long totalBalance = 0;
-                
+
                 foreach (var balance in balances)
                 {
                     totalBalance += balance;
                 }
 
                 // get current timestamp in seconds
-                long timestamp = (long)Math.Floor(GetCurrentTimestampInSeconds());
+                long timestamp = (long) Math.Floor(GetCurrentTimestampInSeconds());
 
                 // bypass the balance checks during unit testing
+                //TODO remove this ugliness
                 if (testMode)
                     totalBalance += 1000;
 
@@ -1045,6 +1106,7 @@ namespace Iota.Api
                     // Only a single entry, signatures will be added later
                     bundle.AddEntry(securitySum, inputAddress, toSubtract, tag, timestamp);
                 }
+
                 // Return not enough balance error
                 if (totalValue > totalBalance)
                 {
@@ -1087,7 +1149,7 @@ namespace Iota.Api
 
             var trytes = gtr.Trytes[0];
 
-            var transaction = new Transaction(trytes, _curl);
+            var transaction = new Transaction(trytes, _customCurl.Clone());
 
             // If first transaction to search is not a tail, return error
             if (bundleHash == null && transaction.CurrentIndex != 0) throw new InvalidTailTransactionException();
@@ -1100,7 +1162,7 @@ namespace Iota.Api
 
             // If only one bundle element, return
             if (transaction.LastIndex == 0 && transaction.CurrentIndex == 0)
-                return new Bundle(new List<Transaction> { transaction }, 1);
+                return new Bundle(new List<Transaction> {transaction}, 1);
 
             // Define new trunkTransaction for search
             var trunkTx = transaction.TrunkTransaction;
@@ -1120,6 +1182,53 @@ namespace Iota.Api
 
             return (now - epoch).TotalSeconds;
         }
+
+        private void ValidateTransfersAddresses(string seed, int security, List<string> trytes)
+        {
+            HashSet<string> addresses = new HashSet<string>();
+            List<Transaction> inputTransactions = new List<Transaction>();
+            List<string> inputAddresses = new List<string>();
+
+
+            foreach (var trx in trytes)
+            {
+                addresses.Add(new Transaction(trx, _customCurl.Clone()).Address);
+                inputTransactions.Add(new Transaction(trx, _customCurl.Clone()));
+            }
+
+            var hashes = FindTransactionsByAddresses(addresses.ToArray()).Hashes;
+            List<Transaction> transactions = FindTransactionObjectsByHashes(hashes.ToArray());
+            var gna = GetNewAddress(seed, security, 0, false, 0, true);
+            var gbr = GetInputs(seed, security, 0, 0, 0);
+
+            foreach (var input in gbr.InputsList)
+            {
+                inputAddresses.Add(input.Address);
+            }
+
+            //check if send to input
+            foreach (var trx in inputTransactions)
+            {
+                if (trx.Value > 0 && inputAddresses.Contains(trx.Address))
+                    throw new ArgumentException("Send to inputs!");
+            }
+
+            foreach (var trx in transactions)
+            {
+                //check if destination address is already in use
+                if (trx.Value < 0 && !inputAddresses.Contains(trx.Address))
+                {
+                    throw new ArgumentException("Sending to a used address.");
+                }
+
+                //check if key reuse
+                if (trx.Value < 0 && gna.Contains(trx.Address))
+                {
+                    throw new ArgumentException("Private key reuse detect!");
+                }
+
+            }
+
+        }
     }
-    
 }

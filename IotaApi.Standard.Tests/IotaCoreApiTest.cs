@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Iota.Api.Exception;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable StringLiteralTypo
@@ -10,6 +11,12 @@ namespace Iota.Api.Tests
     {
         private static readonly string TEST_BUNDLE =
             "YNSXQFSIGLIRWCCBLEABYWVCYXMDR9YSVGFFVM9JPJWRCLTFNMDFEFBGPRPQDROB99N9KRPXFYSPRHMJD";
+
+        private static readonly string TEST_ADDRESS_UNSPENT =
+            "D9UZTBEAT9DMZKMCPEKSBEOWPAUFWKOXWPO9LOHZVTE9HAVTAKHWAIXCJKDJFGUOBOULUFTJZKWTEKCHD";
+
+        private static readonly string TEST_ADDRESS_SPENT =
+            "9SEGQNQHFHCAI9QXTVGBGTIZQDV9RSCGCGPQSPLNCNN9DSENFMLTD9SETUSYZCYG9JYPIAMXFHNT9YRFZ";
 
         private static readonly string TEST_ADDRESS_WITH_CHECKSUM =
             "YJNQ9EQWSXUMLFCIUZDCAJZSAXUQNZSY9AKKVYKKFBAAHRSTKSHUOCCFTQVPPASPGGC9YGNLDQNOUWCAWGWIJNRJMX";
@@ -81,31 +88,19 @@ namespace Iota.Api.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(IllegalAccessError))]
         public void ShouldAddNeighbors()
         {
-            try
-            {
-                var res = _iotaApi.AddNeighbors("udp://8.8.8.8:14265");
-                Assert.IsNotNull(res);
-            }
-            catch (IotaApiException e)
-            {
-                Assert.IsTrue(e.Message.Contains("not available on this node"));
-            }
+            var res = _iotaApi.AddNeighbors("udp://8.8.8.8:14265");
+            Assert.IsNotNull(res);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(IllegalAccessError))]
         public void ShouldRemoveNeighbors()
         {
-            try
-            {
-                var res = _iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
-                Assert.IsNotNull(res);
-            }
-            catch (IotaApiException e)
-            {
-                Assert.IsTrue(e.Message.Contains("not available on this node"));
-            }
+            var res = _iotaApi.RemoveNeighbors("udp://8.8.8.8:14265");
+            Assert.IsNotNull(res);
         }
 
         [TestMethod]
@@ -152,7 +147,7 @@ namespace Iota.Api.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(IotaApiException), "One of the tips absents")]
+        [ExpectedException(typeof(ArgumentException))]
         public void ShouldNotGetInclusionStates()
         {
             var res = _iotaApi.GetInclusionStates(new[] {TEST_HASH},
@@ -178,6 +173,21 @@ namespace Iota.Api.Tests
             Assert.IsNotNull(res.BranchTransaction);
         }
 
+        [TestMethod] // very long execution
+        public void ShouldInvalidDepth()
+        {
+            try
+            {
+                _iotaApi.GetTransactionsToApprove(27);
+                Assert.Fail("Depth more then 15 is not supported by default");
+            }
+            catch (ArgumentException)
+            {
+                //TODO verify correct error
+                //Good!
+            }
+        }
+
         [TestMethod]
         public void ShouldFindTransactions()
         {
@@ -191,10 +201,42 @@ namespace Iota.Api.Tests
         public void ShouldGetBalances()
         {
             // ReSharper disable once RedundantArgumentDefaultValue
-            var res = _iotaApi.GetBalances(new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), 100);
+            var res = _iotaApi.GetBalances(100, new[] {TEST_ADDRESS_WITH_CHECKSUM}.ToList(), null);
             Assert.IsNotNull(res.Balances);
             Assert.IsNotNull(res.References);
             Assert.IsNotNull(res.MilestoneIndex);
+            Assert.IsNotNull(res.Duration);
         }
+
+        [TestMethod]
+        public void InvalidAddressSpentFrom()
+        {
+            try
+            {
+                //Addresses with checksum aren't allowed, remove last 9 characters!
+                _iotaApi.WereAddressesSpentFrom(TEST_ADDRESS_WITH_CHECKSUM);
+                Assert.Fail("failed to throw error on wrong address hash");
+            }
+            catch (ArgumentException)
+            {
+                //TODO verify correct error
+                //Success
+            }
+        }
+
+        [TestMethod]
+        public void AddressIsSpentFrom()
+        {
+            var ret = _iotaApi.WereAddressesSpentFrom(TEST_ADDRESS_SPENT);
+            Assert.IsTrue(ret.States[0]);
+        }
+
+        [TestMethod]
+        public void AddressIsNotSpentFrom()
+        {
+            var ret = _iotaApi.WereAddressesSpentFrom(TEST_ADDRESS_UNSPENT);
+            Assert.IsFalse(ret.States[0]);
+        }
+
     }
 }

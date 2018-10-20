@@ -39,7 +39,7 @@ namespace Iota.Api.Tests.Pow
             };
             var result = _iotaClient.SendTransfer(
                 TEST_SEED1, 2, DEPTH, MIN_WEIGHT_MAGNITUDE, transfers.ToArray(),
-                null, null, false, false);
+                null, null, false, false, null);
             Assert.IsNotNull(result);
         }
     }

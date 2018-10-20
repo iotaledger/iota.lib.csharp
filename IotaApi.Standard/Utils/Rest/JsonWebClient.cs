@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
@@ -46,6 +47,8 @@ namespace Iota.Api.Utils.Rest
                 {
                     using (Stream stream = response.GetResponseStream())
                     {
+                        Debug.Assert(stream != null, nameof(stream) + " != null");
+
                         StreamReader reader = new StreamReader(stream, Encoding.UTF8);
                         string responseString = reader.ReadToEnd();
 
@@ -58,16 +61,32 @@ namespace Iota.Api.Utils.Rest
                         throw new IotaApiException(JsonConvert.DeserializeObject<ErrorResponse>(responseString).Error);
                     }
                 }
+
             }
             catch (WebException ex)
             {
                 Console.WriteLine("catched: " + ex + ex.Message);
 
                 using (var stream = ex.Response.GetResponseStream())
-                using (var reader = new StreamReader(stream))
                 {
-                    String errorResponse = reader.ReadToEnd();
-                    throw new IotaApiException(JsonConvert.DeserializeObject<ErrorResponse>(errorResponse).Error);
+                    Debug.Assert(stream != null, nameof(stream) + " != null");
+
+                    using (var reader = new StreamReader(stream))
+                    {
+                        string errorResponse = reader.ReadToEnd();
+
+                        HttpWebResponse response = (HttpWebResponse) ex.Response;
+
+                        if (response.StatusCode == HttpStatusCode.BadRequest)
+                            throw new ArgumentException(errorResponse);
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                            throw new IllegalAccessError("401" + errorResponse);
+                        if (response.StatusCode == HttpStatusCode.InternalServerError)
+                            throw new IllegalAccessError("500" + errorResponse);
+
+
+                        throw new IotaApiException(JsonConvert.DeserializeObject<ErrorResponse>(errorResponse).Error);
+                    }
                 }
             }
         }
@@ -98,6 +117,8 @@ namespace Iota.Api.Utils.Rest
                     {
                         using (Stream stream = response.GetResponseStream())
                         {
+                            Debug.Assert(stream != null, nameof(stream) + " != null");
+
                             StreamReader reader = new StreamReader(stream, Encoding.UTF8);
                             string responseString = reader.ReadToEnd();
                             callback(JsonConvert.DeserializeObject<TResponse>(responseString));

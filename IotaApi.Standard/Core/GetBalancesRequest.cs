@@ -10,13 +10,15 @@ namespace Iota.Api.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="GetBalancesRequest"/> class.
         /// </summary>
-        /// <param name="addresses">The addresses.</param>
-        /// <param name="threshold">The threshold.</param>
-        public GetBalancesRequest(List<string> addresses, long threshold = 100)
+        /// <param name="threshold">The confirmation threshold, should be set to 100.</param>
+        /// <param name="addresses">The array list of addresses you want to get the confirmed balance from.</param>
+        /// <param name="tips">The starting points we walk back from to find the balance of the addresses</param>
+        public GetBalancesRequest(long threshold, List<string> addresses, List<string> tips)
             : base(Core.Command.GetBalances.GetCommandString())
         {
             Addresses = addresses;
             Threshold = threshold;
+            Tips = tips;
         }
 
         /// <summary>
@@ -36,6 +38,11 @@ namespace Iota.Api.Core
         public List<string> Addresses { get; }
 
         /// <summary>
+        /// The starting points we walk back from to find the balance of the addresses
+        /// </summary>
+        public List<string> Tips { get; }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
@@ -43,7 +50,8 @@ namespace Iota.Api.Core
         /// </returns>
         public override string ToString()
         {
-            return $"{nameof(Threshold)}: {Threshold}, {nameof(Addresses)}: {string.Join(",",Addresses)}";
+            return
+                $"{nameof(Threshold)}: {Threshold}, {nameof(Addresses)}: {string.Join(",", Addresses)},{nameof(Tips)}: {string.Join(",", Tips)}";
         }
     }
 }
