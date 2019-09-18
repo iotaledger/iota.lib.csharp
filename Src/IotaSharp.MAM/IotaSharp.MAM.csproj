@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'==''">net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.1</Version>
+    <Authors>IotaSharp</Authors>
+    <Company>Iota</Company>
+    <Product>IotaSharp.MAM</Product>
+    <Description>Iota Library for .NET</Description>
+    <Copyright>Copyright © Iota 2008</Copyright>
+    <Summary>Iota Library for .NET</Summary>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Title>IotaSharp.MAM</Title>
+    <PackageId>IotaSharp.MAM</PackageId>
+    <PackageTags>MAM</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RootNamespace>IotaSharp.MAM</RootNamespace>
+    <AssemblyName>IotaSharp.MAM</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <MinClientVersion>2.12</MinClientVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
+    <AssemblyTitle>IotaSharp.MAM</AssemblyTitle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <AssemblyTitle>IotaSharp.MAM .NET Standard 2.0</AssemblyTitle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Merkle\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IotaSharp\IotaSharp.csproj" />
+  </ItemGroup>
+
+</Project>

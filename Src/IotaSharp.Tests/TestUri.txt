@@ -1,0 +1,4 @@
+﻿https://nodes.devnet.thetangle.org:443
+https://nodes.devnet.iota.org:443
+
+https://node02.iotatoken.nl:443

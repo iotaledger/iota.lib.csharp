@@ -1,7 +1,8 @@
 version: 1.0.{build}
 image: Visual Studio 2017
+configuration: Release
 before_build:
   - nuget restore
 build:
-  project: IotaApi.sln 
+  project: Src\IotaSharp.sln 
   verbosity: minimal
