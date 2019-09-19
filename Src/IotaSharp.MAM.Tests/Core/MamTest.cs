@@ -10,9 +10,7 @@ namespace IotaSharp.MAM.Tests.Core
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class MamTest
     {
-        private const string Provider = "https://nodes.devnet.iota.org";
-        
-        //"https://node02.iotatoken.nl:443";
+        private const string Provider = "https://node02.iotatoken.nl:443";
         
         [TestMethod]
         public void PublishPublicTest()
