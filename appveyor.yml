@@ -1,8 +1,10 @@
 version: 1.0.{build}
+nuget:
+  disable_publish_on_pr: true
 image: Visual Studio 2017
 configuration: Release
 before_build:
-  - nuget restore
+  - nuget restore Src\IotaSharp.sln
 build:
   project: Src\IotaSharp.sln 
   verbosity: minimal
