@@ -58,29 +58,34 @@ namespace IotaSharp.Utils
             }
             catch (WebException ex)
             {
-                using (var stream = ex.Response.GetResponseStream())
+                if (ex.Response != null)
                 {
-                    Debug.Assert(stream != null, nameof(stream) + " != null");
-
-                    using (var reader = new StreamReader(stream))
+                    using (var stream = ex.Response.GetResponseStream())
                     {
-                        string errorResponse = reader.ReadToEnd();
+                        Debug.Assert(stream != null, nameof(stream) + " != null");
 
-                        HttpWebResponse response = (HttpWebResponse) ex.Response;
+                        using (var reader = new StreamReader(stream))
+                        {
+                            string errorResponse = reader.ReadToEnd();
 
-                        if (response.StatusCode == HttpStatusCode.BadRequest)
-                            throw new ArgumentException(errorResponse);
-                        if (response.StatusCode == HttpStatusCode.Unauthorized)
-                            throw new IllegalAccessException("401" + errorResponse);
-                        if (response.StatusCode == HttpStatusCode.InternalServerError)
-                            throw new IllegalAccessException("500" + errorResponse);
+                            HttpWebResponse response = (HttpWebResponse) ex.Response;
+
+                            if (response.StatusCode == HttpStatusCode.BadRequest)
+                                throw new ArgumentException(errorResponse);
+                            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                                throw new IllegalAccessException("401" + errorResponse);
+                            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                                throw new IllegalAccessException("500" + errorResponse);
 
 
-                        throw new IotaApiException(JsonConvert.DeserializeObject<ErrorResponse>(errorResponse).Error);
+                            throw new IotaApiException(
+                                JsonConvert.DeserializeObject<ErrorResponse>(errorResponse).Error);
+                        }
                     }
                 }
-            }
 
+                throw;
+            }
         }
     }
 }

@@ -92,12 +92,15 @@ namespace IotaSharp.Tests
             "KVEBCGMEOPDPRCQBPIEMZTTXYBURGZVNH9PLHKPMM9D9FUKWIGLKZROGNSYIFHULLWQWXCNAW9HKKVIDCTGKHAVBJZ"
         };
 
+        private const string Provider = "http://node05.iotatoken.nl:16265";
+        private const string DevNetProvider = "https://nodes.devnet.thetangle.org:443";
+
         [TestInitialize]
         public void CreateProxyInstance()
         {
             _iotaApi = new IotaAPI()
             {
-                IotaClient = new IotaClient("https://nodes.devnet.thetangle.org:443"),
+                IotaClient = new IotaClient(DevNetProvider),
                 LocalPoW = new PearlDiverLocalPoW()
             };
         }
@@ -302,7 +305,7 @@ namespace IotaSharp.Tests
         {
             var iotaApi = new IotaAPI
             {
-                IotaClient = new IotaClient("https://node02.iotatoken.nl:443")
+                IotaClient = new IotaClient(Provider)
             };
 
             GetInclusionStatesResponse res = iotaApi.GetLatestInclusion(new[]
@@ -341,7 +344,7 @@ namespace IotaSharp.Tests
         {
             var iotaApi = new IotaAPI
             {
-                IotaClient = new IotaClient("https://node02.iotatoken.nl:443")
+                IotaClient = new IotaClient(Provider)
             };
 
             GetBundleResponse gbr = iotaApi.GetBundle(TEST_HASH);
@@ -364,7 +367,7 @@ namespace IotaSharp.Tests
         {
             var iotaApi = new IotaAPI
             {
-                IotaClient = new IotaClient("https://node02.iotatoken.nl:443")
+                IotaClient = new IotaClient(Provider)
             };
 
             GetTransferResponse gtr = iotaApi.GetTransfers(TEST_SEED3, 2, 0, 10, false);
@@ -377,7 +380,7 @@ namespace IotaSharp.Tests
         {
             var iotaApi = new IotaAPI
             {
-                IotaClient = new IotaClient("https://node02.iotatoken.nl:443")
+                IotaClient = new IotaClient(Provider)
             };
 
             ReplayBundleResponse rbr = iotaApi.ReplayBundle(TEST_HASH, DEPTH, MIN_WEIGHT_MAGNITUDE, null);
@@ -406,7 +409,7 @@ namespace IotaSharp.Tests
         {
             var iotaApi = new IotaAPI
             {
-                IotaClient = new IotaClient("https://node02.iotatoken.nl:443")
+                IotaClient = new IotaClient(Provider)
             };
 
             Assert.ThrowsException<ArgumentException>(() => { iotaApi.BroadcastAndStore(TEST_TRYTES); },

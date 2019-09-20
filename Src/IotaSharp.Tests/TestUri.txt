@@ -2,3 +2,5 @@
 https://nodes.devnet.iota.org:443
 
 https://node02.iotatoken.nl:443
+
+http://node05.iotatoken.nl:16265
