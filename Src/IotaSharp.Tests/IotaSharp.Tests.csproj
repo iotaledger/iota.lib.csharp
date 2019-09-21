@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'==''">net461;netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>IotaSharp.Tests</RootNamespace>
+    <AssemblyName>IotaSharp.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsCodedUITest>False</IsCodedUITest>
+    <DebugType Condition="'$(TargetFramework)' != '' AND '$(TargetFramework)' != 'netcoreapp1.0' AND '$(TargetFramework)' != 'netcoreapp1.1' AND '$(TargetFramework)' != 'netcoreapp2.2'">Full</DebugType>
+    <DeterministicSourcePaths>false</DeterministicSourcePaths>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" PrivateAssets="All" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" PrivateAssets="All" />
+    <ProjectReference Include="..\IotaSharp\IotaSharp.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)'=='net461'">
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
+  <AssemblyTitle>IotaSharp Tests</AssemblyTitle>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.2'">
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp2.2'">
+  <AssemblyTitle>IotaSharp Tests .NET Standard 2.0</AssemblyTitle>
+  </PropertyGroup>
+
+</Project>
